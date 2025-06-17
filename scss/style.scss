@@ -567,7 +567,11 @@ h1, h2, h3, h4, h5,
 		&.img{
 			display: block;
 			@include media-breakpoint-down(sm){
-				height: 300px;
+				min-height: 300px !important;
+				background-size: cover !important;
+				background-position: center center !important;
+				background-repeat: no-repeat !important;
+				background-image: url('../images/about.jpg') !important;
 			}
 		}
 	}
