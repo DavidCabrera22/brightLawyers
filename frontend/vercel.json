@@ -1,15 +1,3 @@
 {
-  "rewrites": [
-    { "source": "/", "destination": "/public/index.html" },
-    { "source": "/index", "destination": "/public/index.html" },
-    { "source": "/index.html", "destination": "/public/index.html" },
-    { "source": "/login", "destination": "/public/login.html" },
-    { "source": "/login.html", "destination": "/public/login.html" },
-    { "source": "/register", "destination": "/public/register.html" },
-    { "source": "/register.html", "destination": "/public/register.html" },
-    { "source": "/assets/:match*", "destination": "/public/assets/:match*" },
-    { "source": "/admin/:match*", "destination": "/public/admin/:match*" },
-    { "source": "/client/:match*", "destination": "/public/client/:match*" },
-    { "source": "/lawyer/:match*", "destination": "/public/lawyer/:match*" }
-  ]
+  "rewrites": []
 }
