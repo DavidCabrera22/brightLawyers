@@ -251,7 +251,7 @@
     <!-- Scripts -->
     <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
     <script>
-        const API_URL = 'http://localhost:4000/api';
+        const API_URL = 'https://brightlawyers.onrender.com/api';
         let currentUser = null;
         let socket = null;
 
@@ -291,7 +291,7 @@
 
         function initSocket() {
             // Connect to root namespace
-            socket = io('http://localhost:4000', {
+            socket = io('https://brightlawyers.onrender.com', {
                 auth: {
                     token: localStorage.getItem('token')
                 }

@@ -473,7 +473,7 @@
         if (docName) formData.append('name', docName);
 
         try {
-            const apiUrl = window.API_URL || 'http://localhost:4000/api';
+            const apiUrl = window.API_URL || 'https://brightlawyers.onrender.com/api';
             const response = await fetch(`${apiUrl}/documents/upload`, {
                 method: 'POST',
                 headers: { 'Authorization': `Bearer ${authToken}` },
@@ -516,7 +516,7 @@
         };
 
         try {
-            const apiUrl = window.API_URL || 'http://localhost:4000/api';
+            const apiUrl = window.API_URL || 'https://brightlawyers.onrender.com/api';
             const response = await fetch(`${apiUrl}/clients/${clientId}`, {
                 method: 'PUT',
                 headers: {

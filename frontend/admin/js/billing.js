@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:4000/api';
+const API_URL = 'https://brightlawyers.onrender.com/api';
 const authToken = localStorage.getItem('token');
 
 if (!authToken) {

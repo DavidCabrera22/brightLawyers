@@ -293,7 +293,7 @@
 
             // Init Socket
             try {
-                 const socketUrl = (typeof API_URL !== 'undefined') ? API_URL.replace('/api', '') : 'http://localhost:4000';
+                 const socketUrl = (typeof API_URL !== 'undefined') ? API_URL.replace('/api', '') : 'https://brightlawyers.onrender.com';
                  socket = io(socketUrl, { auth: { token } });
                  socket.on('connect', () => console.log('Connected to socket'));
                  socket.on('new_message', (msg) => {
