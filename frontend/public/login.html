@@ -229,7 +229,7 @@
     </div>
 
     <!-- Script -->
-    <script src="../assets/js/auth.js?v=2"></script>
+    <script src="../assets/js/auth.js?v=2" onerror="console.error('Error loading auth.js'); alert('Error crítico: No se pudo cargar el sistema de autenticación. Por favor verifique su conexión o recargue la página.');"></script>
     <script>
         // Login Logic
         const loginForm = document.getElementById('login-form');
@@ -238,6 +238,11 @@
             loginForm.addEventListener('submit', async (e) => {
                 e.preventDefault();
                 
+                if (typeof window.login !== 'function') {
+                    alert('Error: El sistema de autenticación no está listo. Por favor recargue la página.');
+                    return;
+                }
+
                 const email = document.getElementById('email').value;
                 const password = document.getElementById('password').value;
                 const submitBtn = loginForm.querySelector('button[type="submit"]');
@@ -247,10 +252,10 @@
                     submitBtn.disabled = true;
                     submitBtn.innerText = 'Iniciando sesión...';
                     
-                    await login(email, password);
+                    await window.login(email, password);
                     
                     // Redirect based on role
-                    const user = getUser();
+                    const user = window.getUser();
                     const userRoles = user?.userRoles || [];
                     
                     const isAdmin = userRoles.some(ur => 
@@ -279,7 +284,11 @@
 
         // Auto-redirect if already logged in
         document.addEventListener('DOMContentLoaded', () => {
-             redirectIfAuthenticated();
+             if (typeof window.redirectIfAuthenticated === 'function') {
+                 window.redirectIfAuthenticated();
+             } else {
+                 console.warn('redirectIfAuthenticated function not found. Please check if auth.js is loaded correctly.');
+             }
         });
 
         function togglePassword() {
