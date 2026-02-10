@@ -133,13 +133,8 @@ const logout = () => {
   removeToken();
   removeUser();
   
-  // Determine correct path to login based on current location
-  const path = window.location.pathname;
-  if (path.includes('/admin/') || path.includes('/lawyer/') || path.includes('/client/') || path.includes('/public/')) {
-      window.location.href = '../public/login.html';
-  } else {
-      window.location.href = 'public/login.html';
-  }
+  // Redirect to login page
+  window.location.href = '/login.html';
 };
 
 // Check if user is authenticated
@@ -150,7 +145,7 @@ const isAuthenticated = () => {
 // Redirect to login if not authenticated
 const requireAuth = async () => {
   if (!isAuthenticated()) {
-    window.location.href = 'login.html';
+    window.location.href = '/login.html';
     return false;
   }
 
@@ -158,7 +153,7 @@ const requireAuth = async () => {
     await getCurrentUser();
     return true;
   } catch (error) {
-    window.location.href = 'login.html';
+    window.location.href = '/login.html';
     return false;
   }
 };
@@ -180,11 +175,11 @@ const redirectIfAuthenticated = () => {
     );
     
     if (isAdmin) {
-      window.location.href = '../admin/admin.html';
+      window.location.href = '/admin/admin.html';
     } else if (isLawyer) {
-      window.location.href = '../lawyer/dashboard-lawyer.html';
+      window.location.href = '/lawyer/dashboard-lawyer.html';
     } else {
-      window.location.href = '../client/dashboard.html';
+      window.location.href = '/client/dashboard.html';
     }
   }
 };

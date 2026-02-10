@@ -60,8 +60,8 @@
         <div class="w-full px-4 h-20 flex items-center justify-between">
             <div class="relative flex items-center h-full w-[300px] lg:w-[350px] mr-4">
                 <a href="index.html" class="absolute top-[-1rem] left-0 lg:top-[-4rem] lg:left-[5rem] z-50 flex items-center">
-                    <img src="../assets/images/logo2.png" alt="Bright Lawyers" class="h-28 lg:h-52 w-auto lg:max-w-none dark:hidden drop-shadow-lg filter transition-transform hover:scale-105 origin-top-left">
-                    <img src="../assets/images/logo11.png" alt="Bright Lawyers" class="h-28 lg:h-52 w-auto hidden dark:block lg:max-w-none drop-shadow-lg filter transition-transform hover:scale-105 origin-top-left">
+                    <img src="assets/images/logo2.png" alt="Bright Lawyers" class="h-28 lg:h-52 w-auto lg:max-w-none dark:hidden drop-shadow-lg filter transition-transform hover:scale-105 origin-top-left">
+                    <img src="assets/images/logo11.png" alt="Bright Lawyers" class="h-28 lg:h-52 w-auto hidden dark:block lg:max-w-none drop-shadow-lg filter transition-transform hover:scale-105 origin-top-left">
                 </a>
             </div>
             <div class="hidden lg:flex items-center gap-6">
@@ -112,7 +112,7 @@
         <!-- Left Side: Image & Testimonial (Desktop Only) -->
         <div class="hidden lg:flex lg:w-1/2 relative bg-slate-900 overflow-hidden">
             <div class="absolute inset-0">
-                <img src="../assets/images/bg_1.jpg" alt="Legal Office" class="w-full h-full object-cover opacity-50">
+                <img src="assets/images/bg_1.jpg" alt="Legal Office" class="w-full h-full object-cover opacity-50">
             </div>
             <div class="absolute inset-0 bg-gradient-to-t from-primary/90 to-primary/40 mix-blend-multiply"></div>
             
@@ -229,7 +229,7 @@
     </div>
 
     <!-- Script -->
-    <script src="../assets/js/auth.js?v=2" onerror="console.error('Error loading auth.js'); alert('Error crítico: No se pudo cargar el sistema de autenticación. Por favor verifique su conexión o recargue la página.');"></script>
+    <script src="assets/js/auth.js?v=2" onerror="console.error('Error loading auth.js'); alert('Error crítico: No se pudo cargar el sistema de autenticación. Por favor verifique su conexión o recargue la página.');"></script>
     <script>
         // Login Logic
         const loginForm = document.getElementById('login-form');
@@ -267,11 +267,11 @@
                     );
                     
                     if (isAdmin) {
-                      window.location.href = '../admin/admin.html';
+                      window.location.href = 'admin/admin.html';
                     } else if (isLawyer) {
-                      window.location.href = '../lawyer/dashboard-lawyer.html';
+                      window.location.href = 'lawyer/dashboard-lawyer.html';
                     } else {
-                      window.location.href = '../client/dashboard.html';
+                      window.location.href = 'client/dashboard.html';
                     }
                     
                 } catch (error) {
