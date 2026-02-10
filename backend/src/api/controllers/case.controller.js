@@ -245,6 +245,9 @@ const toggleDocumentRequest = async (req, res) => {
 
 const deleteCase = async (req, res) => {
     try {
+        if (req.userRole !== 'ADMIN') {
+            return res.status(403).json({ error: 'No tienes permiso para realizar esta acción' });
+        }
         const { id } = req.params;
         await caseService.deleteCase(id);
         res.json({ message: 'Caso eliminado correctamente' });
@@ -270,5 +273,6 @@ module.exports = {
     getDocuments,
     getCaseById,
     assignMe,
-    toggleDocumentRequest
+    toggleDocumentRequest,
+    deleteCase
 };

@@ -69,6 +69,9 @@ const getContractById = async (req, res) => {
 
 const deleteContract = async (req, res) => {
     try {
+        if (req.userRole !== 'ADMIN') {
+            return res.status(403).json({ error: 'No tienes permiso para realizar esta acción' });
+        }
         const { id } = req.params;
         await contractService.deleteContract(id);
         res.json({ message: 'Contrato eliminado correctamente' });
@@ -84,5 +87,6 @@ module.exports = {
     createContract,
     createVersion,
     createSigner,
-    updateContract
+    updateContract,
+    deleteContract
 };
