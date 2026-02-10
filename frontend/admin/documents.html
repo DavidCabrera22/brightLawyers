@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html class="light" lang="es">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>BrightLawyers - Archivo Digital</title>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+    <!-- Material Symbols -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "brand-dark": "#0B1120",      // Sidebar bg (Dark Blue/Black)
+                        "brand-primary": "#1e3a8a",   // Blue 900 (Primary Action)
+                        "brand-accent": "#3b82f6",    // Blue 500 (Highlights)
+                        "brand-secondary": "#334155", // Slate 700
+                        "brand-bg": "#F8FAFC",        // Light background
+                        "brand-surface": "#FFFFFF",   // White surface
+                        "brand-mint": "#eff6ff",      // Blue 50 (Light Blue for active/hover)
+                    },
+                    fontFamily: {
+                        "sans": ["'Plus Jakarta Sans'", "sans-serif"]
+                    },
+                    boxShadow: {
+                        "card": "0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1)",
+                        "card-hover": "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1)",
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1.5rem;
+            color: #94a3b8; /* slate-400 */
+            font-weight: 500;
+            font-size: 0.875rem;
+            transition: all 0.2s;
+            border-left: 3px solid transparent;
+        }
+        .sidebar-link:hover {
+            color: white;
+            background: rgba(255,255,255,0.05);
+        }
+        .sidebar-link.active {
+            background-color: rgba(59, 130, 246, 0.1); /* Blue tint */
+            color: #ffffff;
+            border-left-color: #3b82f6; /* brand-accent */
+        }
+
+        .category-btn {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            transition: all 0.2s;
+            text-align: left;
+            width: 100%;
+        }
+        .category-btn.active {
+            background-color: #eff6ff; /* brand-mint */
+            color: #1e3a8a; /* brand-primary */
+            font-weight: 700;
+        }
+        .category-btn:not(.active) {
+            color: #64748b; /* slate-500 */
+        }
+        .category-btn:not(.active):hover {
+            background-color: #f1f5f9; /* slate-100 */
+            color: #334155; /* slate-700 */
+        }
+    </style>
+</head>
+<body class="bg-brand-bg text-slate-800 h-screen overflow-hidden flex">
+
+    <!-- Sidebar (Dark) -->
+    <aside class="w-64 bg-brand-dark text-white flex flex-col z-20 shadow-xl flex-shrink-0">
+        <!-- Logo Area -->
+        <div class="h-20 flex items-center px-6 border-b border-gray-800 flex-shrink-0">
+            <div class="flex items-center gap-3">
+                <div class="h-8 w-8 rounded bg-gradient-to-br from-blue-600 to-blue-800 flex items-center justify-center shadow-lg shadow-blue-500/30 text-white">
+                    <span class="material-symbols-outlined text-[20px]">balance</span>
+                </div>
+                <div>
+                    <h1 class="font-bold text-sm leading-tight tracking-wide">BrightLawyers</h1>
+                    <p class="text-[10px] text-gray-400 font-medium tracking-wider uppercase">ADMINISTRACIÓN</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="flex-1 overflow-y-auto py-6">
+            <a class="sidebar-link" href="admin.html">
+                <span class="material-symbols-outlined text-[20px]">dashboard</span>
+                Dashboard
+            </a>
+            <a class="sidebar-link" href="cases.html">
+                <span class="material-symbols-outlined text-[20px]">gavel</span>
+                Casos
+            </a>
+            <a class="sidebar-link" href="tasks.html">
+                <span class="material-symbols-outlined text-[20px]">task_alt</span>
+                Tareas
+            </a>
+            <a class="sidebar-link" href="clients.html">
+                <span class="material-symbols-outlined text-[20px]">groups</span>
+                Clientes
+            </a>
+            <a class="sidebar-link active" href="documents.html">
+                <span class="material-symbols-outlined text-[20px]">folder</span>
+                Documentos
+            </a>
+            <a class="sidebar-link" href="contracts.html">
+                <span class="material-symbols-outlined text-[20px]">description</span>
+                Contratos
+            </a>
+            <a class="sidebar-link" href="billing.html">
+                <span class="material-symbols-outlined text-[20px]">payments</span>
+                Facturación
+            </a>
+            <a class="sidebar-link" href="messages.html">
+                <span class="material-symbols-outlined text-[20px]">chat</span>
+                Mensajes
+            </a>
+
+            <div class="mt-6 mb-2 px-6 text-[10px] font-bold text-gray-500 uppercase tracking-wider">Gestión</div>
+            
+            <a class="sidebar-link" href="users.html">
+                <span class="material-symbols-outlined text-[20px]">manage_accounts</span>
+                Equipo Legal
+            </a>
+
+
+            <div class="mt-6 mb-2 px-6 text-[10px] font-bold text-gray-500 uppercase tracking-wider">Sistema</div>
+
+            <a class="sidebar-link" href="configuration.html">
+                <span class="material-symbols-outlined text-[20px]">settings</span>
+                Configuración
+            </a>
+            <button onclick="logout()" class="w-full sidebar-link text-left hover:text-red-400 hover:bg-white/5">
+                <span class="material-symbols-outlined text-[20px]">logout</span>
+                Cerrar Sesión
+            </button>
+        </nav>
+
+        <!-- User Profile (Bottom) -->
+        <div class="p-4 border-t border-gray-800 bg-black/20">
+            <div class="flex items-center gap-3">
+                <div class="h-9 w-9 rounded-full bg-blue-900 text-blue-100 flex items-center justify-center text-xs font-bold border border-blue-700" id="sidebarAvatar">--</div>
+                <div class="overflow-hidden">
+                    <p class="text-sm font-bold text-gray-200 truncate" id="sidebarName">Cargando...</p>
+                    <p class="text-xs text-gray-500 truncate" id="sidebarRole">Administrador</p>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 flex flex-col h-full overflow-hidden bg-brand-bg relative">
+        
+        <!-- Top Header -->
+        <header class="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-8 flex-shrink-0 z-10">
+            <h2 class="text-lg font-bold text-slate-800">Archivo Digital</h2>
+            
+            <div class="flex items-center gap-6">
+                <!-- Search -->
+                <div class="relative hidden md:block w-96">
+                    <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-[20px]">search</span>
+                    <input id="searchInput" type="text" placeholder="Buscar por nombre de archivo o extensión..." 
+                           class="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-brand-accent/20 focus:border-brand-accent transition-all outline-none">
+                </div>
+
+                <div class="flex items-center gap-3">
+                    <button class="flex items-center gap-2 px-4 py-2 bg-brand-primary text-white rounded-lg text-sm font-medium hover:bg-blue-800 transition-colors shadow-sm shadow-blue-900/10">
+                        <span class="material-symbols-outlined text-[18px]">upload</span>
+                        <span>Subir</span>
+                    </button>
+                    <button class="p-2 text-slate-500 hover:bg-slate-50 rounded-full relative">
+                        <span class="material-symbols-outlined text-[22px]">notifications</span>
+                        <span class="absolute top-2 right-2 h-2 w-2 bg-red-500 rounded-full border border-white"></span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Content -->
+        <div class="flex-1 overflow-y-auto p-8">
+            <div class="max-w-7xl mx-auto flex flex-col gap-8">
+                
+                <!-- Title -->
+                <div class="flex flex-col gap-1">
+                    <h1 class="text-2xl font-bold text-slate-900">Gestión de Documentos</h1>
+                    <p class="text-slate-500">Accede a expedientes, pruebas y documentos legales digitalizados de forma segura.</p>
+                </div>
+
+                <!-- Explorer layout -->
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                    <!-- Sidebar Categories -->
+                    <div class="col-span-1 flex flex-col gap-4">
+                        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-card">
+                            <h3 class="text-xs font-bold uppercase tracking-widest text-slate-400 mb-3 px-2">Categorías</h3>
+                            <div class="flex flex-col gap-1">
+                                <button onclick="filterDocs('all')" id="btn-all" class="category-btn active">
+                                    <div class="flex items-center gap-2">
+                                        <span class="material-symbols-outlined text-[20px]">folder</span>
+                                        <span>Todos</span>
+                                    </div>
+                                    <span class="bg-slate-100 text-slate-600 text-[10px] font-bold px-1.5 py-0.5 rounded" id="count-all">0</span>
+                                </button>
+                                <button onclick="filterDocs('case')" id="btn-case" class="category-btn">
+                                    <div class="flex items-center gap-2">
+                                        <span class="material-symbols-outlined text-[20px]">gavel</span>
+                                        <span>Expedientes</span>
+                                    </div>
+                                    <span class="bg-slate-100 text-slate-600 text-[10px] font-bold px-1.5 py-0.5 rounded" id="count-case">0</span>
+                                </button>
+                                <button onclick="filterDocs('contract')" id="btn-contract" class="category-btn">
+                                    <div class="flex items-center gap-2">
+                                        <span class="material-symbols-outlined text-[20px]">description</span>
+                                        <span>Contratos</span>
+                                    </div>
+                                    <span class="bg-slate-100 text-slate-600 text-[10px] font-bold px-1.5 py-0.5 rounded" id="count-contract">0</span>
+                                </button>
+                                <button onclick="filterDocs('id')" id="btn-id" class="category-btn">
+                                    <div class="flex items-center gap-2">
+                                        <span class="material-symbols-outlined text-[20px]">badge</span>
+                                        <span>Identificación</span>
+                                    </div>
+                                    <span class="bg-slate-100 text-slate-600 text-[10px] font-bold px-1.5 py-0.5 rounded" id="count-id">0</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="bg-brand-mint/50 p-4 rounded-xl border border-blue-100">
+                            <div class="flex items-start gap-3">
+                                <div class="p-2 bg-white rounded-lg text-brand-primary shadow-sm">
+                                    <span class="material-symbols-outlined">cloud_upload</span>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-sm text-brand-primary">Almacenamiento</h4>
+                                    <p class="text-xs text-brand-secondary mt-1">Uso: 45% del espacio disponible.</p>
+                                    <div class="w-full h-1.5 bg-white rounded-full mt-2 overflow-hidden">
+                                        <div class="h-full bg-brand-accent w-[45%] rounded-full"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Files Grid -->
+                    <div class="col-span-3 flex flex-col gap-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <h3 class="text-sm font-bold text-slate-700">Archivos Recientes</h3>
+                            <button onclick="loadDocuments()" class="text-brand-primary text-xs font-bold hover:underline flex items-center gap-1">
+                                <span class="material-symbols-outlined text-[14px]">refresh</span>
+                                Actualizar
+                            </button>
+                        </div>
+                        
+                        <div id="documentsContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                            <!-- Dynamically loaded -->
+                            <div class="col-span-full py-16 text-center">
+                                <div class="w-10 h-10 border-4 border-brand-primary border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+                                <p class="text-sm text-slate-500">Cargando archivos...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+<script src="../assets/js/auth.js"></script>
+<script>
+    const authToken = localStorage.getItem('token');
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
+    let allDocuments = [];
+    let currentFilter = 'all';
+
+    async function init() {
+        if (!authToken) { window.location.href = '../public/login.html'; return; }
+        
+        // Profile UI
+        const nameEl = document.getElementById('sidebarName');
+        const roleEl = document.getElementById('sidebarRole');
+        const avatarEl = document.getElementById('sidebarAvatar');
+
+        if (nameEl) nameEl.textContent = user.fullName || user.name || 'Usuario';
+        if (roleEl) roleEl.textContent = (user.userRoles?.[0]?.role?.name || 'Administrador').toUpperCase();
+        if (avatarEl) avatarEl.textContent = (user.fullName || user.name || 'U').split(' ').map(n => n[0]).join('').substring(0, 2);
+
+        await loadDocuments();
+        document.getElementById('searchInput').addEventListener('input', debounce(loadDocuments, 500));
+    }
+
+    function applyFilter() {
+        let filtered = allDocuments;
+        
+        if (currentFilter === 'case') {
+            filtered = allDocuments.filter(d => d.links?.some(l => l.entityType === 'CASE' || l.case));
+        } else if (currentFilter === 'contract') {
+             // Filter by contract links or document type commonly associated with contracts
+            filtered = allDocuments.filter(d => {
+                const isContractLink = d.links?.some(l => l.entityType === 'CONTRACT');
+                const ext = d.fileName?.split('.').pop()?.toLowerCase();
+                return isContractLink || ['pdf', 'doc', 'docx'].includes(ext);
+            });
+        } else if (currentFilter === 'id') {
+             // Filter by ID links (if any) or type
+             filtered = allDocuments.filter(d => d.links?.some(l => l.docCategory === 'ID' || l.docCategory === 'CEDULA'));
+        }
+        
+        renderDocuments(filtered);
+    }
+
+    async function loadDocuments() {
+        const container = document.getElementById('documentsContainer');
+        const search = document.getElementById('searchInput').value;
+
+        try {
+            const url = new URL(`${window.API_URL}/documents`);
+            if (search) url.searchParams.append('search', search);
+
+            const response = await fetch(url, {
+                headers: { 'Authorization': `Bearer ${authToken}` }
+            });
+
+            if (!response.ok) throw new Error('Error al cargar documentos');
+
+            const data = await response.json();
+            allDocuments = data.documents || []; // Access the documents array from the response object
+            
+            // Update counts
+            document.getElementById('count-all').textContent = allDocuments.length;
+            document.getElementById('count-case').textContent = allDocuments.filter(d => d.links?.some(l => l.entityType === 'CASE' || l.case)).length;
+            document.getElementById('count-contract').textContent = allDocuments.filter(d => {
+                const ext = d.fileName?.split('.').pop()?.toLowerCase();
+                return ['pdf', 'doc', 'docx'].includes(ext);
+            }).length;
+             // count-id logic if needed
+            
+            applyFilter();
+        } catch (error) {
+            console.error(error);
+            container.innerHTML = `<div class="col-span-full py-10 text-center text-red-500">Error al cargar archivos digitales.</div>`;
+        }
+    }
+
+    function filterDocs(category) {
+        currentFilter = category;
+        
+        // Update UI buttons
+        document.querySelectorAll('.category-btn').forEach(btn => btn.classList.remove('active'));
+        document.getElementById(`btn-${category}`).classList.add('active');
+
+        applyFilter();
+    }
+
+    function renderDocuments(docs) {
+        const container = document.getElementById('documentsContainer');
+        
+        if (docs.length === 0) {
+            container.className = 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4'; // Reset to default just in case
+            container.innerHTML = `
+                <div class="col-span-full py-16 text-center bg-white rounded-xl border border-dashed border-slate-200">
+                    <div class="w-12 h-12 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-3 text-slate-400">
+                        <span class="material-symbols-outlined text-2xl">folder_off</span>
+                    </div>
+                    <p class="text-slate-500 font-medium text-sm">No hay documentos en esta vista.</p>
+                </div>`;
+            return;
+        }
+
+        // Group by Client -> Case
+        const grouped = {};
+        
+        docs.forEach(doc => {
+            const caseLink = doc.links?.find(l => l.case);
+            const clientName = caseLink?.case?.client?.fullNameOrBusinessName || 'Otros Documentos';
+            const caseTitle = caseLink?.case?.title || 'General';
+            
+            if (!grouped[clientName]) grouped[clientName] = {};
+            if (!grouped[clientName][caseTitle]) grouped[clientName][caseTitle] = [];
+            grouped[clientName][caseTitle].push(doc);
+        });
+
+        // Change container layout for sections
+        container.className = 'flex flex-col gap-8';
+        
+        // Generate HTML
+        container.innerHTML = Object.keys(grouped).sort().map(clientName => {
+            const cases = grouped[clientName];
+            return `
+                <div class="bg-slate-50/50 rounded-xl p-4 border border-slate-100">
+                    <h2 class="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2">
+                        <span class="material-symbols-outlined text-brand-primary">domain</span>
+                        ${clientName}
+                    </h2>
+                    
+                    <div class="flex flex-col gap-6">
+                        ${Object.keys(cases).sort().map(caseTitle => `
+                            <div>
+                                <h3 class="text-sm font-semibold text-slate-500 mb-3 ml-1 flex items-center gap-2">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-brand-accent"></span>
+                                    ${caseTitle}
+                                </h3>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                                    ${cases[caseTitle].map(doc => renderDocumentCard(doc)).join('')}
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }).join('');
+    }
+
+    function renderDocumentCard(doc) {
+        // Safe file name handling
+        const fileName = doc.fileName || doc.title || 'Documento sin nombre';
+        const safeFileName = fileName.replace(/'/g, "\\'");
+        
+        // Compute extension
+        const fileExtension = fileName.split('.').pop();
+        
+        return `
+            <div class="bg-white rounded-xl border border-slate-200 shadow-card hover:shadow-card-hover transition-all group cursor-pointer p-4 flex flex-col h-full">
+                <div class="flex items-start justify-between mb-3">
+                    <div class="w-10 h-10 rounded-lg ${getFileIconStyle(fileExtension)} flex items-center justify-center shadow-sm">
+                        <span class="material-symbols-outlined text-xl">${getFileIcon(fileExtension)}</span>
+                    </div>
+                    <div class="opacity-0 group-hover:opacity-100 transition-opacity">
+                         <button class="p-1 hover:bg-slate-100 rounded text-slate-400 hover:text-slate-600">
+                            <span class="material-symbols-outlined text-[18px]">more_vert</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="mb-2">
+                    <h4 class="text-sm font-bold text-slate-800 leading-tight line-clamp-2 mb-1" title="${fileName}">${fileName}</h4>
+                    <p class="text-[10px] font-bold uppercase text-slate-400 tracking-wider">${fileExtension?.toUpperCase() || 'FILE'}</p>
+                </div>
+
+                <div class="mt-auto pt-3 border-t border-slate-50 flex items-center justify-between">
+                     <div class="text-[11px] text-slate-500 flex items-center gap-1 max-w-[120px] truncate" title="Fecha de creación">
+                        <span class="material-symbols-outlined text-[14px]">calendar_today</span>
+                        ${new Date(doc.createdAt).toLocaleDateString()}
+                    </div>
+                    <button onclick="downloadDocument('${doc.id}', '${safeFileName}')" class="p-1.5 rounded-lg bg-slate-50 text-slate-500 hover:bg-brand-primary hover:text-white transition-colors" title="Descargar">
+                        <span class="material-symbols-outlined text-[18px]">download</span>
+                    </button>
+                </div>
+            </div>
+        `;
+    }
+
+    async function downloadDocument(id, fileName) {
+        try {
+            const response = await fetch(`${window.API_URL}/documents/${id}/download`, {
+                headers: { 'Authorization': `Bearer ${authToken}` }
+            });
+
+            if (!response.ok) throw new Error('Error al descargar documento');
+
+            const blob = await response.blob();
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = fileName;
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(a);
+        } catch (error) {
+            console.error('Download error:', error);
+            alert('Error al descargar el documento');
+        }
+    }
+
+    function getFileIcon(ext) {
+        const e = ext?.toLowerCase();
+        if (e === 'pdf') return 'picture_as_pdf';
+        if (['doc', 'docx'].includes(e)) return 'description';
+        if (['xls', 'xlsx'].includes(e)) return 'table_chart';
+        if (['jpg', 'jpeg', 'png'].includes(e)) return 'image';
+        return 'insert_drive_file';
+    }
+
+    function getFileIconStyle(ext) {
+        const e = ext?.toLowerCase();
+        if (e === 'pdf') return 'bg-red-50 text-red-600';
+        if (['doc', 'docx'].includes(e)) return 'bg-blue-50 text-blue-600';
+        if (['xls', 'xlsx'].includes(e)) return 'bg-emerald-50 text-emerald-600';
+        if (['jpg', 'jpeg', 'png'].includes(e)) return 'bg-purple-50 text-purple-600';
+        return 'bg-slate-50 text-slate-600';
+    }
+
+    function debounce(func, wait) {
+        let timeout;
+        return function executedFunction(...args) {
+            const later = () => {
+                clearTimeout(timeout);
+                func(...args);
+            };
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+        };
+    }
+
+    // Start
+    init();
+</script>
+</body>
+</html>

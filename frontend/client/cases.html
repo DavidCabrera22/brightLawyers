@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html class="light" lang="es">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Mis Casos - BrightLawyers</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "client-dark": "#0B1120", // Darker sidebar
+                        "client-primary": "#1e3a8a", 
+                        "client-accent": "#3b82f6",
+                        "client-bg": "#F8FAFC",
+                        "client-text": "#1e293b",
+                        "status-active": "#dcfce7",
+                        "status-active-text": "#166534",
+                        "status-pending": "#f3f4f6",
+                        "status-pending-text": "#4b5563",
+                    },
+                    fontFamily: {
+                        "sans": ["'Plus Jakarta Sans'", "sans-serif"],
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #F8FAFC; }
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 24px;
+            color: #94a3b8;
+            font-weight: 500;
+            transition: all 0.2s;
+            border-left: 3px solid transparent;
+        }
+        .sidebar-link:hover {
+            color: white;
+            background: rgba(255,255,255,0.05);
+        }
+        .sidebar-link.active {
+            background-color: rgba(59, 130, 246, 0.1);
+            color: #ffffff;
+            border-left-color: #3b82f6;
+        }
+        .case-card {
+            transition: all 0.2s;
+            cursor: pointer;
+            border-left: 3px solid transparent;
+        }
+        .case-card:hover {
+            background-color: #f8fafc;
+        }
+        .case-card.active {
+            background-color: #f1f5f9;
+            border-left-color: #1e3a8a;
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+    </style>
+</head>
+<body class="text-client-text h-screen flex overflow-hidden">
+
+    <!-- Upload Modal -->
+    <div id="uploadModal" class="fixed inset-0 z-50 hidden">
+        <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" onclick="closeUploadModal()"></div>
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-md bg-white rounded-xl shadow-2xl p-8 animate-fade-in">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-xl font-bold text-client-primary">Subir Documento</h3>
+                <button onclick="closeUploadModal()" class="text-gray-400 hover:text-gray-600">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+            <form id="uploadForm" onsubmit="submitUpload(event)">
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-1">Archivo *</label>
+                        <input type="file" id="docFile" required class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-client-primary hover:file:bg-blue-100 transition-colors">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-1">Descripción</label>
+                        <input type="text" id="docDescription" class="w-full rounded-lg border-gray-300 focus:border-client-primary focus:ring-client-primary transition-shadow" placeholder="Ej: Comprobante de pago">
+                    </div>
+                </div>
+                <div class="mt-8 flex justify-end gap-3">
+                    <button type="button" onclick="closeUploadModal()" class="px-4 py-2 text-gray-500 hover:text-gray-700 font-medium">Cancelar</button>
+                    <button type="submit" class="px-6 py-2 bg-client-primary text-white rounded-lg font-bold hover:bg-blue-800 transition-colors shadow-lg shadow-blue-900/20">Subir Documento</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Sidebar -->
+    <aside class="w-64 bg-client-dark flex flex-col flex-shrink-0 z-20">
+        <!-- Logo Area -->
+        <div class="h-20 flex items-center px-6 border-b border-gray-800">
+            <div class="flex items-center gap-3">
+                <div class="h-8 w-8 rounded bg-client-primary flex items-center justify-center text-white">
+                    <span class="material-symbols-outlined text-lg">balance</span>
+                </div>
+                <div>
+                    <h1 class="text-white font-bold leading-none tracking-wide">MI PROCESO</h1>
+                    <p class="text-xs text-gray-400 mt-1">Portal de Cliente</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="flex-1 overflow-y-auto py-6 space-y-1">
+            <a class="sidebar-link" href="dashboard.html">
+                <span class="material-symbols-outlined">grid_view</span>
+                Inicio
+            </a>
+            <a class="sidebar-link active" href="cases.html">
+                <span class="material-symbols-outlined">folder</span>
+                Mis Casos
+            </a>
+            <a class="sidebar-link" href="contracts.html">
+                <span class="material-symbols-outlined">description</span>
+                Contratos
+            </a>
+            <a class="sidebar-link" href="documents.html">
+                <span class="material-symbols-outlined">attach_file</span>
+                Documentos
+            </a>
+            <a class="sidebar-link" href="messages.html">
+                <span class="material-symbols-outlined">chat</span>
+                Mensajes
+            </a>
+            <a class="sidebar-link" href="profile.html">
+                <span class="material-symbols-outlined">person</span>
+                Mi Perfil
+            </a>
+        </nav>
+
+        <!-- Bottom Actions -->
+        <div class="p-4 border-t border-gray-800">
+            <button onclick="logout()" class="flex items-center gap-3 px-4 py-2 text-red-400 hover:text-red-300 transition-colors w-full text-sm font-medium">
+                <span class="material-symbols-outlined">logout</span>
+                Cerrar Sesión
+            </button>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 flex flex-col h-full overflow-hidden bg-client-bg">
+        
+        <!-- Header -->
+        <header class="h-20 bg-white border-b border-gray-100 flex items-center justify-between px-8 flex-shrink-0 z-10">
+            <div>
+                <h2 class="text-xl font-bold text-gray-900 uppercase tracking-tight">DETALLE DEL CASO</h2>
+            </div>
+            
+            <div class="flex items-center gap-6">
+                <button onclick="openRequestModal()" class="bg-client-dark text-white px-4 py-2 rounded-full text-sm font-medium flex items-center gap-2 hover:bg-gray-800 transition-colors shadow-lg shadow-gray-900/10">
+                    <span class="material-symbols-outlined text-[18px]">add</span>
+                    Nuevo Caso
+                </button>
+                
+                <div class="h-8 w-px bg-gray-200"></div>
+
+                <div class="flex items-center gap-3">
+                    <div class="text-right hidden sm:block">
+                        <p class="text-sm font-bold text-gray-900" id="headerUserName">Cargando...</p>
+                        <p class="text-xs text-gray-500">Cliente Premium</p>
+                    </div>
+                    <div class="h-10 w-10 rounded-full bg-client-dark text-white flex items-center justify-center font-bold text-sm" id="headerUserInitials">
+                        --
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Split View Container -->
+        <div class="flex-1 flex overflow-hidden">
+            
+            <!-- Left Panel: Cases List -->
+            <div class="w-96 bg-white border-r border-gray-100 flex flex-col flex-shrink-0 z-0">
+                <!-- List Header -->
+                <div class="p-6 pb-2">
+                    <div class="flex items-center gap-2 mb-4">
+                        <h3 class="text-lg font-bold text-gray-900">Mis casos</h3>
+                        <span class="bg-gray-100 text-gray-600 text-xs font-bold px-2 py-0.5 rounded-full" id="casesCountBadge">0</span>
+                    </div>
+
+                    <!-- Search -->
+                    <div class="relative mb-4">
+                        <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-[20px]">search</span>
+                        <input type="text" id="searchInput" placeholder="Buscar por título o ref..." 
+                               class="w-full pl-10 pr-4 py-2 bg-gray-50 border-transparent focus:bg-white focus:border-client-primary focus:ring-0 rounded-lg text-sm transition-all">
+                    </div>
+
+                    <!-- Filters -->
+                    <div class="flex gap-2">
+                        <button onclick="filterCases('all')" class="filter-btn active px-4 py-1.5 rounded-full text-xs font-bold bg-client-dark text-white transition-colors" data-filter="all">Todos</button>
+                        <button onclick="filterCases('active')" class="filter-btn px-4 py-1.5 rounded-full text-xs font-bold bg-gray-100 text-gray-500 hover:bg-gray-200 transition-colors" data-filter="active">Activos</button>
+                        <button onclick="filterCases('closed')" class="filter-btn px-4 py-1.5 rounded-full text-xs font-bold bg-gray-100 text-gray-500 hover:bg-gray-200 transition-colors" data-filter="closed">Cerrados</button>
+                    </div>
+                </div>
+
+                <!-- Cases List -->
+                <div class="flex-1 overflow-y-auto p-2 space-y-1" id="casesListContainer">
+                    <!-- Loaded dynamically -->
+                    <div class="text-center py-8 text-gray-400 text-sm">Cargando casos...</div>
+                </div>
+            </div>
+
+            <!-- Right Panel: Detail View -->
+            <div class="flex-1 bg-client-bg relative overflow-y-auto">
+                
+                <!-- Empty State (Default) -->
+                <div id="emptyState" class="absolute inset-0 flex flex-col items-center justify-center p-8 text-center animate-fade-in">
+                    <div class="h-32 w-32 bg-white rounded-3xl shadow-sm flex items-center justify-center mb-8 rotate-3 transition-transform hover:rotate-0 duration-500">
+                        <span class="material-symbols-outlined text-6xl text-gray-300">folder_open</span>
+                    </div>
+                    
+                    <h2 class="text-2xl font-bold text-gray-900 mb-3">Selecciona un caso</h2>
+                    <p class="text-gray-500 max-w-md mb-8 leading-relaxed">
+                        Selecciona un caso de la lista lateral para ver los detalles completos, el progreso de la línea de tiempo, documentos asociados y próximos pasos legales.
+                    </p>
+
+                    <button onclick="openRequestModal()" class="text-client-primary font-bold hover:text-blue-700 flex items-center gap-2 mb-12 transition-colors">
+                        <span class="material-symbols-outlined">add</span> Solicitar Nuevo Caso
+                    </button>
+
+                    <div class="bg-blue-50 border border-blue-100 rounded-xl p-6 max-w-lg w-full flex items-start gap-4 text-left">
+                        <div class="h-8 w-8 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0 text-client-primary">
+                            <span class="material-symbols-outlined text-sm">help</span>
+                        </div>
+                        <div>
+                            <h4 class="text-sm font-bold text-client-primary mb-1">¿Necesitas ayuda?</h4>
+                            <p class="text-xs text-blue-800/70 leading-relaxed">Nuestro equipo de asesores legales está disponible para orientarte sobre tus trámites. Contáctanos a través de la sección de mensajes.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Detail Content (Hidden by default) -->
+                <div id="caseDetailView" class="hidden p-8 max-w-5xl mx-auto">
+                    
+                    <!-- Case Header -->
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-8 mb-8 relative overflow-hidden">
+                        <div class="absolute top-0 left-0 w-1 h-full bg-client-primary"></div>
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <div class="flex items-center gap-3 mb-2">
+                                    <span class="bg-blue-50 text-client-primary text-xs font-bold px-2.5 py-1 rounded uppercase tracking-wide" id="detailStatusBadge">ACTIVO</span>
+                                    <span class="text-sm text-gray-400 font-mono" id="detailCaseRef">CASE-2026-002</span>
+                                </div>
+                                <h1 class="text-3xl font-bold text-gray-900 mb-2" id="detailTitle">Demanda Civil - Incumplimiento</h1>
+                                <p class="text-gray-500" id="detailDescription">Descripción del caso...</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Progress Bar -->
+                        <div class="mt-8">
+                            <div class="flex justify-between text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">
+                                <span>Progreso del Caso</span>
+                                <span id="progressPercentage">45%</span>
+                            </div>
+                            <div class="h-2 bg-gray-100 rounded-full overflow-hidden">
+                                <div class="h-full bg-client-primary rounded-full transition-all duration-1000" style="width: 45%" id="progressBar"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                        
+                        <!-- Left Column: Timeline -->
+                        <div class="lg:col-span-2 space-y-8">
+                            
+                            <!-- Timeline -->
+                            <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                                <h3 class="text-sm font-bold text-gray-900 uppercase tracking-wide mb-6">Línea de Tiempo</h3>
+                                <div class="space-y-6 relative before:absolute before:left-2 before:top-2 before:bottom-2 before:w-0.5 before:bg-gray-100" id="timelineContainer">
+                                    <!-- Timeline items injected here -->
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!-- Right Column: Docs & Info -->
+                        <div class="space-y-8">
+                            
+                            <!-- Documents -->
+                            <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                                <div class="flex justify-between items-center mb-6">
+                                    <h3 class="text-sm font-bold text-gray-900 uppercase tracking-wide">Documentos</h3>
+                                    <button onclick="openUploadModal()" class="text-xs font-bold text-client-primary hover:text-blue-700 uppercase flex items-center gap-1">
+                                        <span class="material-symbols-outlined text-sm">upload</span> Subir
+                                    </button>
+                                </div>
+                                <div class="space-y-3" id="documentsList">
+                                    <!-- Docs injected here -->
+                                </div>
+                            </div>
+
+                            <!-- Case Info -->
+                            <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                                <h3 class="text-sm font-bold text-gray-900 uppercase tracking-wide mb-4">Información</h3>
+                                <div class="space-y-4">
+                                    <div>
+                                        <p class="text-xs text-gray-400 uppercase font-bold mb-1">Fecha de Inicio</p>
+                                        <p class="text-sm font-medium text-gray-900" id="detailStartDate">--</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-xs text-gray-400 uppercase font-bold mb-1">Área Legal</p>
+                                        <p class="text-sm font-medium text-gray-900" id="detailPracticeArea">--</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+<script src="../assets/js/auth.js"></script>
+<script>
+    // API_URL provided by auth.js
+    let authToken = getToken();
+    let allCases = [];
+    let currentFilter = 'all';
+    let currentCaseId = null;
+
+    // Check Auth
+    if (!authToken) window.location.href = '../public/login.html';
+
+    // Fetch Helper
+    async function fetchAPI(endpoint, options = {}) {
+        const response = await fetch(`${API_URL}${endpoint}`, {
+            ...options,
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${authToken}`,
+                ...options.headers
+            }
+        });
+        if (response.status === 401) {
+            logout();
+            return null;
+        }
+        return response.ok ? response.json() : null;
+    }
+
+    // Init
+    async function init() {
+        loadUserProfile();
+        loadCases();
+        
+        // Check URL params for pre-selection
+        const urlParams = new URLSearchParams(window.location.search);
+        const caseId = urlParams.get('id');
+        const action = urlParams.get('action');
+        if (caseId) {
+            // We'll select it after cases load
+            setTimeout(() => {
+                selectCase(caseId);
+                if (action === 'upload') {
+                    setTimeout(openUploadModal, 600);
+                }
+            }, 500); 
+        }
+
+        // Search Listener
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            renderCasesList(filterCasesData(e.target.value));
+        });
+    }
+
+    async function loadUserProfile() {
+        try {
+            const data = await fetchAPI('/auth/me');
+            if (data && data.user) {
+                const user = data.user;
+                document.getElementById('headerUserName').textContent = user.name;
+                document.getElementById('headerUserInitials').textContent = user.name.substring(0, 2).toUpperCase();
+            }
+        } catch (e) { console.error(e); }
+    }
+
+    async function loadCases() {
+        try {
+            const data = await fetchAPI('/cases');
+            allCases = data ? (data.cases || []) : [];
+            document.getElementById('casesCountBadge').textContent = allCases.length;
+            renderCasesList(allCases);
+        } catch (e) { console.error(e); }
+    }
+
+    function filterCases(filter) {
+        currentFilter = filter;
+        
+        // Update UI Tabs
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            const isActive = btn.dataset.filter === filter;
+            btn.className = isActive 
+                ? 'filter-btn active px-4 py-1.5 rounded-full text-xs font-bold bg-client-dark text-white transition-colors'
+                : 'filter-btn px-4 py-1.5 rounded-full text-xs font-bold bg-gray-100 text-gray-500 hover:bg-gray-200 transition-colors';
+        });
+
+        const searchTerm = document.getElementById('searchInput').value;
+        renderCasesList(filterCasesData(searchTerm));
+    }
+
+    function filterCasesData(searchTerm = '') {
+        let filtered = allCases;
+        
+        // Status Filter
+        if (currentFilter === 'active') {
+            filtered = filtered.filter(c => c.caseStatus !== 'closed');
+        } else if (currentFilter === 'closed') {
+            filtered = filtered.filter(c => c.caseStatus === 'closed');
+        }
+
+        // Search Filter
+        if (searchTerm) {
+            const term = searchTerm.toLowerCase();
+            filtered = filtered.filter(c => 
+                c.title.toLowerCase().includes(term) || 
+                (c.caseNumberInternal || '').toLowerCase().includes(term)
+            );
+        }
+
+        return filtered;
+    }
+
+    function renderCasesList(cases) {
+        const container = document.getElementById('casesListContainer');
+        container.innerHTML = '';
+
+        if (cases.length === 0) {
+            container.innerHTML = `
+                <div class="text-center py-10 px-4">
+                    <span class="material-symbols-outlined text-gray-300 text-4xl mb-2">search_off</span>
+                    <p class="text-sm text-gray-400">No se encontraron casos.</p>
+                </div>
+            `;
+            return;
+        }
+
+        cases.forEach(c => {
+            const isActive = currentCaseId === c.id;
+            const statusColor = c.caseStatus === 'active' ? 'bg-green-100 text-green-700' : 
+                               c.caseStatus === 'closed' ? 'bg-red-100 text-red-700' : 'bg-yellow-100 text-yellow-700';
+            const statusLabel = c.caseStatus === 'active' ? 'ACTIVO' : 
+                                c.caseStatus === 'closed' ? 'CERRADO' : 'PENDIENTE';
+
+            const el = document.createElement('div');
+            el.className = `case-card p-4 rounded-lg mb-2 ${isActive ? 'active' : ''}`;
+            el.onclick = () => selectCase(c.id);
+            
+            el.innerHTML = `
+                <div class="flex justify-between items-start mb-1">
+                    <h4 class="font-bold text-gray-900 text-sm line-clamp-1 flex-1 pr-2">${c.title}</h4>
+                    <span class="text-[10px] font-bold px-1.5 py-0.5 rounded ${statusColor}">${statusLabel}</span>
+                </div>
+                <div class="flex justify-between items-center text-xs text-gray-400">
+                    <span class="font-mono">${c.caseNumberInternal || 'JUDGE-000'}</span>
+                    <div class="flex items-center gap-1">
+                        <span class="material-symbols-outlined text-[14px]">calendar_today</span>
+                        <span>${new Date(c.updatedAt).toLocaleDateString()}</span>
+                    </div>
+                </div>
+            `;
+            container.appendChild(el);
+        });
+    }
+
+    async function selectCase(id) {
+        currentCaseId = id;
+        
+        // Re-render list to show active state
+        const searchTerm = document.getElementById('searchInput').value;
+        renderCasesList(filterCasesData(searchTerm));
+
+        // Show Detail View
+        document.getElementById('emptyState').classList.add('hidden');
+        document.getElementById('caseDetailView').classList.remove('hidden');
+
+        // Populate Detail
+        const c = allCases.find(x => x.id === id);
+        if (c) {
+            document.getElementById('detailTitle').textContent = c.title;
+            document.getElementById('detailDescription').textContent = c.description || 'Sin descripción disponible.';
+            document.getElementById('detailCaseRef').textContent = c.caseNumberInternal || 'SIN REF';
+            document.getElementById('detailStatusBadge').textContent = c.caseStatus === 'active' ? 'ACTIVO' : c.caseStatus.toUpperCase();
+            document.getElementById('detailStartDate').textContent = new Date(c.createdAt).toLocaleDateString();
+            document.getElementById('detailPracticeArea').textContent = c.practiceArea?.name || 'General';
+
+            // Load Timeline & Docs
+            loadCaseDetails(id);
+        }
+    }
+
+    async function loadCaseDetails(id) {
+        try {
+            // This endpoint should exist based on previous code
+            const data = await fetchAPI(`/cases/${id}`);
+            if (data && data.case) {
+                renderTimeline(data.case.timeline || []);
+                renderDocuments(data.case.documents || []);
+            }
+        } catch (e) { console.error(e); }
+    }
+
+    function renderTimeline(events) {
+        const container = document.getElementById('timelineContainer');
+        container.innerHTML = '';
+        
+        if (!events || events.length === 0) {
+            container.innerHTML = '<p class="text-sm text-gray-400 italic">No hay actividad registrada.</p>';
+            return;
+        }
+
+        events.forEach(e => {
+            const div = document.createElement('div');
+            div.className = 'relative pl-6 pb-2';
+            div.innerHTML = `
+                <div class="absolute left-0 top-1 h-4 w-4 rounded-full border-2 border-white bg-client-primary shadow-sm z-10"></div>
+                <div class="bg-gray-50 rounded-lg p-3">
+                    <div class="flex justify-between items-start mb-1">
+                        <h4 class="text-sm font-bold text-gray-900">${e.title}</h4>
+                        <span class="text-xs text-gray-400">${new Date(e.date).toLocaleDateString()}</span>
+                    </div>
+                    <p class="text-xs text-gray-500">${e.description || ''}</p>
+                </div>
+            `;
+            container.appendChild(div);
+        });
+    }
+
+    function renderDocuments(docs) {
+        const container = document.getElementById('documentsList');
+        container.innerHTML = '';
+
+        if (!docs || docs.length === 0) {
+            container.innerHTML = '<p class="text-sm text-gray-400 italic">No hay documentos compartidos.</p>';
+            return;
+        }
+
+        docs.forEach(link => {
+            // Handle both structure types (direct doc or link) just in case
+            const doc = link.document || link;
+            if (!doc) return;
+
+            const div = document.createElement('div');
+            div.className = 'flex items-center justify-between p-3 rounded-lg border border-gray-100 hover:bg-gray-50 transition-colors group cursor-pointer';
+            // Use API_URL for download
+            div.onclick = () => window.open(`${API_URL}/documents/${doc.id}/download`, '_blank');
+            
+            div.innerHTML = `
+                <div class="flex items-center gap-3 min-w-0">
+                    <div class="h-8 w-8 rounded bg-red-50 text-red-500 flex items-center justify-center flex-shrink-0">
+                        <span class="material-symbols-outlined text-lg">description</span>
+                    </div>
+                    <div class="min-w-0">
+                        <h5 class="text-sm font-bold text-gray-900 group-hover:text-client-primary transition-colors truncate" title="${doc.fileName || ''}">${doc.fileName || 'Documento sin nombre'}</h5>
+                        <p class="text-xs text-gray-400">${new Date(doc.createdAt).toLocaleDateString()}</p>
+                    </div>
+                </div>
+                <span class="material-symbols-outlined text-gray-300 group-hover:text-client-primary flex-shrink-0 ml-2">download</span>
+            `;
+            container.appendChild(div);
+        });
+    }
+
+    // Upload Modal Logic
+    function openUploadModal() {
+        document.getElementById('uploadModal').classList.remove('hidden');
+    }
+    function closeUploadModal() {
+        document.getElementById('uploadModal').classList.add('hidden');
+    }
+    async function submitUpload(e) {
+        e.preventDefault();
+        
+        if (!currentCaseId) {
+            alert('Error: No se ha seleccionado un caso.');
+            return;
+        }
+
+        const fileInput = document.getElementById('docFile');
+        const descInput = document.getElementById('docDescription');
+        
+        if (!fileInput.files || fileInput.files.length === 0) {
+            alert('Por favor selecciona un archivo.');
+            return;
+        }
+
+        const file = fileInput.files[0];
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('caseId', currentCaseId);
+        formData.append('notes', descInput.value || '');
+        formData.append('docCategory', 'CLIENT_UPLOAD');
+
+        // Show loading state
+        const btn = e.target.querySelector('button[type="submit"]');
+        const originalText = btn.innerHTML;
+        btn.innerHTML = '<span class="animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full mr-2 inline-block"></span> Subiendo...';
+        btn.disabled = true;
+
+        try {
+            // Use raw fetch to handle FormData (browser sets boundary)
+            const response = await fetch(`${API_URL}/documents/upload`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${authToken}`
+                    // No Content-Type header, let browser set it for FormData
+                },
+                body: formData
+            });
+
+            if (!response.ok) {
+                const errData = await response.json();
+                throw new Error(errData.error || 'Error al subir documento');
+            }
+
+            // Success
+            alert('Documento subido exitosamente.');
+            closeUploadModal();
+            
+            // Clear form
+            fileInput.value = '';
+            descInput.value = '';
+
+            // Refresh docs
+            loadCaseDetails(currentCaseId);
+
+        } catch (error) {
+            console.error(error);
+            alert('Error: ' + error.message);
+        } finally {
+            // Reset button
+            btn.innerHTML = originalText;
+            btn.disabled = false;
+        }
+    }
+
+    // Init
+    init();
+</script>
+</body>
+</html>

@@ -1,0 +1,44 @@
+{
+  "name": "chatbot-legal-ia",
+  "version": "1.0.0",
+  "description": "Chatbot legal con IA para WhatsApp",
+  "main": "chatbot-server.js",
+  "scripts": {
+    "start": "node chatbot-server.js",
+    "dev": "nodemon chatbot-server.js",
+    "dashboard": "node web-server.js",
+    "api": "node auth-server.js",
+    "db:generate": "prisma generate",
+    "db:push": "prisma db push",
+    "db:studio": "prisma studio",
+    "db:seed": "node prisma/seed.js"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.20.0",
+    "axios": "^1.6.0",
+    "bcryptjs": "^2.4.3",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "express-validator": "^7.0.1",
+    "googleapis": "^159.0.0",
+    "jsonwebtoken": "^9.0.2",
+    "multer": "^2.0.2",
+    "node-cron": "^4.2.1",
+    "nodemailer": "^7.0.12",
+    "openai": "^4.20.0",
+    "qrcode-terminal": "^0.12.0",
+    "socket.io": "^4.8.3",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1",
+    "whatsapp-web.js": "^1.33.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1",
+    "prisma": "^5.20.0"
+  },
+  "prisma": {
+    "seed": "node prisma/seed.js"
+  }
+}

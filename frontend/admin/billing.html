@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html class="light" lang="es">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>BrightLawyers - Facturación y Pagos</title>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+    
+    <!-- Material Symbols -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "brand-dark": "#0B1120",      // Sidebar bg (Dark Blue/Black)
+                        "brand-primary": "#1e3a8a",   // Blue 900 (Primary Action)
+                        "brand-accent": "#3b82f6",    // Blue 500 (Highlights)
+                        "brand-secondary": "#334155", // Slate 700
+                        "brand-bg": "#F8FAFC",        // Light background
+                        "brand-surface": "#FFFFFF",   // White surface
+                        "brand-mint": "#eff6ff",      // Blue 50 (Light Blue for active/hover)
+                    },
+                    fontFamily: {
+                        "sans": ["'Plus Jakarta Sans'", "sans-serif"]
+                    },
+                    boxShadow: {
+                        "card": "0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1)",
+                        "card-hover": "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1)",
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1.5rem;
+            color: #94a3b8; /* slate-400 */
+            font-weight: 500;
+            font-size: 0.875rem;
+            transition: all 0.2s;
+            border-left: 3px solid transparent;
+        }
+        .sidebar-link:hover {
+            color: white;
+            background: rgba(255,255,255,0.05);
+        }
+        .sidebar-link.active {
+            background-color: rgba(59, 130, 246, 0.1); /* Blue tint */
+            color: #ffffff;
+            border-left-color: #3b82f6; /* brand-accent */
+        }
+        
+        /* Modal Transitions */
+        .modal { transition: opacity 0.25s ease; }
+        .modal-content { transition: transform 0.25s ease; }
+        body.modal-open { overflow: hidden; }
+    </style>
+</head>
+<body class="bg-brand-bg text-slate-800 h-screen overflow-hidden flex">
+
+    <!-- Sidebar (Dark) -->
+    <aside class="w-64 bg-brand-dark text-white flex flex-col z-20 shadow-xl flex-shrink-0">
+        <!-- Logo Area -->
+        <div class="h-20 flex items-center px-6 border-b border-gray-800 flex-shrink-0">
+            <div class="flex items-center gap-3">
+                <div class="h-8 w-8 rounded bg-gradient-to-br from-blue-600 to-blue-800 flex items-center justify-center shadow-lg shadow-blue-500/30 text-white">
+                    <span class="material-symbols-outlined text-[20px]">balance</span>
+                </div>
+                <div>
+                    <h1 class="font-bold text-sm leading-tight tracking-wide">BrightLawyers</h1>
+                    <p class="text-[10px] text-gray-400 font-medium tracking-wider uppercase">ADMINISTRACIÓN</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="flex-1 overflow-y-auto py-6">
+            <a class="sidebar-link" href="admin.html">
+                <span class="material-symbols-outlined text-[20px]">dashboard</span>
+                Dashboard
+            </a>
+            <a class="sidebar-link" href="cases.html">
+                <span class="material-symbols-outlined text-[20px]">gavel</span>
+                Casos
+            </a>
+            <a class="sidebar-link" href="tasks.html">
+                <span class="material-symbols-outlined text-[20px]">task_alt</span>
+                Tareas
+            </a>
+            <a class="sidebar-link" href="clients.html">
+                <span class="material-symbols-outlined text-[20px]">groups</span>
+                Clientes
+            </a>
+            <a class="sidebar-link" href="documents.html">
+                <span class="material-symbols-outlined text-[20px]">folder</span>
+                Documentos
+            </a>
+            <a class="sidebar-link" href="contracts.html">
+                <span class="material-symbols-outlined text-[20px]">description</span>
+                Contratos
+            </a>
+            <a class="sidebar-link active" href="billing.html">
+                <span class="material-symbols-outlined text-[20px]">payments</span>
+                Facturación
+            </a>
+            <a class="sidebar-link" href="messages.html">
+                <span class="material-symbols-outlined text-[20px]">chat</span>
+                Mensajes
+            </a>
+
+            <div class="mt-6 mb-2 px-6 text-[10px] font-bold text-gray-500 uppercase tracking-wider">Gestión</div>
+            
+            <a class="sidebar-link" href="users.html">
+                <span class="material-symbols-outlined text-[20px]">manage_accounts</span>
+                Equipo Legal
+            </a>
+
+
+            <div class="mt-6 mb-2 px-6 text-[10px] font-bold text-gray-500 uppercase tracking-wider">Sistema</div>
+
+            <a class="sidebar-link" href="configuration.html">
+                <span class="material-symbols-outlined text-[20px]">settings</span>
+                Configuración
+            </a>
+            <button onclick="logout()" class="w-full sidebar-link text-left hover:text-red-400 hover:bg-white/5">
+                <span class="material-symbols-outlined text-[20px]">logout</span>
+                Cerrar Sesión
+            </button>
+        </nav>
+
+        <!-- User Profile (Bottom) -->
+        <div class="p-4 border-t border-gray-800 bg-black/20">
+            <div class="flex items-center gap-3">
+                <div class="h-9 w-9 rounded-full bg-blue-900 text-blue-100 flex items-center justify-center text-xs font-bold border border-blue-700" id="sidebarAvatar">--</div>
+                <div class="overflow-hidden">
+                    <p class="text-sm font-bold text-gray-200 truncate" id="sidebarName">Cargando...</p>
+                    <p class="text-xs text-gray-500 truncate" id="sidebarRole">...</p>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 flex flex-col h-full overflow-hidden bg-brand-bg relative">
+        
+        <!-- Top Header -->
+        <header class="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-8 flex-shrink-0 z-10">
+            <h2 class="text-lg font-bold text-slate-800">Facturación y Pagos</h2>
+            
+            <div class="flex items-center gap-6">
+                <!-- Search -->
+                <div class="relative hidden md:block w-96">
+                    <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-[20px]">search</span>
+                    <input id="searchInput" type="text" placeholder="Buscar factura, cliente o referencia..." 
+                           class="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-brand-accent/20 focus:border-brand-accent transition-all outline-none">
+                </div>
+
+                <div class="flex items-center gap-3">
+                    <button class="p-2 text-slate-500 hover:bg-slate-50 rounded-full relative">
+                        <span class="material-symbols-outlined text-[22px]">notifications</span>
+                        <span class="absolute top-2 right-2 h-2 w-2 bg-red-500 rounded-full border border-white"></span>
+                    </button>
+                    <div class="h-8 w-px bg-slate-200 mx-1"></div>
+                    <div class="flex items-center gap-2 cursor-pointer p-1 hover:bg-slate-50 rounded-lg transition-colors">
+                        <div class="h-8 w-8 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center text-xs font-bold">AD</div>
+                        <span class="text-sm font-medium text-slate-700 hidden sm:block">Admin</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Content Area -->
+        <div class="flex-1 overflow-y-auto p-8">
+            <div class="max-w-7xl mx-auto space-y-8">
+                
+                <!-- Page Title & Actions -->
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                    <div>
+                        <h1 class="text-2xl font-bold text-slate-900">Gestión Financiera</h1>
+                        <p class="text-slate-500 mt-1">Control de facturas, pagos y reportes financieros.</p>
+                    </div>
+                    <div class="flex gap-3">
+                        <button onclick="openPaymentModal()" class="flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 text-slate-700 rounded-lg font-medium hover:bg-slate-50 transition-colors shadow-sm">
+                            <span class="material-symbols-outlined text-[20px]">add_card</span>
+                            Registrar Pago
+                        </button>
+                        <button onclick="openInvoiceModal()" class="flex items-center gap-2 px-4 py-2 bg-brand-primary text-white rounded-lg font-medium hover:bg-blue-800 transition-colors shadow-sm shadow-blue-900/10">
+                            <span class="material-symbols-outlined text-[20px]">add</span>
+                            Nueva Factura
+                        </button>
+                    </div>
+                </div>
+
+                <!-- KPI Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="h-10 w-10 rounded-lg bg-emerald-100 flex items-center justify-center text-emerald-600">
+                                <span class="material-symbols-outlined">payments</span>
+                            </div>
+                            <span class="text-xs font-bold text-emerald-600 bg-emerald-50 px-2 py-1 rounded-full">+12% vs mes anterior</span>
+                        </div>
+                        <p class="text-sm text-slate-500 font-medium uppercase tracking-wider">Ingresos del Mes</p>
+                        <h3 class="text-2xl font-bold text-slate-800 mt-1">$15.4M <span class="text-sm font-normal text-slate-400">COP</span></h3>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="h-10 w-10 rounded-lg bg-blue-100 flex items-center justify-center text-blue-600">
+                                <span class="material-symbols-outlined">pending_actions</span>
+                            </div>
+                            <span class="text-xs font-bold text-slate-500 bg-slate-50 px-2 py-1 rounded-full">5 facturas</span>
+                        </div>
+                        <p class="text-sm text-slate-500 font-medium uppercase tracking-wider">Pendiente de Cobro</p>
+                        <h3 class="text-2xl font-bold text-slate-800 mt-1">$4.2M <span class="text-sm font-normal text-slate-400">COP</span></h3>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="h-10 w-10 rounded-lg bg-rose-100 flex items-center justify-center text-rose-600">
+                                <span class="material-symbols-outlined">warning</span>
+                            </div>
+                            <span class="text-xs font-bold text-rose-600 bg-rose-50 px-2 py-1 rounded-full">2 vencidas</span>
+                        </div>
+                        <p class="text-sm text-slate-500 font-medium uppercase tracking-wider">Vencido</p>
+                        <h3 class="text-2xl font-bold text-slate-800 mt-1">$1.8M <span class="text-sm font-normal text-slate-400">COP</span></h3>
+                    </div>
+                </div>
+
+                <!-- Invoices Table -->
+                <div class="bg-white rounded-xl border border-slate-200 shadow-card overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-sm">
+                            <thead class="bg-slate-50 text-slate-500 font-semibold border-b border-slate-100 uppercase text-[11px] tracking-wider">
+                                <tr>
+                                    <th class="px-6 py-4">Factura #</th>
+                                    <th class="px-6 py-4">Cliente / Caso</th>
+                                    <th class="px-6 py-4">Emisión</th>
+                                    <th class="px-6 py-4">Vencimiento</th>
+                                    <th class="px-6 py-4">Monto</th>
+                                    <th class="px-6 py-4">Estado</th>
+                                    <th class="px-6 py-4 text-right">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="invoicesTableBody" class="divide-y divide-slate-100">
+                                <!-- Dynamically loaded -->
+                                <tr>
+                                    <td colspan="7" class="px-6 py-20 text-center">
+                                        <div class="flex flex-col items-center gap-3">
+                                            <div class="w-8 h-8 border-4 border-brand-primary border-t-transparent rounded-full animate-spin"></div>
+                                            <p class="text-slate-400">Cargando facturas...</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal: New Invoice -->
+    <div id="invoiceModal" class="hidden fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+        <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+            <div class="fixed inset-0 bg-gray-900 bg-opacity-75 transition-opacity backdrop-blur-sm" aria-hidden="true" onclick="closeInvoiceModal()"></div>
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+            <div class="inline-block align-bottom bg-white rounded-2xl text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg w-full">
+                <div class="bg-white px-6 pt-6 pb-6">
+                    <h3 class="text-xl font-bold text-slate-900 mb-4" id="modal-title">Nueva Factura</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Cliente *</label>
+                            <select id="invoiceClientId" class="w-full rounded-lg border-slate-300 text-sm focus:ring-brand-primary focus:border-brand-primary bg-slate-50">
+                                <option value="">Seleccione Cliente</option>
+                                <!-- JS populate -->
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Caso (Opcional)</label>
+                            <select id="invoiceCaseId" class="w-full rounded-lg border-slate-300 text-sm focus:ring-brand-primary focus:border-brand-primary bg-slate-50">
+                                <option value="">Ninguno / General</option>
+                                <!-- JS populate -->
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Concepto / Referencia</label>
+                            <input type="text" id="invoiceNumber" placeholder="Honorarios Legales" class="w-full rounded-lg border-slate-300 text-sm focus:ring-brand-primary focus:border-brand-primary bg-slate-50">
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-slate-700 mb-1">Fecha Emisión *</label>
+                                <input type="date" id="invoiceIssueDate" class="w-full rounded-lg border-slate-300 text-sm focus:ring-brand-primary focus:border-brand-primary bg-slate-50">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-slate-700 mb-1">Vencimiento</label>
+                                <input type="date" id="invoiceDueDate" class="w-full rounded-lg border-slate-300 text-sm focus:ring-brand-primary focus:border-brand-primary bg-slate-50">
+                            </div>
+                        </div>
+                         <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Total (COP) *</label>
+                            <div class="relative">
+                                <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">$</span>
+                                <input type="number" id="invoiceTotal" placeholder="0.00" class="w-full pl-7 rounded-lg border-slate-300 text-sm focus:ring-brand-primary focus:border-brand-primary bg-slate-50">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-slate-50 px-6 py-4 flex flex-row-reverse gap-3">
+                    <button type="button" onclick="submitInvoice()" class="w-full inline-flex justify-center rounded-lg border border-transparent shadow-sm px-4 py-2 bg-brand-primary text-base font-medium text-white hover:bg-blue-800 focus:outline-none sm:w-auto sm:text-sm">Crear Factura</button>
+                    <button type="button" onclick="closeInvoiceModal()" class="w-full inline-flex justify-center rounded-lg border border-slate-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-slate-700 hover:bg-slate-50 focus:outline-none sm:w-auto sm:text-sm">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Register Payment -->
+    <div id="paymentModal" class="hidden fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+        <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+            <div class="fixed inset-0 bg-gray-900 bg-opacity-75 transition-opacity backdrop-blur-sm" aria-hidden="true" onclick="closePaymentModal()"></div>
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+            <div class="inline-block align-bottom bg-white rounded-2xl text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg w-full">
+                <div class="bg-white px-6 pt-6 pb-6">
+                    <h3 class="text-xl font-bold text-slate-900 mb-4" id="modal-title">Registrar Pago</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Factura *</label>
+                            <select id="paymentInvoiceId" class="w-full rounded-lg border-slate-300 text-sm focus:ring-brand-primary focus:border-brand-primary bg-slate-50">
+                                <option value="">Seleccione Factura</option>
+                                <!-- JS populate -->
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Monto *</label>
+                            <div class="relative">
+                                <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">$</span>
+                                <input type="number" id="paymentAmount" class="w-full pl-7 rounded-lg border-slate-300 text-sm focus:ring-brand-primary focus:border-brand-primary bg-slate-50">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Método *</label>
+                            <select id="paymentMethod" class="w-full rounded-lg border-slate-300 text-sm focus:ring-brand-primary focus:border-brand-primary bg-slate-50" onchange="toggleBankDetails()">
+                                <option value="transfer">Transferencia Bancolombia</option>
+                                <option value="cash">Efectivo</option>
+                                <option value="card">Tarjeta de Crédito/Débito</option>
+                                <option value="pse">PSE</option>
+                            </select>
+                            <div id="bankDetails" class="mt-2 p-3 bg-blue-50 border border-blue-100 rounded-lg text-xs text-blue-800">
+                                <p class="font-bold">Bancolombia Ahorros</p>
+                                <p>031-000000-00</p>
+                                <p>NIT: 900.000.000-0</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-slate-50 px-6 py-4 flex flex-row-reverse gap-3">
+                    <button type="button" onclick="submitPayment()" class="w-full inline-flex justify-center rounded-lg border border-transparent shadow-sm px-4 py-2 bg-emerald-600 text-base font-medium text-white hover:bg-emerald-700 focus:outline-none sm:w-auto sm:text-sm">Registrar Pago</button>
+                    <button type="button" onclick="closePaymentModal()" class="w-full inline-flex justify-center rounded-lg border border-slate-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-slate-700 hover:bg-slate-50 focus:outline-none sm:w-auto sm:text-sm">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../assets/js/auth.js"></script>
+    <script>
+        const authToken = localStorage.getItem('token');
+        const user = JSON.parse(localStorage.getItem('user') || '{}');
+        let allInvoices = [];
+        let allClients = [];
+
+        async function init() {
+            if (!authToken) { window.location.href = '../public/login.html'; return; }
+            
+            // Sidebar Profile
+            document.getElementById('sidebarName').textContent = user.fullName || user.name || 'Usuario';
+            document.getElementById('sidebarRole').textContent = (user.userRoles?.[0]?.role?.name || 'Abogado').toUpperCase();
+            document.getElementById('sidebarAvatar').textContent = (user.fullName || user.name || 'U').split(' ').map(n => n[0]).join('').substring(0, 2);
+
+            await Promise.all([loadInvoices(), loadClients()]);
+            
+            document.getElementById('searchInput').addEventListener('input', debounce(loadInvoices, 500));
+        }
+
+        async function loadInvoices() {
+            const tableBody = document.getElementById('invoicesTableBody');
+            const search = document.getElementById('searchInput').value;
+
+            try {
+                const url = new URL(`${window.API_URL}/invoices`);
+                if (search) url.searchParams.append('search', search);
+
+                const response = await fetch(url, {
+                    headers: { 'Authorization': `Bearer ${authToken}` }
+                });
+
+                // Mock data if 404 or fail (since backend might not have invoices endpoint yet)
+                if (!response.ok) {
+                    console.warn("API Error or Endpoint Missing. Using mock data.");
+                    allInvoices = getMockInvoices(); 
+                } else {
+                    const data = await response.json();
+                    allInvoices = Array.isArray(data) ? data : (data.invoices || []);
+                }
+                
+                renderInvoices(allInvoices);
+            } catch (error) {
+                console.error("Error loading invoices", error);
+                allInvoices = getMockInvoices(); // Fallback
+                renderInvoices(allInvoices);
+            }
+        }
+
+        function renderInvoices(invoices) {
+            const tableBody = document.getElementById('invoicesTableBody');
+            
+            if (!invoices || invoices.length === 0) {
+                tableBody.innerHTML = `<tr><td colspan="7" class="px-6 py-10 text-center text-slate-400">No hay facturas registradas.</td></tr>`;
+                return;
+            }
+
+            tableBody.innerHTML = invoices.map(inv => `
+                <tr class="hover:bg-slate-50 transition-colors group">
+                    <td class="px-6 py-4">
+                        <div class="font-bold text-slate-900">${inv.number || 'INV-' + inv.id.substring(0,6).toUpperCase()}</div>
+                        <div class="text-xs text-slate-500">${inv.concept || 'Servicios Legales'}</div>
+                    </td>
+                    <td class="px-6 py-4">
+                        <div class="text-sm text-slate-700">${inv.clientName || 'Cliente'}</div>
+                        <div class="text-xs text-slate-400">${inv.caseTitle ? 'Caso: ' + inv.caseTitle : 'General'}</div>
+                    </td>
+                    <td class="px-6 py-4 text-xs text-slate-500">
+                        ${new Date(inv.issueDate).toLocaleDateString()}
+                    </td>
+                    <td class="px-6 py-4 text-xs text-slate-500">
+                        ${new Date(inv.dueDate).toLocaleDateString()}
+                    </td>
+                    <td class="px-6 py-4 font-medium text-slate-900">
+                        $${new Intl.NumberFormat('es-CO').format(inv.total)}
+                    </td>
+                    <td class="px-6 py-4">
+                        <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-bold uppercase ${getStatusStyle(inv.status)}">
+                            ${getStatusLabel(inv.status)}
+                        </span>
+                    </td>
+                    <td class="px-6 py-4 text-right">
+                        <div class="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <button class="p-2 rounded-lg hover:bg-white border border-transparent hover:border-slate-200 text-slate-400 hover:text-brand-primary transition-all shadow-sm" title="Descargar PDF">
+                                <span class="material-symbols-outlined text-[18px]">picture_as_pdf</span>
+                            </button>
+                            <button onclick="openPaymentModal('${inv.id}')" class="p-2 rounded-lg hover:bg-white border border-transparent hover:border-slate-200 text-slate-400 hover:text-emerald-600 transition-all shadow-sm" title="Registrar Pago">
+                                <span class="material-symbols-outlined text-[18px]">payments</span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        async function loadClients() {
+            try {
+                const response = await fetch(`${window.API_URL}/clients`, {
+                    headers: { 'Authorization': `Bearer ${authToken}` }
+                });
+                if (response.ok) {
+                    allClients = await response.json();
+                    const select = document.getElementById('invoiceClientId');
+                    allClients.forEach(client => {
+                        const option = document.createElement('option');
+                        option.value = client.id;
+                        option.textContent = client.fullName;
+                        select.appendChild(option);
+                    });
+                }
+            } catch (error) {
+                console.error("Error loading clients", error);
+            }
+        }
+
+        // --- Helpers ---
+        function getStatusStyle(status) {
+            switch(status) {
+                case 'paid': return 'bg-emerald-50 text-emerald-700 border border-emerald-100';
+                case 'pending': return 'bg-amber-50 text-amber-700 border border-amber-100';
+                case 'overdue': return 'bg-red-50 text-red-700 border border-red-100';
+                default: return 'bg-slate-50 text-slate-600 border border-slate-200';
+            }
+        }
+        
+        function getStatusLabel(status) {
+            const map = { 'paid': 'Pagado', 'pending': 'Pendiente', 'overdue': 'Vencido' };
+            return map[status] || status;
+        }
+
+        function toggleBankDetails() {
+            const method = document.getElementById('paymentMethod').value;
+            const details = document.getElementById('bankDetails');
+            if (method === 'transfer') {
+                details.classList.remove('hidden');
+            } else {
+                details.classList.add('hidden');
+            }
+        }
+
+        function getMockInvoices() {
+            return [
+                { id: '1', number: 'INV-001', clientName: 'Juan Perez', caseTitle: 'Divorcio Express', issueDate: '2023-10-01', dueDate: '2023-10-15', total: 1500000, status: 'paid' },
+                { id: '2', number: 'INV-002', clientName: 'Empresa SAS', caseTitle: 'Demanda Laboral', issueDate: '2023-10-20', dueDate: '2023-11-05', total: 3200000, status: 'pending' },
+                { id: '3', number: 'INV-003', clientName: 'Maria Rodriguez', caseTitle: null, issueDate: '2023-09-15', dueDate: '2023-09-30', total: 850000, status: 'overdue' }
+            ];
+        }
+
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => { clearTimeout(timeout); func(...args); };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+
+        // --- Modal Logic ---
+        function openInvoiceModal() {
+            document.getElementById('invoiceModal').classList.remove('hidden');
+            document.body.classList.add('modal-open');
+            // Set default date to today
+            document.getElementById('invoiceIssueDate').valueAsDate = new Date();
+        }
+
+        function closeInvoiceModal() {
+            document.getElementById('invoiceModal').classList.add('hidden');
+            document.body.classList.remove('modal-open');
+        }
+
+        function openPaymentModal(invoiceId) {
+            document.getElementById('paymentModal').classList.remove('hidden');
+            document.body.classList.add('modal-open');
+            
+            // Populate invoice select
+            const select = document.getElementById('paymentInvoiceId');
+            select.innerHTML = '<option value="">Seleccione Factura</option>';
+            allInvoices.forEach(inv => {
+                const option = document.createElement('option');
+                option.value = inv.id;
+                option.textContent = `${inv.number || 'INV-'+inv.id} - ${inv.clientName} ($${inv.total})`;
+                if (inv.id === invoiceId) option.selected = true;
+                select.appendChild(option);
+            });
+        }
+
+        function closePaymentModal() {
+            document.getElementById('paymentModal').classList.add('hidden');
+            document.body.classList.remove('modal-open');
+        }
+
+        async function submitInvoice() {
+            alert('Funcionalidad de crear factura simulada.');
+            closeInvoiceModal();
+            // In real app, re-fetch invoices
+        }
+
+        async function submitPayment() {
+            alert('Funcionalidad de registrar pago simulada.');
+            closePaymentModal();
+        }
+
+        init();
+    </script>
+</body>
+</html>

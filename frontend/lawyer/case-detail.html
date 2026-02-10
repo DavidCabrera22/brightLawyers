@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html class="light" lang="es">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>BrightLawyers - Detalle del Caso</title>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet"/>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "lawyer-primary": "#2c3e50",
+                        "lawyer-secondary": "#34495e",
+                        "lawyer-accent": "#e67e22",
+                        "lawyer-bg": "#ecf0f1",
+                        "lawyer-card": "#ffffff",
+                        "lawyer-text": "#2c3e50",
+                        "lawyer-muted": "#7f8c8d",
+                        "success": "#27ae60",
+                        "danger": "#c0392b",
+                        "warning": "#f39c12",
+                    },
+                    fontFamily: {
+                        "legal": ["Cinzel", "serif"],
+                        "body": ["Lato", "sans-serif"],
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        body { font-family: 'Lato', sans-serif; background-color: #ecf0f1; }
+        h1, h2, h3, h4 { font-family: 'Cinzel', serif; }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .sidebar-link.active {
+            background-color: #2c3e50;
+            color: #ffffff;
+            border-left: 4px solid #e67e22;
+        }
+        /* Tab Styles */
+        .tab-btn.active {
+            border-bottom-color: #e67e22;
+            color: #2c3e50;
+        }
+        .tab-btn:not(.active) {
+            border-bottom-color: transparent;
+            color: #7f8c8d;
+        }
+        .tab-btn:not(.active):hover {
+            color: #34495e;
+            border-bottom-color: #bdc3c7;
+        }
+    </style>
+</head>
+<body class="text-lawyer-text">
+<div class="flex h-screen w-full overflow-hidden">
+    <!-- Distinct Sidebar for Lawyers -->
+    <aside class="w-20 lg:w-64 flex flex-col bg-lawyer-secondary text-gray-300 shadow-xl z-20 transition-all duration-300">
+        <div class="flex items-center justify-center lg:justify-start gap-3 px-4 py-6 border-b border-gray-600">
+            <div class="h-10 w-10 rounded-none bg-lawyer-accent text-white flex items-center justify-center">
+                <span class="material-symbols-outlined text-2xl">gavel</span>
+            </div>
+            <div class="hidden lg:flex flex-col">
+                <h1 class="text-lg font-bold text-white leading-tight">ESCRITORIO LEGAL</h1>
+                <p class="text-xs text-gray-400">Panel de Abogado</p>
+            </div>
+        </div>
+
+        <nav class="flex-1 overflow-y-auto py-6 space-y-2">
+            <a class="flex items-center gap-4 px-6 py-3 text-sm font-medium hover:bg-lawyer-primary hover:text-white transition-colors" href="dashboard-lawyer.html">
+                <span class="material-symbols-outlined">dashboard</span>
+                <span class="hidden lg:block">Resumen</span>
+            </a>
+            <a class="flex items-center gap-4 px-6 py-3 text-sm font-medium hover:bg-lawyer-primary hover:text-white transition-colors active" href="cases-lawyer.html">
+                <span class="material-symbols-outlined">folder_open</span>
+                <span class="hidden lg:block">Mis Casos</span>
+            </a>
+            <a class="flex items-center gap-4 px-6 py-3 text-sm font-medium hover:bg-lawyer-primary hover:text-white transition-colors" href="documents.html">
+                <span class="material-symbols-outlined">description</span>
+                <span class="hidden lg:block">Documentos</span>
+            </a>
+            <a class="flex items-center gap-4 px-6 py-3 text-sm font-medium hover:bg-lawyer-primary hover:text-white transition-colors" href="contracts.html">
+                <span class="material-symbols-outlined">gavel</span>
+                <span class="hidden lg:block">Contratos</span>
+            </a>
+            <a class="flex items-center gap-4 px-6 py-3 text-sm font-medium hover:bg-lawyer-primary hover:text-white transition-colors" href="tasks.html">
+                <span class="material-symbols-outlined">event_note</span>
+                <span class="hidden lg:block">Agenda Legal</span>
+            </a>
+            <a class="flex items-center gap-4 px-6 py-3 text-sm font-medium hover:bg-lawyer-primary hover:text-white transition-colors" href="messages.html">
+                <span class="material-symbols-outlined">mail</span>
+                <span class="hidden lg:block">Comunicaciones</span>
+            </a>
+            <a class="flex items-center gap-4 px-6 py-3 text-sm font-medium hover:bg-lawyer-primary hover:text-white transition-colors" href="profile-lawyer.html">
+                <span class="material-symbols-outlined">person</span>
+                <span class="hidden lg:block">Perfil</span>
+            </a>
+        </nav>
+
+        <div class="p-4 border-t border-gray-600">
+            <button onclick="logout()" class="flex items-center gap-4 px-2 py-2 w-full text-left text-sm font-medium text-red-400 hover:text-red-300 transition-colors">
+                <span class="material-symbols-outlined">logout</span>
+                <span class="hidden lg:block">Cerrar Sesión</span>
+            </button>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 flex flex-col h-full overflow-hidden bg-lawyer-bg relative">
+        <!-- Top Bar -->
+        <header class="h-16 bg-white shadow-sm flex items-center justify-between px-8 z-10">
+            <div class="flex items-center gap-4">
+                <button onclick="window.history.back()" class="text-lawyer-muted hover:text-lawyer-primary flex items-center gap-2">
+                    <span class="material-symbols-outlined">arrow_back</span>
+                    <span class="text-sm font-medium hidden sm:block">Volver</span>
+                </button>
+                <div class="h-6 w-px bg-gray-300 mx-2"></div>
+                <h2 class="text-xl font-bold text-lawyer-primary font-legal">Detalle del Caso</h2>
+            </div>
+            
+            <div class="flex items-center gap-6">
+                <div class="flex items-center gap-3">
+                    <div class="text-right hidden sm:block">
+                        <p class="text-sm font-bold text-lawyer-primary" id="userName">Cargando...</p>
+                        <p class="text-xs text-lawyer-muted" id="userRole">Abogado</p>
+                    </div>
+                    <div class="h-10 w-10 rounded-full bg-lawyer-primary text-white flex items-center justify-center font-bold font-legal" id="userInitials">
+                        --
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Content -->
+        <div class="flex-1 overflow-y-auto p-6 lg:p-8">
+            <div class="max-w-7xl mx-auto flex flex-col gap-6" id="caseContent">
+                <!-- Loading State -->
+                <div id="loading" class="flex flex-col items-center justify-center py-20">
+                    <div class="w-10 h-10 border-4 border-lawyer-accent border-t-transparent rounded-full animate-spin"></div>
+                    <p class="mt-4 text-lawyer-muted">Cargando expediente...</p>
+                </div>
+
+                <!-- Error State -->
+                <div id="errorState" class="hidden flex-col items-center justify-center py-20 text-danger">
+                    <span class="material-symbols-outlined text-4xl">error</span>
+                    <p class="mt-2 font-bold" id="errorMessage">Error al cargar el caso</p>
+                    <button onclick="window.location.reload()" class="mt-4 px-4 py-2 bg-lawyer-primary text-white rounded hover:bg-lawyer-secondary transition-colors">Reintentar</button>
+                </div>
+
+                <!-- Case Details (Hidden initially) -->
+                <div id="details" class="hidden flex-col gap-6">
+                    <!-- Top Card: Summary -->
+                    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 border-l-4 border-lawyer-accent">
+                        <div class="flex flex-col md:flex-row justify-between gap-6">
+                            <div class="flex-1">
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded text-xs font-bold bg-lawyer-bg text-lawyer-primary mb-3" id="caseNumber">CASE-000</span>
+                                <h1 class="text-3xl font-bold text-lawyer-primary font-legal mb-2" id="caseTitle">Título del Caso</h1>
+                                <p class="text-lawyer-muted" id="caseDescription">Descripción...</p>
+                            </div>
+                            <div class="flex flex-col gap-3 min-w-[200px]">
+                                <div id="statusBadgeContainer"></div>
+                                <div class="text-sm">
+                                    <p class="text-xs text-lawyer-muted uppercase font-bold">Cliente</p>
+                                    <p class="font-medium text-lawyer-primary" id="clientName">Nombre Cliente</p>
+                                    <p class="text-xs text-lawyer-muted" id="clientDoc">ID: 000</p>
+                                </div>
+                                <div class="text-sm">
+                                    <p class="text-xs text-lawyer-muted uppercase font-bold">Área de Práctica</p>
+                                    <p class="font-medium" id="practiceArea">General</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tabs -->
+                    <div class="bg-white rounded-t-lg shadow-sm border-b border-gray-200 px-6">
+                        <nav class="-mb-px flex space-x-8" aria-label="Tabs">
+                            <button onclick="switchTab('timeline')" class="tab-btn active whitespace-nowrap py-4 px-1 border-b-2 font-bold text-sm transition-colors" data-target="timeline">
+                                Línea de Tiempo
+                            </button>
+                            <button onclick="switchTab('documents')" class="tab-btn whitespace-nowrap py-4 px-1 border-b-2 font-bold text-sm transition-colors" data-target="documents">
+                                Documentos
+                            </button>
+                            <button onclick="switchTab('notes')" class="tab-btn whitespace-nowrap py-4 px-1 border-b-2 font-bold text-sm transition-colors" data-target="notes">
+                                Notas
+                            </button>
+                        </nav>
+                    </div>
+
+                    <!-- Tab Content -->
+                    <div class="tab-content" id="timeline-panel">
+                        <div class="bg-white rounded-b-lg shadow-sm border border-t-0 border-gray-200 p-6">
+                            <h3 class="text-lg font-bold text-lawyer-primary mb-4 font-legal">Historial Procesal</h3>
+                            <div class="flow-root">
+                                <ul role="list" class="-mb-8" id="timelineList">
+                                    <li class="text-center py-4 text-lawyer-muted text-sm italic">Cargando historial...</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tab-content hidden" id="documents-panel">
+                         <div class="bg-white rounded-b-lg shadow-sm border border-t-0 border-gray-200 p-6">
+                            <div class="flex justify-between items-center mb-4">
+                                <h3 class="text-lg font-bold text-lawyer-primary font-legal">Expediente Digital</h3>
+                                <button onclick="openUploadModal()" class="text-sm bg-lawyer-primary text-white px-3 py-1.5 rounded hover:bg-lawyer-secondary flex items-center gap-1 transition-colors">
+                                    <span class="material-symbols-outlined text-sm">upload</span> Subir Escrito
+                                </button>
+                            </div>
+                            <ul class="divide-y divide-gray-100" id="documentsList">
+                                <li class="text-center py-4 text-lawyer-muted text-sm italic">Cargando documentos...</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="tab-content hidden" id="notes-panel">
+                        <div class="bg-white rounded-b-lg shadow-sm border border-t-0 border-gray-200 p-6">
+                            <div class="flex justify-between items-center mb-4">
+                                <h3 class="text-lg font-bold text-lawyer-primary font-legal">Notas Privadas</h3>
+                                <button onclick="openNoteModal()" class="text-sm bg-lawyer-primary text-white px-3 py-1.5 rounded hover:bg-lawyer-secondary flex items-center gap-1 transition-colors">
+                                    <span class="material-symbols-outlined text-sm">add</span> Nueva Nota
+                                </button>
+                            </div>
+                            <div class="space-y-4" id="notesList">
+                                <p class="text-center py-4 text-lawyer-muted text-sm italic">Cargando notas...</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<!-- Upload Modal -->
+<div id="uploadModal" class="fixed inset-0 bg-black/50 z-50 hidden items-center justify-center">
+    <div class="bg-white rounded-lg shadow-xl max-w-md w-full mx-4 p-6">
+        <div class="flex justify-between items-center mb-4">
+            <h3 class="text-lg font-bold text-lawyer-primary font-legal">Subir Documento</h3>
+            <button onclick="closeUploadModal()" class="text-lawyer-muted hover:text-danger">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+        <form id="uploadForm">
+            <div class="mb-4">
+                <label class="block text-sm font-medium mb-2 text-lawyer-text">Nombre del Documento</label>
+                <input type="text" id="docName" class="w-full rounded border-gray-300 text-sm p-2 focus:ring-lawyer-accent focus:border-lawyer-accent" placeholder="Ej. Escrito de Defensa">
+            </div>
+            <div class="mb-4">
+                <label class="block text-sm font-medium mb-2 text-lawyer-text">Archivo <span class="text-danger">*</span></label>
+                <input type="file" id="docFile" required class="w-full text-sm text-lawyer-muted file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-lawyer-bg file:text-lawyer-primary hover:file:bg-gray-200">
+            </div>
+            <div class="flex justify-end gap-3 pt-4">
+                <button type="button" onclick="closeUploadModal()" class="px-4 py-2 text-sm text-lawyer-muted hover:text-lawyer-primary">Cancelar</button>
+                <button type="submit" class="px-4 py-2 bg-lawyer-primary text-white rounded text-sm font-medium hover:bg-lawyer-secondary transition-colors">Subir</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Note Modal -->
+<div id="noteModal" class="fixed inset-0 bg-black/50 z-50 hidden items-center justify-center">
+    <div class="bg-white rounded-lg shadow-xl max-w-md w-full mx-4 p-6">
+        <div class="flex justify-between items-center mb-4">
+            <h3 class="text-lg font-bold text-lawyer-primary font-legal">Nueva Nota</h3>
+            <button onclick="closeNoteModal()" class="text-lawyer-muted hover:text-danger">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+        <form id="noteForm">
+            <div class="mb-4">
+                <label class="block text-sm font-medium mb-2 text-lawyer-text">Visibilidad</label>
+                <select id="noteVisibility" class="w-full rounded border-gray-300 text-sm p-2 focus:ring-lawyer-accent focus:border-lawyer-accent">
+                    <option value="internal">Interna (Solo Abogados)</option>
+                    <option value="client_visible">Pública (Visible para el Cliente)</option>
+                </select>
+            </div>
+            <div>
+                <label class="block text-sm font-medium mb-2 text-lawyer-text">Contenido <span class="text-danger">*</span></label>
+                <textarea id="noteContent" rows="5" required placeholder="Escriba su nota aquí..." class="w-full rounded border-gray-300 text-sm resize-none focus:ring-lawyer-accent focus:border-lawyer-accent"></textarea>
+            </div>
+            <div class="flex justify-end gap-3 pt-4">
+                <button type="button" onclick="closeNoteModal()" class="px-4 py-2 text-sm text-lawyer-muted hover:text-lawyer-primary">Cancelar</button>
+                <button type="submit" class="px-4 py-2 bg-lawyer-primary text-white rounded text-sm font-medium hover:bg-lawyer-secondary transition-colors">Guardar Nota</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="../assets/js/auth.js"></script>
+<script>
+    const authToken = localStorage.getItem('token');
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
+    const urlParams = new URLSearchParams(window.location.search);
+    const caseId = urlParams.get('id');
+
+    // UI Helpers
+    function switchTab(tabName) {
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            if(btn.dataset.target === tabName) {
+                btn.classList.add('active');
+            } else {
+                btn.classList.remove('active');
+            }
+        });
+
+        document.querySelectorAll('.tab-content').forEach(panel => {
+            if(panel.id === `${tabName}-panel`) {
+                panel.classList.remove('hidden');
+            } else {
+                panel.classList.add('hidden');
+            }
+        });
+    }
+
+    function openNoteModal() { document.getElementById('noteModal').classList.remove('hidden'); document.getElementById('noteModal').classList.add('flex'); }
+    function closeNoteModal() { document.getElementById('noteModal').classList.add('hidden'); document.getElementById('noteModal').classList.remove('flex'); }
+
+    function openUploadModal() { document.getElementById('uploadModal').classList.remove('hidden'); document.getElementById('uploadModal').classList.add('flex'); }
+    function closeUploadModal() { document.getElementById('uploadModal').classList.add('hidden'); document.getElementById('uploadModal').classList.remove('flex'); }
+
+    // Initialization
+    async function init() {
+        if (!authToken) {
+            window.location.href = '../public/login.html';
+            return;
+        }
+
+        if (!caseId) {
+            showError('No se especificó un ID de caso válido.');
+            return;
+        }
+
+        // Setup User Info
+        document.getElementById('userName').textContent = user.name || 'Usuario';
+        document.getElementById('userRole').textContent = (user.userRoles?.[0]?.role?.name || 'Abogado').toUpperCase();
+        document.getElementById('userInitials').textContent = (user.name || 'U').split(' ').map(n => n[0]).join('').substring(0, 2);
+
+        // Check for profile picture
+        const savedProfile = localStorage.getItem('lawyer_profile_' + user.id);
+        if (savedProfile) {
+            try {
+                const pData = JSON.parse(savedProfile);
+                if (pData.profileImage) {
+                    const initialsDiv = document.getElementById('userInitials');
+                    initialsDiv.innerHTML = `<img src="${pData.profileImage}" class="w-full h-full object-cover rounded-full">`;
+                    initialsDiv.classList.remove('bg-lawyer-primary', 'text-white');
+                    initialsDiv.classList.add('overflow-hidden');
+                }
+            } catch (e) { console.error('Error loading profile pic:', e); }
+        }
+
+        // Load Data
+        try {
+            await Promise.all([
+                loadCaseDetails(),
+                loadTimeline(),
+                loadDocuments(),
+                loadNotes()
+            ]);
+            document.getElementById('loading').classList.add('hidden');
+            document.getElementById('details').classList.remove('hidden');
+            document.getElementById('details').classList.add('flex');
+        } catch (error) {
+            console.error(error);
+            showError(error.message || 'Error cargando datos del caso');
+        }
+
+        // Form Listeners
+        document.getElementById('uploadForm').addEventListener('submit', handleUpload);
+        document.getElementById('noteForm').addEventListener('submit', handleNoteSubmit);
+    }
+
+    function showError(msg) {
+        document.getElementById('loading').classList.add('hidden');
+        document.getElementById('errorState').classList.remove('hidden');
+        document.getElementById('errorState').classList.add('flex');
+        document.getElementById('errorMessage').textContent = msg;
+    }
+
+    // Fetches
+    async function loadCaseDetails() {
+         const response = await fetch(`${API_URL}/cases/${caseId}`, {
+             headers: { 'Authorization': `Bearer ${authToken}` }
+         });
+         
+         if (!response.ok) {
+             if (response.status === 404) throw new Error('Caso no encontrado');
+             throw new Error('Error al cargar info del caso');
+         }
+
+         const data = await response.json();
+         const myCase = data.case;
+
+         renderCaseHeader(myCase);
+    }
+
+    async function loadTimeline() {
+         const response = await fetch(`${API_URL}/cases/${caseId}/timeline`, {
+             headers: { 'Authorization': `Bearer ${authToken}` }
+         });
+         if (response.ok) {
+             const data = await response.json();
+             renderTimeline(data.events || []);
+         } else {
+             renderTimeline([]); 
+         }
+    }
+
+    async function loadDocuments() {
+        // Using sub-resource endpoint for case documents
+        const response = await fetch(`${API_URL}/cases/${caseId}/documents`, {
+            headers: { 'Authorization': `Bearer ${authToken}` }
+        });
+        if (response.ok) {
+            const data = await response.json();
+            renderDocuments(data.documents || []);
+        } else {
+            renderDocuments([]);
+        }
+    }
+
+    async function loadNotes() {
+        // Assuming an endpoint for notes exists or we use timeline as notes for now?
+        // Admin version had "notes", checking if backend supports it.
+        // If not, we can treat them as internal timeline events or comments.
+        // For now, let's try a generic endpoint or mock it empty if 404.
+        try {
+            const response = await fetch(`${API_URL}/cases/${caseId}/notes`, {
+                headers: { 'Authorization': `Bearer ${authToken}` }
+            });
+            if (response.ok) {
+                const data = await response.json();
+                renderNotes(data.notes || []);
+            } else {
+                renderNotes([]);
+            }
+        } catch(e) {
+            renderNotes([]);
+        }
+    }
+
+    // Renderers
+    function renderCaseHeader(c) {
+        document.getElementById('caseNumber').textContent = c.caseNumberInternal || 'S/N';
+        document.getElementById('caseTitle').textContent = c.title || 'Sin Título';
+        document.getElementById('caseDescription').textContent = c.description || 'Sin descripción';
+        
+        document.getElementById('clientName').textContent = c.client?.fullNameOrBusinessName || 'N/A';
+        document.getElementById('clientDoc').textContent = c.client?.documentNumber ? `ID: ${c.client.documentNumber}` : '';
+        document.getElementById('practiceArea').textContent = c.practiceArea?.name || 'General';
+
+        // Status Badge
+        const styles = {
+            'active': 'bg-green-100 text-green-800 border-green-200',
+            'intake': 'bg-blue-100 text-blue-800 border-blue-200',
+            'closed': 'bg-gray-100 text-gray-800 border-gray-200',
+            'suspended': 'bg-red-100 text-red-800 border-red-200'
+        };
+        const labels = {
+            'active': 'Activo',
+            'intake': 'Instrucción',
+            'closed': 'Cerrado',
+            'suspended': 'Suspendido'
+        };
+        const style = styles[c.caseStatus] || 'bg-gray-100 text-gray-800';
+        const label = labels[c.caseStatus] || c.caseStatus;
+        
+        document.getElementById('statusBadgeContainer').innerHTML = `
+            <span class="px-3 py-1 rounded-full text-xs font-bold border ${style} uppercase tracking-wide">
+                ${label}
+            </span>
+        `;
+    }
+
+    function renderTimeline(events) {
+        const list = document.getElementById('timelineList');
+        if (events.length === 0) {
+            list.innerHTML = `<li class="text-center py-8 text-lawyer-muted italic">No hay eventos registrados en la línea de tiempo.</li>`;
+            return;
+        }
+
+        list.innerHTML = events.map((event, idx) => `
+            <li class="relative pb-8">
+                ${idx !== events.length - 1 ? '<span class="absolute top-4 left-4 -ml-px h-full w-0.5 bg-gray-200" aria-hidden="true"></span>' : ''}
+                <div class="relative flex space-x-3">
+                    <div>
+                        <span class="h-8 w-8 rounded-full bg-lawyer-bg flex items-center justify-center ring-8 ring-white">
+                            <span class="material-symbols-outlined text-lawyer-secondary text-sm">event</span>
+                        </span>
+                    </div>
+                    <div class="flex min-w-0 flex-1 justify-between space-x-4 pt-1.5">
+                        <div>
+                            <p class="text-sm text-lawyer-text">${event.summary || event.description} <span class="font-medium text-lawyer-primary">${event.eventType || event.title || ''}</span></p>
+                            ${event.details ? `<p class="text-xs text-lawyer-muted mt-1">${event.details}</p>` : ''}
+                        </div>
+                        <div class="whitespace-nowrap text-right text-sm text-lawyer-muted">
+                            <time>${new Date(event.eventDate || event.createdAt).toLocaleDateString()}</time>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        `).join('');
+    }
+
+    function renderDocuments(docs) {
+        const list = document.getElementById('documentsList');
+        if (docs.length === 0) {
+            list.innerHTML = `<li class="text-center py-8 text-lawyer-muted italic">No hay documentos en el expediente.</li>`;
+            return;
+        }
+
+        list.innerHTML = docs.map(doc => {
+            const downloadUrl = `${API_URL}/documents/${doc.id}/download`;
+            return `
+            <li class="flex items-center justify-between py-4 px-4 hover:bg-gray-50 transition-colors rounded-lg">
+                <div class="flex items-center gap-4">
+                    <div class="h-10 w-10 rounded bg-red-50 flex items-center justify-center text-red-500">
+                        <span class="material-symbols-outlined">description</span>
+                    </div>
+                    <div>
+                        <p class="text-sm font-bold text-lawyer-primary">${doc.fileName || doc.name}</p>
+                        <p class="text-xs text-lawyer-muted">${new Date(doc.createdAt).toLocaleDateString()} • ${(parseInt(doc.sizeBytes || doc.size || 0)/1024).toFixed(1)} KB</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-2">
+                    <a href="${downloadUrl}" target="_blank" class="p-2 text-lawyer-muted hover:text-lawyer-primary rounded-full hover:bg-gray-200 transition-colors" title="Ver/Descargar">
+                        <span class="material-symbols-outlined">download</span>
+                    </a>
+                </div>
+            </li>
+        `}).join('');
+    }
+
+    function renderNotes(notes) {
+        const list = document.getElementById('notesList');
+        if (notes.length === 0) {
+            list.innerHTML = `<li class="text-center py-8 text-lawyer-muted italic">No hay notas privadas.</li>`;
+            return;
+        }
+        
+        list.innerHTML = notes.map(note => `
+             <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-100">
+                <p class="text-sm text-gray-800">${note.note || note.content}</p>
+                <div class="mt-2 flex justify-between items-center text-xs text-gray-500">
+                    <span>${new Date(note.createdAt).toLocaleString()}</span>
+                    <span class="px-2 py-0.5 bg-white rounded border border-gray-200">${note.visibility === 'internal' ? 'Interna' : 'Pública'}</span>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    // Handlers
+    async function handleUpload(e) {
+        e.preventDefault();
+        const fileInput = document.getElementById('docFile');
+        const nameInput = document.getElementById('docName');
+        
+        if (fileInput.files.length === 0) return;
+
+        const formData = new FormData();
+        formData.append('file', fileInput.files[0]);
+        formData.append('caseId', caseId);
+        formData.append('name', nameInput.value || fileInput.files[0].name);
+
+        try {
+            const btn = e.target.querySelector('button[type="submit"]');
+            const originalText = btn.textContent;
+            btn.textContent = 'Subiendo...';
+            btn.disabled = true;
+
+            const response = await fetch(`${API_URL}/documents/upload`, {
+                method: 'POST',
+                headers: { 'Authorization': `Bearer ${authToken}` },
+                body: formData
+            });
+
+            if (!response.ok) throw new Error('Error al subir documento');
+
+            alert('Documento subido correctamente');
+            closeUploadModal();
+            loadDocuments();
+            
+            // Reset form
+            e.target.reset();
+        } catch (error) {
+            alert(error.message);
+        } finally {
+            const btn = e.target.querySelector('button[type="submit"]');
+            btn.textContent = 'Subir';
+            btn.disabled = false;
+        }
+    }
+
+    async function handleNoteSubmit(e) {
+        e.preventDefault();
+        const content = document.getElementById('noteContent').value;
+        const visibility = document.getElementById('noteVisibility').value;
+
+        try {
+            const btn = e.target.querySelector('button[type="submit"]');
+            btn.disabled = true;
+
+            // Note: If /notes endpoint doesn't exist, this will fail.
+            // We might need to implement it in backend or use timeline comments.
+            // For now assuming it exists or using a fallback.
+            const response = await fetch(`${API_URL}/cases/${caseId}/notes`, {
+                method: 'POST',
+                headers: { 
+                    'Authorization': `Bearer ${authToken}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ content, visibility })
+            });
+
+            if (!response.ok) throw new Error('Error al guardar nota');
+
+            closeNoteModal();
+            loadNotes();
+            e.target.reset();
+        } catch (error) {
+            alert(error.message);
+        } finally {
+            const btn = e.target.querySelector('button[type="submit"]');
+            btn.disabled = false;
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>

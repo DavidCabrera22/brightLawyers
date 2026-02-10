@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html class="light" lang="es">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Mis Documentos - BrightLawyers</title>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+    <!-- Material Symbols -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "lawyer-primary": "#2c3e50",   // Dark Blue
+                        "lawyer-secondary": "#34495e", // Desaturated Blue
+                        "lawyer-accent": "#e67e22",    // Orange
+                        "lawyer-bg": "#ecf0f1",        // Light Gray
+                        "lawyer-card": "#ffffff",
+                        "lawyer-text": "#2c3e50",
+                        "lawyer-muted": "#7f8c8d",
+                        // Admin style matches
+                        "slate-50": "#f8fafc",
+                        "slate-100": "#f1f5f9",
+                        "slate-200": "#e2e8f0",
+                        "slate-300": "#cbd5e1",
+                        "slate-400": "#94a3b8",
+                        "slate-500": "#64748b",
+                        "slate-600": "#475569",
+                        "slate-700": "#334155",
+                        "slate-800": "#1e293b",
+                        "slate-900": "#0f172a",
+                    },
+                    fontFamily: {
+                        "sans": ["'Plus Jakarta Sans'", "sans-serif"]
+                    },
+                    boxShadow: {
+                        "card": "0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1)",
+                        "card-hover": "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1)",
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #ecf0f1; }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1.5rem;
+            color: #bdc3c7; /* Light gray for contrast on dark bg */
+            font-weight: 500;
+            font-size: 0.875rem;
+            transition: all 0.2s;
+            border-left: 3px solid transparent;
+        }
+        .sidebar-link:hover {
+            color: white;
+            background: rgba(255,255,255,0.05);
+        }
+        .sidebar-link.active {
+            background-color: rgba(230, 126, 34, 0.1); /* Orange tint */
+            color: #ffffff;
+            border-left-color: #e67e22; /* lawyer-accent */
+        }
+        
+        .skeleton {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: .5; }
+        }
+    </style>
+</head>
+<body class="bg-lawyer-bg text-slate-800 h-screen overflow-hidden flex">
+
+    <!-- Sidebar (Lawyer Theme) -->
+    <aside class="w-64 bg-lawyer-secondary text-white flex flex-col z-20 shadow-xl flex-shrink-0">
+        <!-- Logo Area -->
+        <div class="h-20 flex items-center px-6 border-b border-white/10 flex-shrink-0">
+            <div class="flex items-center gap-3">
+                <div class="h-8 w-8 rounded bg-lawyer-accent text-white flex items-center justify-center shadow-lg">
+                    <span class="material-symbols-outlined text-[20px]">gavel</span>
+                </div>
+                <div>
+                    <h1 class="font-bold text-sm leading-tight tracking-wide text-white">BrightLawyers</h1>
+                    <p class="text-[10px] text-gray-400 font-medium tracking-wider uppercase">Panel de Abogado</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="flex-1 overflow-y-auto py-6">
+            <a class="sidebar-link" href="dashboard-lawyer.html">
+                <span class="material-symbols-outlined text-[20px]">dashboard</span>
+                Resumen
+            </a>
+            <a class="sidebar-link" href="cases-lawyer.html">
+                <span class="material-symbols-outlined text-[20px]">folder_open</span>
+                Mis Casos
+            </a>
+            <a class="sidebar-link active" href="documents.html">
+                <span class="material-symbols-outlined text-[20px]">description</span>
+                Documentos
+            </a>
+            <a class="sidebar-link" href="contracts.html">
+                <span class="material-symbols-outlined text-[20px]">gavel</span>
+                Contratos
+            </a>
+            <a class="sidebar-link" href="tasks.html">
+                <span class="material-symbols-outlined text-[20px]">event_note</span>
+                Agenda Legal
+            </a>
+            <a class="sidebar-link" href="messages.html">
+                <span class="material-symbols-outlined text-[20px]">mail</span>
+                Comunicaciones
+            </a>
+            <a class="sidebar-link" href="profile-lawyer.html">
+                <span class="material-symbols-outlined text-[20px]">person</span>
+                Perfil
+            </a>
+
+            <div class="mt-auto mb-2 pt-6 px-6 border-t border-white/5">
+                <button onclick="logout()" class="w-full sidebar-link text-left hover:text-red-400 hover:bg-white/5 px-0 pl-0 border-l-0">
+                    <span class="material-symbols-outlined text-[20px]">logout</span>
+                    Cerrar Sesión
+                </button>
+            </div>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 flex flex-col h-full overflow-hidden bg-lawyer-bg relative">
+        
+        <!-- Top Header -->
+        <header class="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-8 flex-shrink-0 z-10">
+            <h2 class="text-lg font-bold text-lawyer-primary">Mis Documentos</h2>
+            
+            <div class="flex items-center gap-6">
+                <!-- Search -->
+                <div class="relative hidden md:block w-80">
+                    <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-[20px]">search</span>
+                    <input type="text" 
+                           id="searchInput" 
+                           placeholder="Buscar por nombre, caso o categoría..." 
+                           class="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-lawyer-accent/20 focus:border-lawyer-accent transition-all outline-none">
+                </div>
+
+                <div class="flex items-center gap-3">
+                    <button class="p-2 text-slate-500 hover:bg-slate-50 rounded-full relative">
+                        <span class="material-symbols-outlined text-[22px]">notifications</span>
+                        <span class="absolute top-2 right-2 h-2 w-2 bg-red-500 rounded-full border border-white"></span>
+                    </button>
+                    
+                    <div class="h-8 w-px bg-slate-200 mx-1"></div>
+                    
+                    <div class="flex items-center gap-2 cursor-pointer p-1 hover:bg-slate-50 rounded-lg transition-colors">
+                        <div class="text-right hidden sm:block">
+                            <p class="text-xs font-bold text-slate-700" id="userName">Cargando...</p>
+                            <p class="text-[10px] text-slate-500">Abogado</p>
+                        </div>
+                        <div class="h-8 w-8 rounded-full bg-lawyer-primary text-white flex items-center justify-center text-xs font-bold overflow-hidden" id="userInitials">
+                            --
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Scrollable Content -->
+        <div class="flex-1 overflow-y-auto p-6 md:p-8">
+            <div class="max-w-7xl mx-auto space-y-6">
+                
+                <!-- Filters & Controls Card -->
+                <div class="bg-white p-5 rounded-xl border border-slate-100 shadow-card flex flex-col md:flex-row justify-between items-center gap-4">
+                    <div class="flex items-center gap-3 w-full md:w-auto">
+                        <div class="relative w-full md:w-64">
+                            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 material-symbols-outlined text-[18px]">filter_list</span>
+                            <select id="categoryFilter" class="w-full h-10 pl-10 pr-8 rounded-lg border border-slate-200 bg-slate-50 text-sm font-medium text-slate-600 focus:outline-none focus:border-lawyer-accent focus:ring-1 focus:ring-lawyer-accent appearance-none cursor-pointer hover:bg-white transition-colors">
+                                <option value="">Todas las categorías</option>
+                                <option value="DEMANDA">Demanda</option>
+                                <option value="PRUEBA">Prueba</option>
+                                <option value="PODER">Poder</option>
+                                <option value="GRAL">General</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <button onclick="openUploadModal()" class="w-full md:w-auto px-5 py-2.5 bg-lawyer-primary hover:bg-lawyer-secondary text-white text-sm font-semibold rounded-lg shadow-sm hover:shadow transition-all flex items-center justify-center gap-2">
+                        <span class="material-symbols-outlined text-[18px]">upload_file</span>
+                        Subir Documento
+                    </button>
+                </div>
+
+                <!-- Documents Table Card -->
+                <div class="bg-white rounded-xl border border-slate-100 shadow-card overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead class="bg-slate-50 border-b border-slate-200">
+                                <tr>
+                                    <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Nombre</th>
+                                    <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Caso Relacionado</th>
+                                    <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Categoría</th>
+                                    <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Fecha</th>
+                                    <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Tamaño</th>
+                                    <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider text-right">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="documentsTableBody" class="divide-y divide-slate-100 text-sm">
+                                <tr>
+                                    <td colspan="6" class="px-6 py-12 text-center">
+                                        <div class="flex flex-col items-center justify-center gap-3">
+                                            <div class="w-8 h-8 border-4 border-lawyer-accent border-t-transparent rounded-full animate-spin"></div>
+                                            <span class="text-slate-400 font-medium">Cargando documentos...</span>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- Pagination -->
+                    <div class="px-6 py-4 border-t border-slate-100 bg-slate-50/50 flex items-center justify-between">
+                        <span class="text-xs text-slate-500 font-medium" id="resultsCount">Mostrando 0 resultados</span>
+                        <div class="flex gap-1">
+                            <button class="w-8 h-8 flex items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-400 hover:text-lawyer-accent disabled:opacity-50" disabled>
+                                <span class="material-symbols-outlined text-[16px]">chevron_left</span>
+                            </button>
+                            <button class="w-8 h-8 flex items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-400 hover:text-lawyer-accent disabled:opacity-50" disabled>
+                                <span class="material-symbols-outlined text-[16px]">chevron_right</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- Upload Modal -->
+    <div id="uploadModal" class="fixed inset-0 bg-black/50 z-50 hidden items-center justify-center backdrop-blur-sm">
+        <div class="bg-white rounded-xl shadow-2xl max-w-md w-full mx-4 p-6 transform transition-all scale-100">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-lg font-bold text-lawyer-primary">Subir Documento</h3>
+                <button onclick="closeUploadModal()" class="text-slate-400 hover:text-red-500 transition-colors">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+            <form id="uploadForm">
+                <div class="mb-4">
+                    <label class="block text-sm font-medium mb-2 text-slate-700">Caso Relacionado <span class="text-red-500">*</span></label>
+                    <div class="relative">
+                        <select id="caseSelect" required class="w-full rounded-lg border-slate-300 text-sm p-2.5 focus:ring-lawyer-accent focus:border-lawyer-accent bg-slate-50">
+                            <option value="">Seleccione un caso...</option>
+                            <!-- Populated dynamically -->
+                        </select>
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-sm font-medium mb-2 text-slate-700">Categoría</label>
+                    <div class="relative">
+                        <select id="docCategory" class="w-full rounded-lg border-slate-300 text-sm p-2.5 focus:ring-lawyer-accent focus:border-lawyer-accent bg-slate-50">
+                            <option value="GRAL">General</option>
+                            <option value="DEMANDA">Demanda</option>
+                            <option value="PRUEBA">Prueba</option>
+                            <option value="PODER">Poder</option>
+                            <option value="SENTENCIA">Sentencia</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="mb-6">
+                    <label class="block text-sm font-medium mb-2 text-slate-700">Archivo <span class="text-red-500">*</span></label>
+                    <input type="file" id="docFile" required class="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-lawyer-bg file:text-lawyer-primary hover:file:bg-slate-200 transition-all cursor-pointer">
+                </div>
+                <div class="flex justify-end gap-3 pt-2">
+                    <button type="button" onclick="closeUploadModal()" class="px-4 py-2 text-sm font-medium text-slate-600 hover:text-slate-800 hover:bg-slate-100 rounded-lg transition-colors">Cancelar</button>
+                    <button type="submit" class="px-5 py-2 bg-lawyer-primary text-white rounded-lg text-sm font-medium hover:bg-lawyer-secondary shadow-sm hover:shadow transition-all">Subir Documento</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../assets/js/auth.js"></script>
+    <script>
+        const authToken = localStorage.getItem('token');
+        const user = JSON.parse(localStorage.getItem('user') || '{}');
+        
+        // Check Auth
+        if (!authToken) {
+            window.location.href = '../public/login.html';
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Set User Info
+            const userNameEl = document.getElementById('userName');
+            if(userNameEl) userNameEl.textContent = user.name || 'Usuario';
+            
+            const initialsDiv = document.getElementById('userInitials');
+            if(initialsDiv) {
+                initialsDiv.textContent = (user.name || 'U').split(' ').map(n => n[0]).join('').substring(0, 2);
+            }
+
+            // Check for profile picture
+            const savedProfile = localStorage.getItem('lawyer_profile_' + user.id);
+            if (savedProfile && initialsDiv) {
+                try {
+                    const pData = JSON.parse(savedProfile);
+                    if (pData.profileImage) {
+                        initialsDiv.innerHTML = `<img src="${pData.profileImage}" class="w-full h-full object-cover rounded-full">`;
+                        initialsDiv.classList.remove('bg-lawyer-primary', 'text-white');
+                        initialsDiv.classList.add('overflow-hidden');
+                    }
+                } catch (e) { console.error('Error loading profile pic:', e); }
+            }
+
+            // Load Data
+            await Promise.all([
+                loadDocuments(),
+                loadMyCases() // For the upload modal dropdown
+            ]);
+
+            // Event Listeners
+            const uploadForm = document.getElementById('uploadForm');
+            if(uploadForm) uploadForm.addEventListener('submit', handleUpload);
+            
+            const searchInput = document.getElementById('searchInput');
+            if(searchInput) searchInput.addEventListener('input', debounce(loadDocuments, 500));
+            
+            const categoryFilter = document.getElementById('categoryFilter');
+            if(categoryFilter) categoryFilter.addEventListener('change', loadDocuments);
+        });
+
+        async function loadDocuments() {
+            const searchInput = document.getElementById('searchInput');
+            const search = searchInput ? searchInput.value : '';
+            
+            let url = `${API_URL}/documents`;
+            if (search) {
+                url += `?search=${encodeURIComponent(search)}`;
+            }
+
+            try {
+                const response = await fetch(url, {
+                    headers: { 'Authorization': `Bearer ${authToken}` }
+                });
+                
+                if (!response.ok) throw new Error('Error cargando documentos');
+                
+                const data = await response.json();
+                let docs = data.documents || [];
+                
+                // Client-side category filter
+                const categoryFilter = document.getElementById('categoryFilter');
+                const catFilter = categoryFilter ? categoryFilter.value : '';
+                
+                if (catFilter) {
+                    docs = docs.filter(d => {
+                        return d.links && d.links.some(l => l.docCategory === catFilter);
+                    });
+                }
+
+                renderDocuments(docs);
+            } catch (error) {
+                console.error(error);
+                const tbody = document.getElementById('documentsTableBody');
+                if(tbody) {
+                    tbody.innerHTML = `
+                        <tr><td colspan="6" class="px-6 py-8 text-center text-red-500">Error al cargar documentos. Intente nuevamente.</td></tr>
+                    `;
+                }
+            }
+        }
+
+        async function loadMyCases() {
+            try {
+                // Try fetching all cases (lawyer should see assigned cases usually)
+                const casesResponse = await fetch(`${API_URL}/cases`, {
+                     headers: { 'Authorization': `Bearer ${authToken}` }
+                });
+
+                if (casesResponse.ok) {
+                    const data = await casesResponse.json();
+                    const cases = data.cases || [];
+                    const select = document.getElementById('caseSelect');
+                    if(!select) return;
+                    
+                    select.innerHTML = '<option value="">Seleccione un caso...</option>'; // Reset
+                    
+                    cases.forEach(c => {
+                        const option = document.createElement('option');
+                        option.value = c.id;
+                        option.textContent = `${c.caseNumberInternal || 'S/N'} - ${c.title}`;
+                        select.appendChild(option);
+                    });
+                }
+            } catch (error) {
+                console.error('Error loading cases for dropdown', error);
+            }
+        }
+
+        function renderDocuments(docs) {
+            const tbody = document.getElementById('documentsTableBody');
+            const countSpan = document.getElementById('resultsCount');
+            
+            if(countSpan) countSpan.textContent = `Mostrando ${docs.length} resultados`;
+            if(!tbody) return;
+
+            if (docs.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="6" class="px-6 py-12 text-center text-slate-400 italic">
+                            <span class="material-symbols-outlined text-4xl mb-2 opacity-50">folder_off</span>
+                            <p>No se encontraron documentos.</p>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            tbody.innerHTML = docs.map(doc => {
+                const caseLink = doc.links && doc.links.find(l => l.entityType === 'CASE');
+                const category = caseLink ? caseLink.docCategory : 'General';
+                const caseId = caseLink ? caseLink.entityId : null;
+                
+                // Determine icon based on file type (simple logic)
+                let icon = 'description';
+                if(doc.fileName.endsWith('.pdf')) icon = 'picture_as_pdf';
+                else if(doc.fileName.match(/\.(jpg|jpeg|png)$/i)) icon = 'image';
+                
+                return `
+                <tr class="hover:bg-slate-50 transition-colors group">
+                    <td class="px-6 py-4">
+                        <div class="flex items-center gap-3">
+                            <div class="h-8 w-8 rounded bg-slate-100 flex items-center justify-center text-slate-500 group-hover:bg-lawyer-primary group-hover:text-white transition-colors">
+                                <span class="material-symbols-outlined text-[18px]">${icon}</span>
+                            </div>
+                            <span class="font-medium text-slate-700 group-hover:text-lawyer-primary transition-colors">${doc.fileName}</span>
+                        </div>
+                    </td>
+                    <td class="px-6 py-4">
+                        ${caseId ? `<a href="case-detail.html?id=${caseId}" class="text-lawyer-secondary hover:text-lawyer-accent font-medium hover:underline decoration-dotted transition-colors">Ver Caso</a>` : '<span class="text-slate-400">--</span>'}
+                    </td>
+                    <td class="px-6 py-4">
+                        <span class="px-2.5 py-1 rounded-full text-xs font-bold bg-slate-100 text-slate-600 border border-slate-200">${category}</span>
+                    </td>
+                    <td class="px-6 py-4 text-slate-500">
+                        ${new Date(doc.createdAt).toLocaleDateString()}
+                    </td>
+                    <td class="px-6 py-4 text-slate-500 font-mono text-xs">
+                        ${(parseInt(doc.sizeBytes)/1024).toFixed(1)} KB
+                    </td>
+                    <td class="px-6 py-4 text-right">
+                        <a href="${API_URL}/documents/${doc.id}/download" target="_blank" class="inline-flex items-center justify-center h-8 w-8 rounded-lg hover:bg-slate-100 text-slate-400 hover:text-lawyer-primary transition-colors" title="Descargar">
+                            <span class="material-symbols-outlined text-[20px]">download</span>
+                        </a>
+                    </td>
+                </tr>
+            `}).join('');
+        }
+
+        // Modal Functions
+        function openUploadModal() {
+            const modal = document.getElementById('uploadModal');
+            if(modal) {
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+            }
+        }
+
+        function closeUploadModal() {
+            const modal = document.getElementById('uploadModal');
+            if(modal) {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }
+        }
+
+        async function handleUpload(e) {
+            e.preventDefault();
+            const fileInput = document.getElementById('docFile');
+            const caseSelect = document.getElementById('caseSelect');
+            const categorySelect = document.getElementById('docCategory');
+            
+            if (fileInput.files.length === 0) return;
+
+            const formData = new FormData();
+            formData.append('file', fileInput.files[0]);
+            formData.append('caseId', caseSelect.value);
+            formData.append('docCategory', categorySelect.value);
+            formData.append('name', fileInput.files[0].name);
+
+            try {
+                const btn = e.target.querySelector('button[type="submit"]');
+                const originalText = btn.textContent;
+                btn.textContent = 'Subiendo...';
+                btn.disabled = true;
+
+                const response = await fetch(`${API_URL}/documents/upload`, {
+                    method: 'POST',
+                    headers: { 'Authorization': `Bearer ${authToken}` },
+                    body: formData
+                });
+
+                if (!response.ok) throw new Error('Error al subir documento');
+
+                closeUploadModal();
+                loadDocuments();
+                e.target.reset();
+                // Optional: show toast instead of alert
+                alert('Documento subido correctamente');
+            } catch (error) {
+                alert(error.message);
+            } finally {
+                const btn = e.target.querySelector('button[type="submit"]');
+                btn.textContent = 'Subir Documento';
+                btn.disabled = false;
+            }
+        }
+
+        // Utility
+        function debounce(func, wait) {
+            let timeout;
+            return function(...args) {
+                const context = this;
+                clearTimeout(timeout);
+                timeout = setTimeout(() => func.apply(context, args), wait);
+            };
+        }
+    </script>
+</body>
+</html>

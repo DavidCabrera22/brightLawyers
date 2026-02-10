@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html class="light" lang="es">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>BrightLawyers - Contratos y Convenios</title>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+    
+    <!-- Material Symbols -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "brand-dark": "#0B1120",      // Sidebar bg (Dark Blue/Black)
+                        "brand-primary": "#1e3a8a",   // Blue 900 (Primary Action)
+                        "brand-accent": "#3b82f6",    // Blue 500 (Highlights)
+                        "brand-secondary": "#334155", // Slate 700
+                        "brand-bg": "#F8FAFC",        // Light background
+                        "brand-surface": "#FFFFFF",   // White surface
+                        "brand-mint": "#eff6ff",      // Blue 50 (Light Blue for active/hover)
+                    },
+                    fontFamily: {
+                        "sans": ["'Plus Jakarta Sans'", "sans-serif"]
+                    },
+                    boxShadow: {
+                        "card": "0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1)",
+                        "card-hover": "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1)",
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1.5rem;
+            color: #94a3b8; /* slate-400 */
+            font-weight: 500;
+            font-size: 0.875rem;
+            transition: all 0.2s;
+            border-left: 3px solid transparent;
+        }
+        .sidebar-link:hover {
+            color: white;
+            background: rgba(255,255,255,0.05);
+        }
+        .sidebar-link.active {
+            background-color: rgba(59, 130, 246, 0.1); /* Blue tint */
+            color: #ffffff;
+            border-left-color: #3b82f6; /* brand-accent */
+        }
+        
+        /* Modal Transitions */
+        .modal { transition: opacity 0.25s ease; }
+        .modal-content { transition: transform 0.25s ease; }
+        body.modal-open { overflow: hidden; }
+    </style>
+</head>
+<body class="bg-brand-bg text-slate-800 h-screen overflow-hidden flex">
+
+    <!-- Sidebar (Dark) -->
+    <aside class="w-64 bg-brand-dark text-white flex flex-col z-20 shadow-xl flex-shrink-0">
+        <!-- Logo Area -->
+        <div class="h-20 flex items-center px-6 border-b border-gray-800 flex-shrink-0">
+            <div class="flex items-center gap-3">
+                <div class="h-8 w-8 rounded bg-gradient-to-br from-blue-600 to-blue-800 flex items-center justify-center shadow-lg shadow-blue-500/30 text-white">
+                    <span class="material-symbols-outlined text-[20px]">balance</span>
+                </div>
+                <div>
+                    <h1 class="font-bold text-sm leading-tight tracking-wide">BrightLawyers</h1>
+                    <p class="text-[10px] text-gray-400 font-medium tracking-wider uppercase">ADMINISTRACIÓN</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="flex-1 overflow-y-auto py-6">
+            <a class="sidebar-link" href="admin.html">
+                <span class="material-symbols-outlined text-[20px]">dashboard</span>
+                Dashboard
+            </a>
+            <a class="sidebar-link" href="cases.html">
+                <span class="material-symbols-outlined text-[20px]">gavel</span>
+                Casos
+            </a>
+            <a class="sidebar-link" href="tasks.html">
+                <span class="material-symbols-outlined text-[20px]">task_alt</span>
+                Tareas
+            </a>
+            <a class="sidebar-link" href="clients.html">
+                <span class="material-symbols-outlined text-[20px]">groups</span>
+                Clientes
+            </a>
+            <a class="sidebar-link" href="documents.html">
+                <span class="material-symbols-outlined text-[20px]">folder</span>
+                Documentos
+            </a>
+            <a class="sidebar-link active" href="contracts.html">
+                <span class="material-symbols-outlined text-[20px]">description</span>
+                Contratos
+            </a>
+            <a class="sidebar-link" href="billing.html">
+                <span class="material-symbols-outlined text-[20px]">payments</span>
+                Facturación
+            </a>
+            <a class="sidebar-link" href="messages.html">
+                <span class="material-symbols-outlined text-[20px]">chat</span>
+                Mensajes
+            </a>
+
+            <div class="mt-6 mb-2 px-6 text-[10px] font-bold text-gray-500 uppercase tracking-wider">Gestión</div>
+            
+            <a class="sidebar-link" href="users.html">
+                <span class="material-symbols-outlined text-[20px]">manage_accounts</span>
+                Equipo Legal
+            </a>
+
+
+            <div class="mt-6 mb-2 px-6 text-[10px] font-bold text-gray-500 uppercase tracking-wider">Sistema</div>
+
+            <a class="sidebar-link" href="configuration.html">
+                <span class="material-symbols-outlined text-[20px]">settings</span>
+                Configuración
+            </a>
+            <button onclick="logout()" class="w-full sidebar-link text-left hover:text-red-400 hover:bg-white/5">
+                <span class="material-symbols-outlined text-[20px]">logout</span>
+                Cerrar Sesión
+            </button>
+        </nav>
+
+        <!-- User Profile (Bottom) -->
+        <div class="p-4 border-t border-gray-800 bg-black/20">
+            <div class="flex items-center gap-3">
+                <div class="h-9 w-9 rounded-full bg-blue-900 text-blue-100 flex items-center justify-center text-xs font-bold border border-blue-700" id="sidebarAvatar">--</div>
+                <div class="overflow-hidden">
+                    <p class="text-sm font-bold text-gray-200 truncate" id="sidebarName">Cargando...</p>
+                    <p class="text-xs text-gray-500 truncate" id="sidebarRole">...</p>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 flex flex-col h-full overflow-hidden bg-brand-bg relative">
+        
+        <!-- Top Header -->
+        <header class="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-8 flex-shrink-0 z-10">
+            <h2 class="text-lg font-bold text-slate-800">Contratos y Convenios</h2>
+            
+            <div class="flex items-center gap-6">
+                <!-- Search -->
+                <div class="relative hidden md:block w-96">
+                    <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-[20px]">search</span>
+                    <input id="searchInput" type="text" placeholder="Buscar por título o cliente..." 
+                           class="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-brand-accent/20 focus:border-brand-accent transition-all outline-none">
+                </div>
+
+                <div class="flex items-center gap-3">
+                    <button class="p-2 text-slate-500 hover:bg-slate-50 rounded-full relative">
+                        <span class="material-symbols-outlined text-[22px]">notifications</span>
+                        <span class="absolute top-2 right-2 h-2 w-2 bg-red-500 rounded-full border border-white"></span>
+                    </button>
+                    <div class="h-8 w-px bg-slate-200 mx-1"></div>
+                    <div class="flex items-center gap-2 cursor-pointer p-1 hover:bg-slate-50 rounded-lg transition-colors">
+                        <div class="h-8 w-8 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center text-xs font-bold">AD</div>
+                        <span class="text-sm font-medium text-slate-700 hidden sm:block">Admin</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Content Area -->
+        <div class="flex-1 overflow-y-auto p-8">
+            <div class="max-w-7xl mx-auto space-y-8">
+                
+                <!-- Page Title & Actions -->
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                    <div>
+                        <h1 class="text-2xl font-bold text-slate-900">Gestión de Contratos</h1>
+                        <p class="text-slate-500 mt-1">Control de versiones, estados de firma y vigencia de convenios legales.</p>
+                    </div>
+                    <button onclick="openModal()" class="flex items-center gap-2 px-4 py-2 bg-brand-primary text-white rounded-lg font-medium hover:bg-blue-800 transition-colors shadow-sm shadow-blue-900/10">
+                        <span class="material-symbols-outlined text-[20px]">add_task</span>
+                        Nuevo Contrato
+                    </button>
+                </div>
+
+                <!-- Active Cases Section (Collapsible or just visible if data exists) -->
+                <div id="activeCasesSection" class="hidden">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-bold text-slate-800 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-amber-500">warning</span>
+                            Casos Pendientes de Contrato
+                        </h3>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="activeCasesGrid">
+                        <!-- Dynamically loaded -->
+                    </div>
+                </div>
+
+                <!-- Contracts Table -->
+                <div class="bg-white rounded-xl border border-slate-200 shadow-card overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-sm">
+                            <thead class="bg-slate-50 text-slate-500 font-semibold border-b border-slate-100 uppercase text-[11px] tracking-wider">
+                                <tr>
+                                    <th class="px-6 py-4">Título del Acuerdo</th>
+                                    <th class="px-6 py-4">Cliente / Parte</th>
+                                    <th class="px-6 py-4">Estado</th>
+                                    <th class="px-6 py-4">Vencimiento</th>
+                                    <th class="px-6 py-4 text-right">Firma</th>
+                                    <th class="px-6 py-4 text-right">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="contractsTableBody" class="divide-y divide-slate-100">
+                                <!-- Dynamically loaded -->
+                                <tr>
+                                    <td colspan="6" class="px-6 py-20 text-center">
+                                        <div class="flex flex-col items-center gap-3">
+                                            <div class="w-8 h-8 border-4 border-brand-primary border-t-transparent rounded-full animate-spin"></div>
+                                            <p class="text-slate-400">Cargando contratos...</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- New Contract Modal -->
+    <div id="newContractModal" class="hidden fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+        <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+            <div class="fixed inset-0 bg-gray-900 bg-opacity-75 transition-opacity backdrop-blur-sm" aria-hidden="true" onclick="closeModal()"></div>
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+            <div class="inline-block align-bottom bg-white rounded-2xl text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg w-full">
+                <div class="bg-white px-6 pt-6 pb-6">
+                    <h3 class="text-xl font-bold text-slate-900 mb-4" id="modal-title">Nuevo Contrato</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Título del Contrato *</label>
+                            <input type="text" id="contractTitle" class="w-full rounded-lg border-slate-300 text-sm focus:ring-brand-primary focus:border-brand-primary bg-slate-50">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Cliente *</label>
+                            <select id="contractClient" class="w-full rounded-lg border-slate-300 text-sm focus:ring-brand-primary focus:border-brand-primary bg-slate-50">
+                                <option value="">Seleccione Cliente</option>
+                            </select>
+                        </div>
+                        
+                        <!-- Fee Structure -->
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Tipo de Honorarios *</label>
+                            <select id="contractFeeType" onchange="toggleFeeInputs()" class="w-full rounded-lg border-slate-300 text-sm focus:ring-brand-primary focus:border-brand-primary bg-slate-50">
+                                <option value="FIXED">Suma Fija</option>
+                                <option value="PERCENTAGE">Cuota Litis (Porcentaje)</option>
+                                <option value="MIXED">Mixto (Fija + %)</option>
+                            </select>
+                        </div>
+
+                        <div id="fixedFeeContainer">
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Honorarios Fijos (COP)</label>
+                            <input type="number" id="contractFixedFee" placeholder="0" class="w-full rounded-lg border-slate-300 text-sm focus:ring-brand-primary focus:border-brand-primary bg-slate-50">
+                        </div>
+
+                        <div id="percentageFeeContainer" class="hidden">
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Porcentaje (Cuota Litis) %</label>
+                            <input type="number" id="contractPercentageFee" placeholder="0" max="50" class="w-full rounded-lg border-slate-300 text-sm focus:ring-brand-primary focus:border-brand-primary bg-slate-50">
+                            <p class="text-xs text-slate-500 mt-1 flex items-center gap-1">
+                                <span class="material-symbols-outlined text-[14px]">info</span>
+                                Máximo recomendado 50%
+                            </p>
+                        </div>
+
+                        <!-- File Upload -->
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Documento (Word/PDF)</label>
+                            <input type="file" id="contractFile" accept=".pdf,.doc,.docx" class="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-bold file:bg-brand-primary/10 file:text-brand-primary hover:file:bg-brand-primary/20">
+                            <p class="text-xs text-slate-400 mt-1">Opcional. Puede subir el borrador después.</p>
+                        </div>
+
+                        <input type="hidden" id="contractCaseId">
+                    </div>
+                </div>
+                <div class="bg-slate-50 px-6 py-4 flex flex-row-reverse gap-3">
+                    <button type="button" onclick="createContract()" class="w-full inline-flex justify-center rounded-lg border border-transparent shadow-sm px-4 py-2 bg-brand-primary text-base font-medium text-white hover:bg-blue-800 focus:outline-none sm:w-auto sm:text-sm">Crear</button>
+                    <button type="button" onclick="closeModal()" class="w-full inline-flex justify-center rounded-lg border border-slate-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-slate-700 hover:bg-slate-50 focus:outline-none sm:w-auto sm:text-sm">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- View Contract Modal -->
+    <div id="viewContractModal" class="hidden fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+        <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+            <div class="fixed inset-0 bg-gray-900 bg-opacity-75 transition-opacity backdrop-blur-sm" aria-hidden="true" onclick="closeViewModal()"></div>
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+            <div class="inline-block align-bottom bg-white rounded-2xl text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:align-middle sm:max-w-2xl w-full">
+                <div class="bg-white px-6 pt-6 pb-6">
+                    <div class="flex justify-between items-start mb-6">
+                        <h3 class="text-xl font-bold text-slate-900" id="viewContractTitle">Detalles del Contrato</h3>
+                        <button onclick="closeViewModal()" class="text-slate-400 hover:text-slate-500 bg-slate-100 p-1 rounded-full">
+                            <span class="material-symbols-outlined text-[20px]">close</span>
+                        </button>
+                    </div>
+                    <!-- Content would go here, functionality handled by JS -->
+                    <div id="viewContractContent" class="space-y-4 text-sm text-slate-600">
+                        Cargando...
+                    </div>
+                </div>
+                <div class="bg-slate-50 px-6 py-4 flex flex-row-reverse">
+                    <button type="button" onclick="closeViewModal()" class="w-full inline-flex justify-center rounded-lg border border-slate-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-slate-700 hover:bg-slate-50 focus:outline-none sm:w-auto sm:text-sm">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../assets/js/auth.js"></script>
+    <script>
+        const authToken = localStorage.getItem('token');
+        const user = JSON.parse(localStorage.getItem('user') || '{}');
+        let allContracts = [];
+        let allClients = [];
+
+        async function init() {
+            if (!authToken) { window.location.href = '../public/login.html'; return; }
+            
+            // Sidebar Profile
+            document.getElementById('sidebarName').textContent = user.fullName || user.name || 'Usuario';
+            document.getElementById('sidebarRole').textContent = (user.userRoles?.[0]?.role?.name || 'Abogado').toUpperCase();
+            document.getElementById('sidebarAvatar').textContent = (user.fullName || user.name || 'U').split(' ').map(n => n[0]).join('').substring(0, 2);
+
+            await Promise.all([loadContracts(), loadClients(), loadActiveCases()]);
+            
+            document.getElementById('searchInput').addEventListener('input', debounce(loadContracts, 500));
+        }
+
+        async function loadContracts() {
+            const tableBody = document.getElementById('contractsTableBody');
+            const search = document.getElementById('searchInput').value;
+
+            try {
+                const url = new URL(`${window.API_URL}/contracts`);
+                if (search) url.searchParams.append('search', search);
+
+                const response = await fetch(url, {
+                    headers: { 'Authorization': `Bearer ${authToken}` }
+                });
+
+                if (!response.ok) throw new Error('Error al cargar contratos');
+
+                const data = await response.json();
+                allContracts = Array.isArray(data) ? data : (data.contracts || []);
+                renderContracts(allContracts);
+            } catch (error) {
+                console.error(error);
+                tableBody.innerHTML = `<tr><td colspan="6" class="px-6 py-10 text-center text-red-500">Error al cargar datos.</td></tr>`;
+            }
+        }
+
+        function renderContracts(contracts) {
+            const tableBody = document.getElementById('contractsTableBody');
+            
+            // Check if user is admin
+            const isAdmin = (user.userRoles?.[0]?.role?.name || '').toLowerCase() === 'admin' || 
+                            (user.userRoles?.[0]?.role?.name || '').toLowerCase() === 'administrador';
+
+            if (!contracts || contracts.length === 0) {
+                tableBody.innerHTML = `<tr><td colspan="6" class="px-6 py-10 text-center text-slate-400">No hay contratos registrados.</td></tr>`;
+                return;
+            }
+
+            tableBody.innerHTML = contracts.map(c => {
+                // Determine latest version for download
+                const hasVersions = c.versions && c.versions.length > 0;
+                const latestDocId = hasVersions ? c.versions[0].documentId : null;
+                const rawDocName = hasVersions ? (c.versions[0].document?.fileName || 'contrato.pdf') : null;
+                const latestDocName = rawDocName ? rawDocName.replace(/'/g, "\\'") : null;
+
+                return `
+                <tr class="hover:bg-slate-50 transition-colors group">
+                    <td class="px-6 py-4">
+                        <div class="font-bold text-slate-900">${c.title || 'Contrato Sin Título'}</div>
+                        <div class="text-xs text-slate-500">REF: ${c.contractNumber || c.id.substring(0,8).toUpperCase()}</div>
+                    </td>
+                    <td class="px-6 py-4">
+                        <div class="text-sm text-slate-700">${c.client?.fullNameOrBusinessName || c.client?.fullName || 'Cliente Desconocido'}</div>
+                        <div class="text-xs text-slate-400">${c.client?.email || ''}</div>
+                    </td>
+                    <td class="px-6 py-4">
+                        <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-bold uppercase ${getStatusStyle(c.status)}">
+                            ${getStatusLabel(c.status)}
+                        </span>
+                    </td>
+                    <td class="px-6 py-4 text-xs text-slate-500">
+                        ${c.expirationDate ? new Date(c.expirationDate).toLocaleDateString() : 'Indefinido'}
+                    </td>
+                    <td class="px-6 py-4 text-right">
+                         <span class="inline-flex items-center gap-1 text-xs ${c.signed ? 'text-emerald-600' : 'text-slate-400'}">
+                            <span class="material-symbols-outlined text-[16px]">${c.signed ? 'ink_pen' : 'history_edu'}</span>
+                            ${c.signed ? 'Firmado' : 'Pendiente'}
+                        </span>
+                    </td>
+                    <td class="px-6 py-4 text-right">
+                        <div class="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <button onclick="viewContract('${c.id}')" class="p-2 rounded-lg hover:bg-white border border-transparent hover:border-slate-200 text-slate-400 hover:text-brand-primary transition-all shadow-sm" title="Ver Detalles">
+                                <span class="material-symbols-outlined text-[18px]">visibility</span>
+                            </button>
+                            <button onclick="${latestDocId ? `downloadDocument('${latestDocId}', '${latestDocName}')` : ''}" 
+                                    class="p-2 rounded-lg hover:bg-white border border-transparent hover:border-slate-200 ${latestDocId ? 'text-slate-400 hover:text-brand-primary cursor-pointer' : 'text-slate-200 cursor-not-allowed'} transition-all shadow-sm" 
+                                    title="Descargar Última Versión">
+                                <span class="material-symbols-outlined text-[18px]">download</span>
+                            </button>
+                            ${isAdmin ? `
+                            <button onclick="deleteContract('${c.id}')" class="p-2 rounded-lg hover:bg-white border border-transparent hover:border-slate-200 text-slate-400 hover:text-red-600 transition-all shadow-sm" title="Eliminar Contrato">
+                                <span class="material-symbols-outlined text-[18px]">delete</span>
+                            </button>
+                            ` : ''}
+                        </div>
+                    </td>
+                </tr>
+            `}).join('');
+        }
+
+        async function deleteContract(id) {
+            if (!confirm('¿Estás seguro de eliminar este contrato? Esta acción no se puede deshacer.')) return;
+            
+            try {
+                const res = await fetch(`${window.API_URL}/contracts/${id}`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${authToken}` }
+                });
+                
+                if (res.ok) {
+                    loadContracts();
+                } else {
+                    const data = await res.json();
+                    alert('Error al eliminar contrato: ' + (data.error || 'Error desconocido'));
+                }
+            } catch (e) {
+                console.error(e);
+                alert('Error de conexión al eliminar contrato');
+            }
+        }
+
+        async function loadClients() {
+            try {
+                const response = await fetch(`${window.API_URL}/clients`, {
+                    headers: { 'Authorization': `Bearer ${authToken}` }
+                });
+                if (response.ok) {
+                    allClients = await response.json();
+                    const select = document.getElementById('contractClient');
+                    allClients.forEach(client => {
+                        const option = document.createElement('option');
+                        option.value = client.id;
+                        option.textContent = client.fullName;
+                        select.appendChild(option);
+                    });
+                }
+            } catch (error) {
+                console.error("Error loading clients", error);
+            }
+        }
+
+        async function loadActiveCases() {
+            try {
+                const response = await fetch(`${window.API_URL}/cases`, {
+                     headers: { 'Authorization': `Bearer ${authToken}` }
+                });
+                if (response.ok) {
+                    const data = await response.json();
+                    const cases = Array.isArray(data) ? data : (data.cases || []);
+                    
+                    // Filter cases that might need attention
+                    // Using caseStatus as per cases.html convention
+                    const pendingCases = cases.filter(c => (c.caseStatus === 'active' || c.caseStatus === 'open') && !c.contractId).slice(0, 3);
+                    
+                    if (pendingCases.length > 0) {
+                        document.getElementById('activeCasesSection').classList.remove('hidden');
+                        document.getElementById('activeCasesGrid').innerHTML = pendingCases.map(c => `
+                            <div class="bg-amber-50 border border-amber-100 p-4 rounded-xl flex flex-col gap-2 shadow-sm">
+                                <div class="flex justify-between items-start">
+                                    <h4 class="font-bold text-amber-900 text-sm truncate w-full">${c.title}</h4>
+                                </div>
+                                <p class="text-xs text-amber-700 line-clamp-2">${c.description || 'Sin descripción'}</p>
+                                <button onclick="openModalForCase('${c.id}', '${c.clientId || c.client?.id || ''}')" class="mt-2 self-end text-xs font-bold text-amber-600 hover:text-amber-800 underline">
+                                    Crear Contrato
+                                </button>
+                            </div>
+                        `).join('');
+                    }
+                }
+            } catch (error) {
+                console.error("Error loading active cases", error);
+            }
+        }
+
+        // --- Helpers ---
+        function getStatusStyle(status) {
+            switch(status) {
+                case 'active': return 'bg-emerald-50 text-emerald-700 border border-emerald-100';
+                case 'draft': return 'bg-slate-100 text-slate-600 border border-slate-200';
+                case 'expired': return 'bg-red-50 text-red-700 border border-red-100';
+                default: return 'bg-blue-50 text-blue-700 border border-blue-100';
+            }
+        }
+        
+        function getStatusLabel(status) {
+            const map = { 
+                'active': 'Vigente', 
+                'draft': 'Borrador', 
+                'expired': 'Vencido',
+                'sent': 'Enviado',
+                'signed': 'Firmado',
+                'cancelled': 'Cancelado'
+            };
+            return map[status] || status;
+        }
+
+        function toggleFeeInputs() {
+            const type = document.getElementById('contractFeeType').value;
+            const fixed = document.getElementById('fixedFeeContainer');
+            const pct = document.getElementById('percentageFeeContainer');
+            
+            if (type === 'FIXED') {
+                fixed.classList.remove('hidden');
+                pct.classList.add('hidden');
+            } else if (type === 'PERCENTAGE') {
+                fixed.classList.add('hidden');
+                pct.classList.remove('hidden');
+            } else {
+                fixed.classList.remove('hidden');
+                pct.classList.remove('hidden');
+            }
+        }
+
+        // --- Modal Logic ---
+        function openModal() {
+            document.getElementById('newContractModal').classList.remove('hidden');
+            document.body.classList.add('modal-open');
+        }
+
+        function openModalForCase(caseId, clientId) {
+            openModal();
+            document.getElementById('contractCaseId').value = caseId;
+            if (clientId) document.getElementById('contractClient').value = clientId;
+        }
+
+        function closeModal() {
+            document.getElementById('newContractModal').classList.add('hidden');
+            document.body.classList.remove('modal-open');
+        }
+
+        function closeViewModal() {
+            document.getElementById('viewContractModal').classList.add('hidden');
+            document.body.classList.remove('modal-open');
+        }
+
+        async function viewContract(id) {
+            try {
+                // Fetch full contract details
+                const response = await fetch(`${window.API_URL}/contracts/${id}`, {
+                    headers: { 'Authorization': `Bearer ${authToken}` }
+                });
+                
+                if (!response.ok) throw new Error('Error al cargar contrato');
+                
+                const data = await response.json();
+                const contract = data.contract || data; // Handle wrapper if any
+
+                document.getElementById('viewContractTitle').textContent = contract.title;
+                
+                // Versions List
+                let versionsHtml = `
+                    <div class="text-center py-6 bg-slate-50 rounded-lg border border-dashed border-slate-300">
+                        <span class="material-symbols-outlined text-slate-300 text-4xl mb-2">folder_off</span>
+                        <p class="text-sm text-slate-500">No hay documentos adjuntos a este contrato.</p>
+                    </div>`;
+
+                if (contract.versions && contract.versions.length > 0) {
+                    versionsHtml = `
+                        <div class="space-y-3 mt-2">
+                            ${contract.versions.map(v => {
+                                const safeFileName = (v.document?.fileName || `Contrato-v${v.versionNumber}.pdf`).replace(/'/g, "\\'");
+                                return `
+                                <div class="flex items-center justify-between p-4 bg-white rounded-lg border border-slate-200 shadow-sm hover:border-brand-accent/50 transition-colors">
+                                    <div class="flex items-center gap-4">
+                                        <div class="h-10 w-10 rounded bg-red-50 flex items-center justify-center text-red-500">
+                                            <span class="material-symbols-outlined">picture_as_pdf</span>
+                                        </div>
+                                        <div>
+                                            <p class="text-sm font-bold text-slate-800">Versión ${v.versionNumber}</p>
+                                            <p class="text-xs text-slate-500 flex items-center gap-1">
+                                                <span class="material-symbols-outlined text-[14px]">calendar_today</span>
+                                                ${new Date(v.createdAt).toLocaleDateString()} ${new Date(v.createdAt).toLocaleTimeString()}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <button onclick="downloadDocument('${v.documentId}', '${safeFileName}')" 
+                                            class="flex items-center gap-2 px-3 py-1.5 bg-slate-50 hover:bg-brand-mint text-brand-primary rounded-md text-sm font-medium transition-colors border border-slate-200 hover:border-brand-accent/30">
+                                        <span class="material-symbols-outlined text-[18px]">download</span>
+                                        Descargar
+                                    </button>
+                                </div>
+                            `}).join('')}
+                        </div>
+                    `;
+                }
+
+                document.getElementById('viewContractContent').innerHTML = `
+                    <div class="grid grid-cols-2 gap-x-8 gap-y-6">
+                        <div class="col-span-2 bg-blue-50/50 p-4 rounded-xl border border-blue-100 flex items-start gap-3">
+                            <span class="material-symbols-outlined text-brand-primary mt-0.5">info</span>
+                            <div class="flex-1">
+                                <p class="text-xs font-bold text-brand-primary uppercase tracking-wider mb-1">Referencia</p>
+                                <p class="font-mono text-sm text-slate-700">${contract.contractNumber || '---'}</p>
+                            </div>
+                        </div>
+
+                        <div class="col-span-2 sm:col-span-1">
+                            <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Cliente</p>
+                            <div class="flex items-center gap-2">
+                                <div class="h-8 w-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 font-bold text-xs">
+                                    ${(contract.client?.fullNameOrBusinessName || 'C').charAt(0)}
+                                </div>
+                                <div>
+                                    <p class="font-medium text-slate-800">${contract.client?.fullNameOrBusinessName || contract.client?.fullName || 'Desconocido'}</p>
+                                    <p class="text-xs text-slate-500">${contract.client?.email || 'Sin email'}</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-span-2 sm:col-span-1">
+                            <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Estado Actual</p>
+                            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase ${getStatusStyle(contract.status)}">
+                                ${getStatusLabel(contract.status)}
+                            </span>
+                        </div>
+
+                        <div class="col-span-2 sm:col-span-1">
+                            <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Detalles Financieros</p>
+                            <p class="font-medium text-slate-800 mb-0.5">${contract.feeType === 'FIXED' ? 'Suma Fija' : (contract.feeType === 'PERCENTAGE' ? 'Cuota Litis' : 'Mixto')}</p>
+                            ${contract.contractValue ? `<p class="text-sm font-mono text-slate-600">$ ${parseFloat(contract.contractValue).toLocaleString()}</p>` : ''}
+                        </div>
+
+                        <div class="col-span-2 sm:col-span-1">
+                            <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Fecha de Creación</p>
+                            <p class="font-medium text-slate-800">${new Date(contract.createdAt).toLocaleDateString()}</p>
+                            <p class="text-xs text-slate-500">Por: ${(contract.creator?.fullName || 'Sistema')}</p>
+                        </div>
+                        
+                        <div class="col-span-2 border-t border-slate-100 pt-6 mt-2">
+                            <h4 class="text-sm font-bold text-slate-900 mb-4 flex items-center gap-2">
+                                <span class="material-symbols-outlined text-brand-accent">folder_open</span>
+                                Documentos y Versiones del Contrato
+                            </h4>
+                            ${versionsHtml}
+                        </div>
+                    </div>
+                `;
+                document.getElementById('viewContractModal').classList.remove('hidden');
+            } catch (error) {
+                console.error(error);
+                alert('No se pudo cargar la información del contrato.');
+            }
+        }
+
+        async function downloadDocument(id, fileName) {
+            try {
+                const response = await fetch(`${window.API_URL}/documents/${id}/download`, {
+                    headers: { 'Authorization': `Bearer ${authToken}` }
+                });
+                
+                if (response.ok) {
+                    const blob = await response.blob();
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = fileName || 'documento';
+                    document.body.appendChild(a);
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                    a.remove();
+                } else {
+                    alert('Error al descargar el documento.');
+                }
+            } catch (error) {
+                console.error(error);
+                alert('Error de conexión al descargar.');
+            }
+        }
+
+        async function createContract() {
+            const title = document.getElementById('contractTitle').value;
+            const clientId = document.getElementById('contractClient').value;
+            const feeType = document.getElementById('contractFeeType').value;
+            const fixedFee = document.getElementById('contractFixedFee').value;
+            const pctFee = document.getElementById('contractPercentageFee').value;
+            const caseId = document.getElementById('contractCaseId').value;
+            const fileInput = document.getElementById('contractFile');
+
+            if (!title || !clientId) {
+                alert('Por favor complete los campos obligatorios.');
+                return;
+            }
+
+            const btn = document.querySelector('button[onclick="createContract()"]');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<span class="material-symbols-outlined animate-spin text-sm">progress_activity</span> Creando...';
+            btn.disabled = true;
+
+            try {
+                // 1. Create Contract
+                const contractBody = {
+                    title,
+                    clientId,
+                    caseId: caseId || undefined,
+                    feeType,
+                    contractValue: feeType === 'FIXED' ? fixedFee : undefined,
+                    feeFixed: feeType === 'FIXED' ? fixedFee : (feeType === 'MIXED' ? fixedFee : undefined),
+                    feePercentage: feeType === 'PERCENTAGE' ? pctFee : (feeType === 'MIXED' ? pctFee : undefined)
+                };
+
+                const contractRes = await fetch(`${window.API_URL}/contracts`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${authToken}`
+                    },
+                    body: JSON.stringify(contractBody)
+                });
+
+                if (!contractRes.ok) throw new Error('Error al crear el contrato');
+                const contract = await contractRes.json();
+
+                // 2. Upload Document if present
+                if (fileInput.files.length > 0) {
+                    const formData = new FormData();
+                    formData.append('file', fileInput.files[0]);
+                    formData.append('docCategory', 'CONTRACT');
+                    formData.append('notes', 'Contrato inicial');
+
+                    const uploadRes = await fetch(`${window.API_URL}/documents/upload`, {
+                        method: 'POST',
+                        headers: { 'Authorization': `Bearer ${authToken}` },
+                        body: formData
+                    });
+
+                    if (uploadRes.ok) {
+                        const uploadData = await uploadRes.json();
+                        const documentId = uploadData.document.id;
+
+                        // 3. Create Version
+                        await fetch(`${window.API_URL}/contracts/${contract.id}/versions`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': `Bearer ${authToken}`
+                            },
+                            body: JSON.stringify({ documentId })
+                        });
+                    }
+                }
+
+                closeModal();
+                loadContracts();
+                // Clear form
+                document.getElementById('contractTitle').value = '';
+                document.getElementById('contractClient').value = '';
+                fileInput.value = '';
+            } catch (error) {
+                console.error(error);
+                alert('Error al crear el contrato: ' + error.message);
+            } finally {
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }
+        }
+
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => { clearTimeout(timeout); func(...args); };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+
+        init();
+    </script>
+</body>
+</html>

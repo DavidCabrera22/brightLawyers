@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BrightLawyers - Selección de Módulo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#1a405b",
+                        "accent": "#f59e0b",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"],
+                        "heading": ["Playfair Display", "serif"],
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        h1, h2, h3 { font-family: 'Playfair Display', serif; }
+        
+        .module-card {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .module-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(26, 64, 91, 0.15);
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-gray-50 to-blue-50 min-h-screen flex items-center justify-center p-6">
+    <div class="max-w-6xl w-full">
+        <!-- Header -->
+        <div class="text-center mb-12">
+            <div class="flex items-center justify-center gap-3 mb-4">
+                <div class="flex h-16 w-16 items-center justify-center rounded-2xl bg-primary text-white shadow-lg">
+                    <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3"></path>
+                    </svg>
+                </div>
+            </div>
+            <h1 class="text-4xl font-bold text-primary mb-3">Bienvenido, <span id="adminName">Administrador</span></h1>
+            <p class="text-gray-600 text-lg">Selecciona el módulo al que deseas acceder</p>
+        </div>
+
+        <!-- Module Cards -->
+        <div class="grid md:grid-cols-2 gap-8 mb-8">
+            <!-- Admin Module Card -->
+            <a href="admin.html" class="module-card bg-white rounded-2xl shadow-lg p-8 border-2 border-transparent hover:border-primary">
+                <div class="flex flex-col items-center text-center">
+                    <!-- Icon -->
+                    <div class="w-24 h-24 bg-gradient-to-br from-primary to-blue-900 rounded-2xl flex items-center justify-center mb-6 shadow-lg">
+                        <svg class="w-14 h-14 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                        </svg>
+                    </div>
+                    
+                    <!-- Title -->
+                    <h2 class="text-2xl font-bold text-primary mb-3">Panel de Administración</h2>
+                    
+                    <!-- Description -->
+                    <p class="text-gray-600 mb-6">
+                        Gestiona usuarios, configura el sistema, visualiza reportes y estadísticas globales del bufete.
+                    </p>
+                    
+                    <!-- Features List -->
+                    <ul class="text-left text-sm space-y-2 mb-6">
+                        <li class="flex items-center gap-2 text-gray-700">
+                            <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            Gestión de usuarios y roles
+                        </li>
+                        <li class="flex items-center gap-2 text-gray-700">
+                            <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            Estadísticas y reportes globales
+                        </li>
+                        <li class="flex items-center gap-2 text-gray-700">
+                            <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            Configuración del sistema
+                        </li>
+                        <li class="flex items-center gap-2 text-gray-700">
+                            <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            Rendimiento del equipo
+                        </li>
+                    </ul>
+                    
+                    <!-- CTA Button -->
+                    <div class="w-full">
+                        <div class="flex items-center justify-center gap-2 bg-primary text-white py-3 px-6 rounded-lg font-semibold hover:bg-blue-900 transition-colors">
+                            <span>Ir al Panel Admin</span>
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Lawyer Module Card -->
+            <a href="../lawyer/dashboard-lawyer.html" class="module-card bg-white rounded-2xl shadow-lg p-8 border-2 border-transparent hover:border-accent">
+                <div class="flex flex-col items-center text-center">
+                    <!-- Icon -->
+                    <div class="w-24 h-24 bg-gradient-to-br from-accent to-orange-600 rounded-2xl flex items-center justify-center mb-6 shadow-lg">
+                        <svg class="w-14 h-14 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                        </svg>
+                    </div>
+                    
+                    <!-- Title -->
+                    <h2 class="text-2xl font-bold text-primary mb-3">Panel de Abogado</h2>
+                    
+                    <!-- Description -->
+                    <p class="text-gray-600 mb-6">
+                        Gestiona tus casos, clientes, tareas, documentos y mantente al día con tu agenda diaria.
+                    </p>
+                    
+                    <!-- Features List -->
+                    <ul class="text-left text-sm space-y-2 mb-6">
+                        <li class="flex items-center gap-2 text-gray-700">
+                            <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            Gestión de casos y clientes
+                        </li>
+                        <li class="flex items-center gap-2 text-gray-700">
+                            <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            Tareas y vencimientos
+                        </li>
+                        <li class="flex items-center gap-2 text-gray-700">
+                            <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            Documentos y contratos
+                        </li>
+                        <li class="flex items-center gap-2 text-gray-700">
+                            <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            Mensajería y comunicación
+                        </li>
+                    </ul>
+                    
+                    <!-- CTA Button -->
+                    <div class="w-full">
+                        <div class="flex items-center justify-center gap-2 bg-accent text-white py-3 px-6 rounded-lg font-semibold hover:bg-orange-600 transition-colors">
+                            <span>Ir al Panel Abogado</span>
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <!-- Logout Button -->
+        <div class="text-center">
+            <button onclick="logout()" class="flex items-center gap-2 mx-auto px-4 py-2 rounded-lg text-gray-600 hover:bg-red-50 hover:text-red-600 transition-colors group">
+                <span class="material-symbols-outlined">logout</span>
+                <span class="font-medium">Cerrar Sesión</span>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Check authentication
+        const token = localStorage.getItem('token');
+        const user = JSON.parse(localStorage.getItem('user') || '{}');
+
+        if (!token) {
+            window.location.href = '../public/login.html';
+        }
+
+        // Display admin name
+        const name = user.fullName || user.name || 'Administrador';
+        if (document.getElementById('adminName')) {
+            document.getElementById('adminName').textContent = name.split(' ')[0];
+        }
+
+        // Logout function
+        function logout() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            window.location.href = '../public/login.html';
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html class="light" lang="es">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>BrightLawyers - Detalle del Cliente</title>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet"/>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#1a405b",
+                        "accent": "#f59e0b",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#131a1f",
+                        "card-light": "#ffffff",
+                        "card-dark": "#1e2830",
+                        "text-primary-light": "#101519",
+                        "text-primary-dark": "#f3f4f6",
+                        "text-secondary-light": "#5a778c",
+                        "text-secondary-dark": "#9ca3af",
+                        "success": "#10b981",
+                        "warning": "#f59e0b",
+                        "danger": "#ef4444",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"],
+                        "heading": ["Playfair Display", "serif"],
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "2xl": "1rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        h1, h2, h3, h4, h5, h6 { font-family: 'Playfair Display', serif; }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+        .dark ::-webkit-scrollbar-thumb { background: #4b5563; }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-text-primary-light dark:text-text-primary-dark transition-colors duration-200">
+<div class="flex h-screen w-full overflow-hidden">
+    <!-- Sidebar Navigation -->
+    <aside class="hidden w-64 flex-col bg-white dark:bg-card-dark border-r border-gray-200 dark:border-gray-800 lg:flex z-20 shadow-sm">
+        <div class="flex items-center gap-3 px-6 py-6" onclick="window.location.href='index.html'" style="cursor: pointer;">
+            <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-primary text-white">
+                <span class="material-symbols-outlined text-2xl">balance</span>
+            </div>
+            <div class="flex flex-col">
+                <h1 class="text-lg font-bold text-primary dark:text-white leading-tight">BrightLawyers</h1>
+                <p class="text-xs text-text-secondary-light dark:text-text-secondary-dark">Sistema Legal</p>
+            </div>
+        </div>
+        <nav class="flex-1 overflow-y-auto px-4 py-4 space-y-1">
+            <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-text-secondary-light dark:text-text-secondary-dark hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-primary dark:hover:text-white transition-colors group" href="admin.html" id="dashLink">
+                <span class="material-symbols-outlined">dashboard</span>
+                <span class="text-sm font-medium">Dashboard</span>
+            </a>
+            <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-text-secondary-light dark:text-text-secondary-dark hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-primary dark:hover:text-white transition-colors group" href="cases.html">
+                <span class="material-symbols-outlined">gavel</span>
+                <span class="text-sm font-medium">Casos</span>
+            </a>
+            <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-text-secondary-light dark:text-text-secondary-dark hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-primary dark:hover:text-white transition-colors group" href="tasks.html">
+                <span class="material-symbols-outlined">task_alt</span>
+                <span class="text-sm font-medium">Tareas</span>
+            </a>
+            <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-primary/10 text-primary dark:bg-primary/20 dark:text-white group" href="clients.html">
+                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">groups</span>
+                <span class="text-sm font-medium">Clientes</span>
+            </a>
+            <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-text-secondary-light dark:text-text-secondary-dark hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-primary dark:hover:text-white transition-colors group" href="documents.html">
+                <span class="material-symbols-outlined">folder</span>
+                <span class="text-sm font-medium">Documentos</span>
+            </a>
+            <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-text-secondary-light dark:text-text-secondary-dark hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-primary dark:hover:text-white transition-colors group" href="contracts.html">
+                <span class="material-symbols-outlined">description</span>
+                <span class="text-sm font-medium">Contratos</span>
+            </a>
+            <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-text-secondary-light dark:text-text-secondary-dark hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-primary dark:hover:text-white transition-colors group" href="billing.html">
+                <span class="material-symbols-outlined">payments</span>
+                <span class="text-sm font-medium">Facturación</span>
+            </a>
+            <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-text-secondary-light dark:text-text-secondary-dark hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-primary dark:hover:text-white transition-colors group" href="messages.html">
+                <span class="material-symbols-outlined">chat</span>
+                <span class="text-sm font-medium">Mensajes</span>
+            </a>
+
+            <div class="pt-4 mt-4 border-t border-gray-100 dark:border-gray-800">
+                <p class="px-3 text-xs font-semibold text-text-secondary-light dark:text-text-secondary-dark uppercase tracking-wider mb-2">Gestión</p>
+                <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-text-secondary-light dark:text-text-secondary-dark hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-primary dark:hover:text-white transition-colors group" href="users.html">
+                    <span class="material-symbols-outlined">manage_accounts</span>
+                    <span class="text-sm font-medium">Equipo Legal</span>
+                </a>
+
+            </div>
+
+            <div class="pt-4 mt-4 border-t border-gray-100 dark:border-gray-800">
+                <p class="px-3 text-xs font-semibold text-text-secondary-light dark:text-text-secondary-dark uppercase tracking-wider mb-2">Sistema</p>
+                <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-text-secondary-light dark:text-text-secondary-dark hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-primary dark:hover:text-white transition-colors group" href="configuration.html">
+                    <span class="material-symbols-outlined">settings</span>
+                    <span class="text-sm font-medium">Configuración</span>
+                </a>
+                <button onclick="logout()" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-text-secondary-light dark:text-text-secondary-dark hover:bg-red-50 dark:hover:bg-red-900/20 hover:text-red-600 dark:hover:text-red-400 transition-colors group text-left">
+                    <span class="material-symbols-outlined">logout</span>
+                    <span class="text-sm font-medium">Cerrar Sesión</span>
+                </button>
+            </div>
+        </nav>
+        <div class="border-t border-gray-200 dark:border-gray-800 p-4">
+            <div class="flex items-center gap-3 rounded-lg bg-background-light dark:bg-background-dark p-3">
+                <div class="h-10 w-10 rounded-full bg-primary text-white flex items-center justify-center font-bold" id="sidebarAvatar">
+                    --
+                </div>
+                <div class="flex flex-col overflow-hidden">
+                    <p class="truncate text-sm font-bold text-primary dark:text-white" id="sidebarName">Cargando...</p>
+                    <p class="truncate text-xs text-text-secondary-light dark:text-text-secondary-dark" id="sidebarRole">--</p>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex h-full flex-1 flex-col overflow-hidden relative">
+        <!-- Top Header -->
+        <header class="flex h-16 items-center justify-between border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-card-dark px-6 lg:px-8 z-10">
+            <div class="flex items-center gap-4">
+                <button onclick="window.location.href='clients.html'" class="text-text-secondary-light hover:text-primary flex items-center gap-2">
+                    <span class="material-symbols-outlined">arrow_back</span>
+                    <span class="text-sm font-medium hidden sm:block">Volver a Clientes</span>
+                </button>
+                <div class="h-6 w-px bg-gray-200 dark:bg-gray-700 mx-2"></div>
+                <h1 class="text-lg font-bold font-heading text-primary dark:text-white" id="headerTitle">Expediente del Cliente</h1>
+            </div>
+             <div class="flex items-center gap-4 sm:gap-6">
+                <button onclick="logout()" class="flex items-center text-text-secondary-light dark:text-text-secondary-dark hover:text-danger transition-colors" title="Cerrar Sesión">
+                    <span class="material-symbols-outlined">logout</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Content -->
+        <div class="flex-1 overflow-y-auto bg-background-light dark:bg-background-dark p-6 lg:p-8">
+            <div class="mx-auto max-w-7xl flex flex-col gap-6" id="clientContent">
+                <!-- Loading State -->
+                <div id="loading" class="flex flex-col items-center justify-center py-20">
+                    <div class="w-10 h-10 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+                    <p class="mt-4 text-text-secondary-light">Cargando expediente del cliente...</p>
+                </div>
+
+                <!-- Error State -->
+                <div id="errorState" class="hidden flex-col items-center justify-center py-20 text-danger">
+                    <span class="material-symbols-outlined text-4xl">error</span>
+                    <p class="mt-2 font-bold" id="errorMessage">Error al cargar el cliente</p>
+                    <button onclick="window.location.reload()" class="mt-4 px-4 py-2 bg-primary text-white rounded-lg">Reintentar</button>
+                </div>
+
+                <!-- Client Details (Hidden initially) -->
+                <div id="details" class="hidden flex-col gap-6">
+                    <!-- Top Card: Client Info -->
+                    <div class="bg-white dark:bg-card-dark rounded-xl border border-gray-200 dark:border-gray-800 p-6 shadow-sm">
+                        <div class="flex flex-col md:flex-row justify-between gap-6">
+                            <div class="flex items-start gap-4">
+                                <div class="w-16 h-16 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
+                                    <span class="material-symbols-outlined text-3xl" id="clientIcon">person</span>
+                                </div>
+                                <div class="flex-1">
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800 mb-2" id="clientType">PERSONA</span>
+                                    <h1 class="text-2xl font-bold text-primary dark:text-white font-heading" id="clientName">Nombre del Cliente</h1>
+                                    <p class="text-sm text-text-secondary-light mt-1" id="clientDocument">DOC: 000000</p>
+                                </div>
+                            </div>
+                            <div class="flex flex-col gap-3 min-w-[250px]">
+                                <div class="flex items-center gap-3 text-sm">
+                                    <span class="material-symbols-outlined text-text-secondary-light">mail</span>
+                                    <span id="clientEmail">correo@ejemplo.com</span>
+                                </div>
+                                <div class="flex items-center gap-3 text-sm">
+                                    <span class="material-symbols-outlined text-text-secondary-light">phone</span>
+                                    <span id="clientPhone">+57 300 000 0000</span>
+                                </div>
+                                <div class="flex items-center gap-3 text-sm">
+                                    <span class="material-symbols-outlined text-text-secondary-light">location_on</span>
+                                    <span id="clientAddress">Dirección</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Cases Section -->
+                    <div class="bg-white dark:bg-card-dark rounded-xl border border-gray-200 dark:border-gray-800 p-6 shadow-sm">
+                        <div class="flex justify-between items-center mb-6">
+                            <div>
+                                <h3 class="text-xl font-bold text-primary dark:text-white font-heading">Casos Asociados</h3>
+                                <p class="text-sm text-text-secondary-light mt-1">Historial de casos legales del cliente</p>
+                            </div>
+                            <span class="px-3 py-1 rounded-full text-sm font-bold bg-primary/10 text-primary" id="casesCount">0 casos</span>
+                        </div>
+                        
+                        <div id="casesList" class="space-y-4">
+                            <p class="text-center py-8 text-text-secondary-light text-sm italic">Cargando casos...</p>
+                        </div>
+                    </div>
+
+                    <!-- Quick Actions -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <button onclick="window.location.href='new-case.html?clientId=' + clientId" class="flex items-center justify-center gap-2 p-4 bg-white dark:bg-card-dark rounded-xl border border-gray-200 dark:border-gray-800 hover:border-primary hover:shadow-md transition-all group">
+                            <span class="material-symbols-outlined text-primary">add_circle</span>
+                            <span class="font-medium text-sm">Crear Nuevo Caso</span>
+                        </button>
+                        <button onclick="openUploadModal()" class="flex items-center justify-center gap-2 p-4 bg-white dark:bg-card-dark rounded-xl border border-gray-200 dark:border-gray-800 hover:border-primary hover:shadow-md transition-all group">
+                            <span class="material-symbols-outlined text-primary">upload_file</span>
+                            <span class="font-medium text-sm">Subir Documento</span>
+                        </button>
+                        <button onclick="openEditModal()" class="flex items-center justify-center gap-2 p-4 bg-white dark:bg-card-dark rounded-xl border border-gray-200 dark:border-gray-800 hover:border-primary hover:shadow-md transition-all group">
+                            <span class="material-symbols-outlined text-primary">edit</span>
+                            <span class="font-medium text-sm">Editar Cliente</span>
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<!-- Document Upload Modal -->
+<div id="uploadModal" class="fixed inset-0 bg-black/50 z-50 hidden items-center justify-center">
+    <div class="bg-white dark:bg-card-dark rounded-xl shadow-xl max-w-md w-full mx-4 p-6">
+        <div class="flex justify-between items-center mb-4">
+            <h3 class="text-lg font-bold text-primary dark:text-white font-heading">Subir Documento</h3>
+            <button onclick="closeUploadModal()" class="text-text-secondary-light hover:text-danger">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+        <form id="uploadForm" class="space-y-4">
+            <div>
+                <label class="block text-sm font-medium mb-2">Caso Asociado</label>
+                <select id="docCaseId" class="w-full rounded-lg border-gray-200 dark:border-gray-800 bg-white dark:bg-card-dark text-sm">
+                    <option value="">Documento general (sin caso)</option>
+                </select>
+            </div>
+            <div>
+                <label class="block text-sm font-medium mb-2">Archivo <span class="text-danger">*</span></label>
+                <input type="file" id="docFile" required class="w-full text-sm rounded-lg border border-gray-200 dark:border-gray-800 file:mr-4 file:py-2 file:px-4 file:rounded-l-lg file:border-0 file:bg-primary file:text-white file:cursor-pointer"/>
+            </div>
+            <div>
+                <label class="block text-sm font-medium mb-2">Nombre del documento</label>
+                <input type="text" id="docName" placeholder="Opcional - se usará el nombre del archivo" class="w-full rounded-lg border-gray-200 dark:border-gray-800 bg-white dark:bg-card-dark text-sm"/>
+            </div>
+            <div class="flex justify-end gap-3 pt-4">
+                <button type="button" onclick="closeUploadModal()" class="px-4 py-2 text-sm text-text-secondary-light hover:text-primary">Cancelar</button>
+                <button type="submit" class="px-4 py-2 bg-primary text-white rounded-lg text-sm font-medium hover:bg-primary/90">Subir</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Edit Client Modal -->
+<div id="editModal" class="fixed inset-0 bg-black/50 z-50 hidden items-center justify-center">
+    <div class="bg-white dark:bg-card-dark rounded-xl shadow-xl max-w-md w-full mx-4 p-6">
+        <div class="flex justify-between items-center mb-4">
+            <h3 class="text-lg font-bold text-primary dark:text-white font-heading">Editar Cliente</h3>
+            <button onclick="closeEditModal()" class="text-text-secondary-light hover:text-danger">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+        <form id="editForm" class="space-y-4">
+            <div>
+                <label class="block text-sm font-medium mb-2">Nombre Completo <span class="text-danger">*</span></label>
+                <input type="text" id="editName" required class="w-full rounded-lg border-gray-200 dark:border-gray-800 bg-white dark:bg-card-dark text-sm"/>
+            </div>
+            <div>
+                <label class="block text-sm font-medium mb-2">Email</label>
+                <input type="email" id="editEmail" class="w-full rounded-lg border-gray-200 dark:border-gray-800 bg-white dark:bg-card-dark text-sm"/>
+            </div>
+            <div>
+                <label class="block text-sm font-medium mb-2">Teléfono</label>
+                <input type="tel" id="editPhone" class="w-full rounded-lg border-gray-200 dark:border-gray-800 bg-white dark:bg-card-dark text-sm"/>
+            </div>
+            <div>
+                <label class="block text-sm font-medium mb-2">Dirección</label>
+                <input type="text" id="editAddress" class="w-full rounded-lg border-gray-200 dark:border-gray-800 bg-white dark:bg-card-dark text-sm"/>
+            </div>
+            <div class="flex justify-end gap-3 pt-4">
+                <button type="button" onclick="closeEditModal()" class="px-4 py-2 text-sm text-text-secondary-light hover:text-primary">Cancelar</button>
+                <button type="submit" class="px-4 py-2 bg-primary text-white rounded-lg text-sm font-medium hover:bg-primary/90">Guardar</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="../assets/js/auth.js"></script>
+<script>
+    const authToken = localStorage.getItem('token');
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
+    const urlParams = new URLSearchParams(window.location.search);
+    const clientId = urlParams.get('id');
+    let currentClient = null;
+
+    async function init() {
+        if (!authToken) {
+            window.location.href = '../public/login.html';
+            return;
+        }
+
+        if (!clientId) {
+            showError('No se especificó un ID de cliente válido.');
+            return;
+        }
+
+        // Setup User Info
+        if (document.getElementById('sidebarName')) document.getElementById('sidebarName').textContent = user.fullName || user.name || 'Usuario';
+        if (document.getElementById('sidebarRole')) document.getElementById('sidebarRole').textContent = (user.userRoles?.[0]?.role?.name || 'Rol').toUpperCase();
+        if (document.getElementById('sidebarAvatar')) {
+             const initials = (user.fullName || user.name || 'U').split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+             document.getElementById('sidebarAvatar').textContent = initials;
+        }
+
+        // Admin redirect
+        const isAdmin = user.userRoles?.some(ur => ur.role?.name === 'admin' || ur.role?.name === 'administrador');
+        if (isAdmin) document.getElementById('dashLink').href = 'admin.html';
+
+        // Form handlers
+        document.getElementById('uploadForm').addEventListener('submit', uploadDocument);
+        document.getElementById('editForm').addEventListener('submit', updateClient);
+
+        try {
+            await loadClientDetails();
+            document.getElementById('loading').classList.add('hidden');
+            document.getElementById('details').classList.remove('hidden');
+            document.getElementById('details').classList.add('flex');
+        } catch (error) {
+            console.error(error);
+            showError(error.message || 'Error cargando datos del cliente');
+        }
+    }
+
+    function showError(msg) {
+        document.getElementById('loading').classList.add('hidden');
+        document.getElementById('errorState').classList.remove('hidden');
+        document.getElementById('errorState').classList.add('flex');
+        document.getElementById('errorMessage').textContent = msg;
+    }
+
+    async function loadClientDetails() {
+        const response = await fetch(`${API_URL}/clients/${clientId}`, {
+            headers: { 'Authorization': `Bearer ${authToken}` }
+        });
+        
+        if (!response.ok) {
+            if (response.status === 404) throw new Error('Cliente no encontrado');
+            throw new Error('Error al cargar info del cliente');
+        }
+
+        const data = await response.json();
+        currentClient = data.client;
+
+        renderClientHeader(currentClient);
+        renderCases(currentClient.cases || []);
+        populateCaseSelect(currentClient.cases || []);
+    }
+
+    function renderClientHeader(client) {
+        document.getElementById('clientName').textContent = client.fullNameOrBusinessName;
+        document.getElementById('clientType').textContent = client.clientType === 'COMPANY' ? 'EMPRESA' : 'PERSONA NATURAL';
+        document.getElementById('clientIcon').textContent = client.clientType === 'COMPANY' ? 'business' : 'person';
+        document.getElementById('clientDocument').textContent = `${client.documentType || 'DOC'}: ${client.documentNumber || 'Sin documento'}`;
+        document.getElementById('clientEmail').textContent = client.email || 'Sin correo registrado';
+        document.getElementById('clientPhone').textContent = client.phone || 'Sin teléfono';
+        document.getElementById('clientAddress').textContent = client.address || 'Sin dirección';
+    }
+
+    function renderCases(cases) {
+        const list = document.getElementById('casesList');
+        document.getElementById('casesCount').textContent = `${cases.length} caso${cases.length !== 1 ? 's' : ''}`;
+
+        if (cases.length === 0) {
+            list.innerHTML = `
+                <div class="text-center py-10 border-2 border-dashed border-gray-200 dark:border-gray-800 rounded-xl">
+                    <span class="material-symbols-outlined text-4xl text-text-secondary-light mb-2">gavel</span>
+                    <p class="text-text-secondary-light">Este cliente no tiene casos registrados.</p>
+                    <button onclick="window.location.href='new-case.html?clientId=${clientId}'" class="mt-4 px-4 py-2 bg-primary text-white rounded-lg text-sm font-medium hover:bg-primary/90">
+                        Crear Primer Caso
+                    </button>
+                </div>
+            `;
+            return;
+        }
+
+        const statusStyles = {
+            'intake': 'bg-warning/10 text-warning border-warning/20',
+            'active': 'bg-success/10 text-success border-success/20',
+            'suspended': 'bg-danger/10 text-danger border-danger/20',
+            'closed': 'bg-gray-100 text-gray-500 border-gray-200'
+        };
+        const statusLabels = {
+            'intake': 'En Apertura',
+            'active': 'Activo',
+            'suspended': 'Suspendido',
+            'closed': 'Cerrado'
+        };
+
+        list.innerHTML = cases.map(c => `
+            <div class="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-800/50 rounded-xl border border-gray-100 dark:border-gray-700 hover:border-primary transition-colors group cursor-pointer" onclick="window.location.href='case-detail.html?id=${c.id}'">
+                <div class="flex items-center gap-4">
+                    <div class="w-10 h-10 rounded-lg bg-primary/10 text-primary flex items-center justify-center">
+                        <span class="material-symbols-outlined">gavel</span>
+                    </div>
+                    <div>
+                        <p class="font-bold text-primary dark:text-white group-hover:text-accent transition-colors">${c.title}</p>
+                        <div class="flex items-center gap-2 text-xs text-text-secondary-light mt-1">
+                            <span>${c.caseNumberInternal || 'S/N'}</span>
+                            <span>•</span>
+                            <span>${c.practiceArea?.name || 'General'}</span>
+                            <span>•</span>
+                            <span>${c.openedAt ? new Date(c.openedAt).toLocaleDateString() : 'Fecha desconocida'}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex items-center gap-3">
+                    <span class="inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-bold uppercase border ${statusStyles[c.caseStatus] || statusStyles['closed']}">
+                        ${statusLabels[c.caseStatus] || c.caseStatus}
+                    </span>
+                    <span class="material-symbols-outlined text-text-secondary-light group-hover:text-primary transition-colors">chevron_right</span>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    function populateCaseSelect(cases) {
+        const select = document.getElementById('docCaseId');
+        cases.forEach(c => {
+            const option = document.createElement('option');
+            option.value = c.id;
+            option.textContent = `${c.caseNumberInternal || 'S/N'} - ${c.title}`;
+            select.appendChild(option);
+        });
+    }
+
+    // Upload Modal Functions
+    function openUploadModal() {
+        document.getElementById('uploadModal').classList.remove('hidden');
+        document.getElementById('uploadModal').classList.add('flex');
+    }
+
+    function closeUploadModal() {
+        document.getElementById('uploadModal').classList.add('hidden');
+        document.getElementById('uploadModal').classList.remove('flex');
+        document.getElementById('uploadForm').reset();
+    }
+
+    async function uploadDocument(e) {
+        e.preventDefault();
+        const file = document.getElementById('docFile').files[0];
+        const caseId = document.getElementById('docCaseId').value;
+        const docName = document.getElementById('docName').value;
+
+        if (!file) {
+            alert('Por favor seleccione un archivo.');
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('file', file);
+        if (caseId) formData.append('caseId', caseId);
+        if (docName) formData.append('name', docName);
+
+        try {
+            const apiUrl = window.API_URL || 'http://localhost:4000/api';
+            const response = await fetch(`${apiUrl}/documents/upload`, {
+                method: 'POST',
+                headers: { 'Authorization': `Bearer ${authToken}` },
+                body: formData
+            });
+
+            if (!response.ok) throw new Error('Error al subir documento');
+
+            alert('Documento subido exitosamente!');
+            closeUploadModal();
+        } catch (error) {
+            console.error('Error uploading:', error);
+            alert('Error al subir el documento: ' + error.message);
+        }
+    }
+
+    // Edit Modal Functions
+    function openEditModal() {
+        if (!currentClient) return;
+        document.getElementById('editName').value = currentClient.fullNameOrBusinessName || '';
+        document.getElementById('editEmail').value = currentClient.email || '';
+        document.getElementById('editPhone').value = currentClient.phone || '';
+        document.getElementById('editAddress').value = currentClient.address || '';
+        document.getElementById('editModal').classList.remove('hidden');
+        document.getElementById('editModal').classList.add('flex');
+    }
+
+    function closeEditModal() {
+        document.getElementById('editModal').classList.add('hidden');
+        document.getElementById('editModal').classList.remove('flex');
+    }
+
+    async function updateClient(e) {
+        e.preventDefault();
+        const data = {
+            fullNameOrBusinessName: document.getElementById('editName').value,
+            email: document.getElementById('editEmail').value || null,
+            phone: document.getElementById('editPhone').value || null,
+            address: document.getElementById('editAddress').value || null
+        };
+
+        try {
+            const apiUrl = window.API_URL || 'http://localhost:4000/api';
+            const response = await fetch(`${apiUrl}/clients/${clientId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${authToken}`
+                },
+                body: JSON.stringify(data)
+            });
+
+            if (!response.ok) throw new Error('Error al actualizar cliente');
+
+            alert('Cliente actualizado exitosamente!');
+            closeEditModal();
+            window.location.reload();
+        } catch (error) {
+            console.error('Error updating:', error);
+            alert('Error al actualizar el cliente: ' + error.message);
+        }
+    }
+
+    init();
+</script>
+</body>
+</html>

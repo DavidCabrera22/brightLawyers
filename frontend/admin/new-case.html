@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html class="light" lang="es">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>BrightLawyers - Nuevo Caso</title>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet"/>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#1a405b",
+                        "accent": "#f59e0b",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#131a1f",
+                        "card-light": "#ffffff",
+                        "card-dark": "#1e2830",
+                        "text-primary-light": "#101519",
+                        "text-primary-dark": "#f3f4f6",
+                        "text-secondary-light": "#5a778c",
+                        "text-secondary-dark": "#9ca3af",
+                        "success": "#10b981",
+                        "warning": "#f59e0b",
+                        "danger": "#ef4444",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"],
+                        "heading": ["Playfair Display", "serif"],
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        h1, h2, h3, h4, h5, h6 { font-family: 'Playfair Display', serif; }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-text-primary-light dark:text-text-primary-dark">
+<div class="flex h-screen w-full overflow-hidden">
+    <!-- Sidebar Navigation -->
+    <aside class="hidden w-64 flex-col bg-white dark:bg-card-dark border-r border-gray-200 dark:border-gray-800 lg:flex z-20 shadow-sm">
+        <div class="flex items-center gap-3 px-6 py-6" onclick="window.location.href='admin.html'" style="cursor: pointer;">
+            <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-primary text-white">
+                <span class="material-symbols-outlined text-2xl">balance</span>
+            </div>
+            <div class="flex flex-col">
+                <h1 class="text-lg font-bold text-primary dark:text-white leading-tight">BrightLawyers</h1>
+                <p class="text-xs text-text-secondary-light dark:text-text-secondary-dark">Sistema Legal</p>
+            </div>
+        </div>
+        <nav class="flex-1 overflow-y-auto px-4 py-4 space-y-1">
+            <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-text-secondary-light dark:text-text-secondary-dark hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-primary dark:hover:text-white transition-colors group" href="admin.html" id="dashLink">
+                <span class="material-symbols-outlined">dashboard</span>
+                <span class="text-sm font-medium">Dashboard</span>
+            </a>
+            <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-primary/10 text-primary dark:bg-primary/20 dark:text-white group" href="cases.html">
+                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">gavel</span>
+                <span class="text-sm font-medium">Casos</span>
+            </a>
+            <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-text-secondary-light dark:text-text-secondary-dark hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-primary dark:hover:text-white transition-colors group" href="tasks.html">
+                <span class="material-symbols-outlined">task_alt</span>
+                <span class="text-sm font-medium">Tareas</span>
+            </a>
+            <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-text-secondary-light dark:text-text-secondary-dark hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-primary dark:hover:text-white transition-colors group" href="clients.html">
+                <span class="material-symbols-outlined">groups</span>
+                <span class="text-sm font-medium">Clientes</span>
+            </a>
+            <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-text-secondary-light dark:text-text-secondary-dark hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-primary dark:hover:text-white transition-colors group" href="documents.html">
+                <span class="material-symbols-outlined">folder</span>
+                <span class="text-sm font-medium">Documentos</span>
+            </a>
+            <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-text-secondary-light dark:text-text-secondary-dark hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-primary dark:hover:text-white transition-colors group" href="contracts.html">
+                <span class="material-symbols-outlined">description</span>
+                <span class="text-sm font-medium">Contratos</span>
+            </a>
+            <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-text-secondary-light dark:text-text-secondary-dark hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-primary dark:hover:text-white transition-colors group" href="billing.html">
+                <span class="material-symbols-outlined">payments</span>
+                <span class="text-sm font-medium">Facturación</span>
+            </a>
+            <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-text-secondary-light dark:text-text-secondary-dark hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-primary dark:hover:text-white transition-colors group" href="messages.html">
+                <span class="material-symbols-outlined">chat</span>
+                <span class="text-sm font-medium">Mensajes</span>
+            </a>
+
+            <div class="pt-4 mt-4 border-t border-gray-100 dark:border-gray-800">
+                <p class="px-3 text-xs font-semibold text-text-secondary-light dark:text-text-secondary-dark uppercase tracking-wider mb-2">Gestión</p>
+                <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-text-secondary-light dark:text-text-secondary-dark hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-primary dark:hover:text-white transition-colors group" href="users.html">
+                    <span class="material-symbols-outlined">manage_accounts</span>
+                    <span class="text-sm font-medium">Equipo Legal</span>
+                </a>
+
+            </div>
+
+            <div class="pt-4 mt-4 border-t border-gray-100 dark:border-gray-800">
+                <p class="px-3 text-xs font-semibold text-text-secondary-light dark:text-text-secondary-dark uppercase tracking-wider mb-2">Sistema</p>
+                <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-text-secondary-light dark:text-text-secondary-dark hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-primary dark:hover:text-white transition-colors group" href="configuration.html">
+                    <span class="material-symbols-outlined">settings</span>
+                    <span class="text-sm font-medium">Configuración</span>
+                </a>
+                <button onclick="logout()" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-text-secondary-light dark:text-text-secondary-dark hover:bg-red-50 dark:hover:bg-red-900/20 hover:text-red-600 dark:hover:text-red-400 transition-colors group text-left">
+                    <span class="material-symbols-outlined">logout</span>
+                    <span class="text-sm font-medium">Cerrar Sesión</span>
+                </button>
+            </div>
+        </nav>
+        <div class="border-t border-gray-200 dark:border-gray-800 p-4">
+            <div class="flex items-center gap-3 rounded-lg bg-background-light dark:bg-background-dark p-3">
+                <div class="h-10 w-10 rounded-full bg-primary text-white flex items-center justify-center font-bold" id="sidebarAvatar">
+                    --
+                </div>
+                <div class="flex flex-col overflow-hidden">
+                    <p class="truncate text-sm font-bold text-primary dark:text-white" id="sidebarName">Cargando...</p>
+                    <p class="truncate text-xs text-text-secondary-light dark:text-text-secondary-dark" id="sidebarRole">--</p>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex h-full flex-1 flex-col overflow-hidden relative">
+        <!-- Top Header -->
+        <header class="flex h-16 items-center justify-between border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-card-dark px-6 lg:px-8 z-10">
+            <div class="flex items-center gap-4">
+                <button onclick="goBack()" class="text-text-secondary-light hover:text-primary flex items-center gap-2">
+                    <span class="material-symbols-outlined">arrow_back</span>
+                    <span class="text-sm font-medium hidden sm:block">Volver</span>
+                </button>
+                <div class="h-6 w-px bg-gray-200 mx-2"></div>
+                <h1 class="text-lg font-bold font-heading text-primary dark:text-white">Nuevo Caso</h1>
+            </div>
+            <button onclick="logout()" class="flex items-center text-text-secondary-light hover:text-danger transition-colors">
+                <span class="material-symbols-outlined">logout</span>
+            </button>
+        </header>
+
+        <!-- Content -->
+        <div class="flex-1 overflow-y-auto bg-background-light dark:bg-background-dark p-6 lg:p-8">
+            <div class="mx-auto max-w-2xl">
+                <div class="bg-white dark:bg-card-dark rounded-xl border border-gray-200 dark:border-gray-800 p-6 shadow-sm">
+                    <div class="mb-6">
+                        <h2 class="text-xl font-bold text-primary dark:text-white font-heading">Crear Nuevo Caso Legal</h2>
+                        <p class="text-sm text-text-secondary-light mt-1">Complete la información para registrar un nuevo caso.</p>
+                    </div>
+
+                    <form id="caseForm" class="space-y-6">
+                        <!-- Client Selection -->
+                        <div>
+                            <label class="block text-sm font-medium text-text-primary-light dark:text-white mb-2">
+                                Cliente <span class="text-danger">*</span>
+                            </label>
+                            <select id="clientId" required class="w-full rounded-lg border-gray-200 dark:border-gray-800 bg-white dark:bg-card-dark text-sm focus:ring-primary dark:text-white">
+                                <option value="">Seleccione un cliente...</option>
+                            </select>
+                            <p class="text-xs text-text-secondary-light mt-1" id="clientHint"></p>
+                        </div>
+
+                        <!-- Practice Area -->
+                        <div>
+                            <label class="block text-sm font-medium text-text-primary-light dark:text-white mb-2">
+                                Área de Práctica <span class="text-danger">*</span>
+                            </label>
+                            <select id="practiceAreaId" required class="w-full rounded-lg border-gray-200 dark:border-gray-800 bg-white dark:bg-card-dark text-sm focus:ring-primary dark:text-white">
+                                <option value="">Seleccione un área...</option>
+                            </select>
+                        </div>
+
+                        <!-- Title -->
+                        <div>
+                            <label class="block text-sm font-medium text-text-primary-light dark:text-white mb-2">
+                                Título del Caso <span class="text-danger">*</span>
+                            </label>
+                            <input type="text" id="title" required placeholder="Ej: Demanda laboral por despido injustificado"
+                                class="w-full rounded-lg border-gray-200 dark:border-gray-800 bg-white dark:bg-card-dark text-sm focus:ring-primary dark:text-white"/>
+                        </div>
+
+                        <!-- Description -->
+                        <div>
+                            <label class="block text-sm font-medium text-text-primary-light dark:text-white mb-2">
+                                Descripción
+                            </label>
+                            <textarea id="description" rows="4" placeholder="Descripción detallada del caso..."
+                                class="w-full rounded-lg border-gray-200 dark:border-gray-800 bg-white dark:bg-card-dark text-sm focus:ring-primary dark:text-white resize-none"></textarea>
+                        </div>
+
+                        <!-- Confidentiality Level -->
+                        <div>
+                            <label class="block text-sm font-medium text-text-primary-light dark:text-white mb-2">
+                                Nivel de Confidencialidad
+                            </label>
+                            <div class="flex gap-4">
+                                <label class="flex items-center gap-2">
+                                    <input type="radio" name="confidentiality" value="normal" checked class="text-primary focus:ring-primary"/>
+                                    <span class="text-sm">Normal</span>
+                                </label>
+                                <label class="flex items-center gap-2">
+                                    <input type="radio" name="confidentiality" value="restricted" class="text-primary focus:ring-primary"/>
+                                    <span class="text-sm">Restringido</span>
+                                </label>
+                                <label class="flex items-center gap-2">
+                                    <input type="radio" name="confidentiality" value="confidential" class="text-primary focus:ring-primary"/>
+                                    <span class="text-sm">Confidencial</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="flex items-center justify-end gap-3 pt-4 border-t border-gray-100 dark:border-gray-800">
+                            <button type="button" onclick="goBack()" class="px-4 py-2 text-sm font-medium text-text-secondary-light hover:text-primary transition-colors">
+                                Cancelar
+                            </button>
+                            <button type="submit" class="px-6 py-2.5 bg-primary text-white rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors flex items-center gap-2">
+                                <span class="material-symbols-outlined text-sm">add</span>
+                                Crear Caso
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<script src="../assets/js/auth.js"></script>
+<script>
+    const authToken = localStorage.getItem('token');
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
+    const urlParams = new URLSearchParams(window.location.search);
+    const preselectedClientId = urlParams.get('clientId');
+
+    async function init() {
+        if (!authToken) {
+            window.location.href = '../public/login.html';
+            return;
+        }
+
+        // Sidebar link fix
+        const isAdmin = user.userRoles?.some(ur => ur.role?.name === 'admin' || ur.role?.name === 'administrador');
+        const dashLink = document.getElementById('dashLink');
+        if (isAdmin && dashLink) dashLink.href = 'admin.html';
+
+        // Setup User Info
+        document.getElementById('sidebarName').textContent = user.fullName || user.name || 'Usuario';
+        document.getElementById('sidebarRole').textContent = (user.userRoles?.[0]?.role?.name || 'Abogado').toUpperCase();
+        document.getElementById('sidebarAvatar').textContent = (user.fullName || user.name || 'U').split(' ').map(n => n[0]).join('').substring(0, 2);
+
+        await Promise.all([loadClients(), loadPracticeAreas()]);
+
+        // Set form submission handler
+        document.getElementById('caseForm').addEventListener('submit', createCase);
+    }
+
+    async function loadClients() {
+        try {
+            const response = await fetch(`${API_URL}/clients`, {
+                headers: { 'Authorization': `Bearer ${authToken}` }
+            });
+            if (!response.ok) throw new Error('Error loading clients');
+            
+            const data = await response.json();
+            const select = document.getElementById('clientId');
+            
+            data.clients.forEach(c => {
+                const option = document.createElement('option');
+                option.value = c.id;
+                option.textContent = `${c.fullNameOrBusinessName} (${c.documentNumber || 'S/N'})`;
+                select.appendChild(option);
+            });
+
+            // Pre-select client if provided
+            if (preselectedClientId) {
+                select.value = preselectedClientId;
+                const selectedClient = data.clients.find(c => c.id === preselectedClientId);
+                if (selectedClient) {
+                    document.getElementById('clientHint').textContent = `Cliente preseleccionado: ${selectedClient.fullNameOrBusinessName}`;
+                }
+            }
+        } catch (error) {
+            console.error('Error loading clients:', error);
+        }
+    }
+
+    async function loadPracticeAreas() {
+        try {
+            const response = await fetch(`${API_URL}/practice-areas`, {
+                headers: { 'Authorization': `Bearer ${authToken}` }
+            });
+            if (!response.ok) throw new Error('Error loading practice areas');
+            
+            const data = await response.json();
+            const select = document.getElementById('practiceAreaId');
+            
+            // API returns array directly, not wrapped in object
+            const areas = Array.isArray(data) ? data : (data.areas || data.practiceAreas || []);
+            areas.forEach(area => {
+                const option = document.createElement('option');
+                option.value = area.id;
+                option.textContent = area.name;
+                select.appendChild(option);
+            });
+        } catch (error) {
+            console.error('Error loading practice areas:', error);
+        }
+    }
+
+    async function createCase(e) {
+        e.preventDefault();
+
+        const clientId = document.getElementById('clientId').value;
+        const practiceAreaId = document.getElementById('practiceAreaId').value;
+        const title = document.getElementById('title').value;
+        const description = document.getElementById('description').value;
+        const confidentialityLevel = document.querySelector('input[name="confidentiality"]:checked').value;
+
+        if (!clientId || !practiceAreaId || !title) {
+            alert('Por favor complete todos los campos requeridos.');
+            return;
+        }
+
+        try {
+            const response = await fetch(`${API_URL}/cases`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${authToken}`
+                },
+                body: JSON.stringify({
+                    clientId,
+                    practiceAreaId,
+                    title,
+                    description,
+                    confidentialityLevel
+                })
+            });
+
+            if (!response.ok) {
+                const err = await response.json();
+                throw new Error(err.error || 'Error al crear caso');
+            }
+
+            const data = await response.json();
+            alert('Caso creado exitosamente!');
+            
+            // Redirect to case detail or client detail
+            if (preselectedClientId) {
+                window.location.href = `client-detail.html?id=${preselectedClientId}`;
+            } else {
+                window.location.href = `case-detail.html?id=${data.case.id}`;
+            }
+        } catch (error) {
+            console.error('Error creating case:', error);
+            alert('Error al crear el caso: ' + error.message);
+        }
+    }
+
+    function goBack() {
+        if (preselectedClientId) {
+            window.location.href = `client-detail.html?id=${preselectedClientId}`;
+        } else {
+            window.history.back();
+        }
+    }
+
+    init();
+</script>
+</body>
+</html>

@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html class="light" lang="es">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>BrightLawyers - Gestión de Usuarios</title>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+    
+    <!-- Material Symbols -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "brand-dark": "#0B1120",      // Sidebar bg (Dark Blue/Black)
+                        "brand-primary": "#1e3a8a",   // Blue 900 (Primary Action)
+                        "brand-accent": "#3b82f6",    // Blue 500 (Highlights)
+                        "brand-secondary": "#334155", // Slate 700
+                        "brand-bg": "#F8FAFC",        // Light background
+                        "brand-surface": "#FFFFFF",   // White surface
+                        "brand-mint": "#eff6ff",      // Blue 50 (Light Blue for active/hover)
+                    },
+                    fontFamily: {
+                        "sans": ["'Plus Jakarta Sans'", "sans-serif"]
+                    },
+                    boxShadow: {
+                        "card": "0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1)",
+                        "card-hover": "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1)",
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1.5rem;
+            color: #94a3b8; /* slate-400 */
+            font-weight: 500;
+            font-size: 0.875rem;
+            transition: all 0.2s;
+            border-left: 3px solid transparent;
+        }
+        .sidebar-link:hover {
+            color: white;
+            background: rgba(255,255,255,0.05);
+        }
+        .sidebar-link.active {
+            background-color: rgba(59, 130, 246, 0.1); /* Blue tint */
+            color: #ffffff;
+            border-left-color: #3b82f6; /* brand-accent */
+        }
+        
+        .skeleton {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: .5; }
+        }
+    </style>
+</head>
+<body class="bg-brand-bg text-slate-800 h-screen overflow-hidden flex">
+
+    <!-- Sidebar (Dark) -->
+    <aside class="w-64 bg-brand-dark text-white flex flex-col z-20 shadow-xl flex-shrink-0">
+        <!-- Logo Area -->
+        <div class="h-20 flex items-center px-6 border-b border-gray-800 flex-shrink-0">
+            <div class="flex items-center gap-3">
+                <div class="h-8 w-8 rounded bg-gradient-to-br from-blue-600 to-blue-800 flex items-center justify-center shadow-lg shadow-blue-500/30 text-white">
+                    <span class="material-symbols-outlined text-[20px]">balance</span>
+                </div>
+                <div>
+                    <h1 class="font-bold text-sm leading-tight tracking-wide">BrightLawyers</h1>
+                    <p class="text-[10px] text-gray-400 font-medium tracking-wider uppercase">ADMINISTRACIÓN</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="flex-1 overflow-y-auto py-6">
+            <a class="sidebar-link" href="admin.html">
+                <span class="material-symbols-outlined text-[20px]">dashboard</span>
+                Dashboard
+            </a>
+            <a class="sidebar-link" href="cases.html">
+                <span class="material-symbols-outlined text-[20px]">gavel</span>
+                Casos
+            </a>
+            <a class="sidebar-link" href="tasks.html">
+                <span class="material-symbols-outlined text-[20px]">task_alt</span>
+                Tareas
+            </a>
+            <a class="sidebar-link" href="clients.html">
+                <span class="material-symbols-outlined text-[20px]">groups</span>
+                Clientes
+            </a>
+            <a class="sidebar-link" href="documents.html">
+                <span class="material-symbols-outlined text-[20px]">folder</span>
+                Documentos
+            </a>
+            <a class="sidebar-link" href="contracts.html">
+                <span class="material-symbols-outlined text-[20px]">description</span>
+                Contratos
+            </a>
+            <a class="sidebar-link" href="billing.html">
+                <span class="material-symbols-outlined text-[20px]">payments</span>
+                Facturación
+            </a>
+            <a class="sidebar-link" href="messages.html">
+                <span class="material-symbols-outlined text-[20px]">chat</span>
+                Mensajes
+            </a>
+
+            <div class="mt-6 mb-2 px-6 text-[10px] font-bold text-gray-500 uppercase tracking-wider">Gestión</div>
+            
+            <a class="sidebar-link active" href="users.html">
+                <span class="material-symbols-outlined text-[20px]">manage_accounts</span>
+                Equipo Legal
+            </a>
+
+
+            <div class="mt-6 mb-2 px-6 text-[10px] font-bold text-gray-500 uppercase tracking-wider">Sistema</div>
+
+            <a class="sidebar-link" href="configuration.html">
+                <span class="material-symbols-outlined text-[20px]">settings</span>
+                Configuración
+            </a>
+            <button onclick="logout()" class="w-full sidebar-link text-left hover:text-red-400 hover:bg-white/5">
+                <span class="material-symbols-outlined text-[20px]">logout</span>
+                Cerrar Sesión
+            </button>
+        </nav>
+
+        <!-- User Profile (Bottom) -->
+        <div class="p-4 border-t border-gray-800 bg-black/20">
+            <div class="flex items-center gap-3">
+                <div class="h-9 w-9 rounded-full bg-blue-900 text-blue-100 flex items-center justify-center text-xs font-bold border border-blue-700" id="sidebarAvatar">--</div>
+                <div class="overflow-hidden">
+                    <p class="text-sm font-bold text-gray-200 truncate" id="sidebarName">Cargando...</p>
+                    <p class="text-xs text-gray-500 truncate" id="sidebarRole">...</p>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 flex flex-col h-full overflow-hidden bg-brand-bg relative">
+        
+        <!-- Top Header -->
+        <header class="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-8 flex-shrink-0 z-10">
+            <h2 class="text-lg font-bold text-slate-800">Gestión de Personal</h2>
+            
+            <div class="flex items-center gap-6">
+                <!-- Search -->
+                <div class="relative hidden md:block w-96">
+                    <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-[20px]">search</span>
+                    <input id="searchInput" type="text" placeholder="Buscar por nombre, email o rol..." 
+                           class="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-brand-accent/20 focus:border-brand-accent transition-all outline-none">
+                </div>
+
+                <div class="flex items-center gap-3">
+                    <button class="p-2 text-slate-500 hover:bg-slate-50 rounded-full relative">
+                        <span class="material-symbols-outlined text-[22px]">notifications</span>
+                        <span class="absolute top-2 right-2 h-2 w-2 bg-red-500 rounded-full border border-white"></span>
+                    </button>
+                    <div class="h-8 w-px bg-slate-200 mx-1"></div>
+                    <div class="flex items-center gap-2 cursor-pointer p-1 hover:bg-slate-50 rounded-lg transition-colors">
+                        <div class="h-8 w-8 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center text-xs font-bold">AD</div>
+                        <span class="text-sm font-medium text-slate-700 hidden sm:block">Admin</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Content Area -->
+        <div class="flex-1 overflow-y-auto p-8">
+            <div class="max-w-7xl mx-auto space-y-8">
+                
+                <!-- Page Title & Actions -->
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                    <div>
+                        <h1 class="text-2xl font-bold text-slate-900">Equipo Legal</h1>
+                        <p class="text-slate-500 mt-1">Administra los usuarios, roles y permisos del sistema.</p>
+                    </div>
+                    <button onclick="window.location.href='new-user.html'" class="flex items-center gap-2 px-4 py-2 bg-brand-primary text-white rounded-lg font-medium hover:bg-blue-800 transition-colors shadow-sm shadow-blue-900/10">
+                        <span class="material-symbols-outlined text-[20px]">add_moderator</span>
+                        Añadir Personal
+                    </button>
+                </div>
+
+                <!-- Users Table -->
+                <div class="bg-white rounded-xl border border-slate-200 shadow-card overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-sm">
+                            <thead class="bg-slate-50 text-slate-500 font-semibold border-b border-slate-100 uppercase text-[11px] tracking-wider">
+                                <tr>
+                                    <th class="px-6 py-4">Usuario</th>
+                                    <th class="px-6 py-4">Roles Asignados</th>
+                                    <th class="px-6 py-4">Estado</th>
+                                    <th class="px-6 py-4">Última Actividad</th>
+                                    <th class="px-6 py-4 text-right">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="usersTableBody" class="divide-y divide-slate-100">
+                                <!-- Dynamically loaded -->
+                                <tr>
+                                    <td colspan="5" class="px-6 py-20 text-center">
+                                        <div class="flex flex-col items-center gap-3">
+                                            <div class="w-8 h-8 border-4 border-brand-primary border-t-transparent rounded-full animate-spin"></div>
+                                            <p class="text-slate-400">Cargando equipo...</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- Pagination (Static for now) -->
+                    <div class="px-6 py-4 border-t border-slate-100 flex items-center justify-between">
+                        <p class="text-sm text-slate-500">Mostrando <span class="font-bold text-slate-700" id="showingCount">0</span> usuarios</p>
+                        <div class="flex gap-2">
+                            <button class="px-3 py-1 text-sm border border-slate-200 rounded hover:bg-slate-50 text-slate-600 disabled:opacity-50" disabled>Anterior</button>
+                            <button class="px-3 py-1 text-sm border border-slate-200 rounded hover:bg-slate-50 text-slate-600 disabled:opacity-50" disabled>Siguiente</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <script src="../assets/js/auth.js"></script>
+    <script>
+        const authToken = localStorage.getItem('token');
+        const user = JSON.parse(localStorage.getItem('user') || '{}');
+        let allUsers = [];
+
+        async function init() {
+            if (!authToken) { window.location.href = '../public/login.html'; return; }
+            
+            // Sidebar Profile
+            document.getElementById('sidebarName').textContent = user.fullName || user.name || 'Usuario';
+            document.getElementById('sidebarRole').textContent = (user.userRoles?.[0]?.role?.name || 'Abogado').toUpperCase();
+            document.getElementById('sidebarAvatar').textContent = (user.fullName || user.name || 'U').split(' ').map(n => n[0]).join('').substring(0, 2);
+
+            await loadUsers();
+            document.getElementById('searchInput').addEventListener('input', debounce(loadUsers, 500));
+        }
+
+        async function loadUsers() {
+            const tableBody = document.getElementById('usersTableBody');
+            const search = document.getElementById('searchInput').value;
+
+            try {
+                const url = new URL(`${window.API_URL}/users`);
+                if (search) url.searchParams.append('search', search);
+
+                const response = await fetch(url, {
+                    headers: { 'Authorization': `Bearer ${authToken}` }
+                });
+
+                if (!response.ok) throw new Error('No autorizado');
+
+                const users = await response.json();
+                allUsers = users;
+                renderUsers(users);
+                document.getElementById('showingCount').textContent = users.length;
+            } catch (error) {
+                console.error(error);
+                tableBody.innerHTML = `<tr><td colspan="5" class="px-6 py-10 text-center text-red-500">Error al cargar datos. Asegúrate de tener permisos de administrador.</td></tr>`;
+            }
+        }
+
+        function renderUsers(users) {
+            const tableBody = document.getElementById('usersTableBody');
+            if (users.length === 0) {
+                tableBody.innerHTML = `<tr><td colspan="5" class="px-6 py-10 text-center text-slate-400">No se encontraron usuarios.</td></tr>`;
+                return;
+            }
+
+            tableBody.innerHTML = users.map(u => `
+                <tr class="hover:bg-slate-50 transition-colors group">
+                    <td class="px-6 py-4">
+                        <div class="flex items-center gap-3">
+                            <div class="h-9 w-9 rounded-full bg-slate-100 flex items-center justify-center font-bold text-brand-primary border border-slate-200">
+                                ${u.fullName?.[0] || 'U'}
+                            </div>
+                            <div class="flex flex-col">
+                                <span class="font-bold text-slate-900">${u.fullName}</span>
+                                <span class="text-xs text-slate-500">${u.email}</span>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="px-6 py-4">
+                        <div class="flex flex-wrap gap-1">
+                            ${u.userRoles?.map(ur => `
+                                <span class="inline-flex px-2 py-0.5 rounded text-[10px] font-bold border ${getRoleStyle(ur.role?.name)}">
+                                    ${ur.role?.name?.toUpperCase()}
+                                </span>
+                            `).join('') || '<span class="text-xs text-gray-400">Sin rol</span>'}
+                        </div>
+                    </td>
+                    <td class="px-6 py-4">
+                        <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-bold uppercase ${u.status === 'active' ? 'bg-emerald-50 text-emerald-700 border border-emerald-100' : 'bg-red-50 text-red-700 border border-red-100'}">
+                            <span class="h-1.5 w-1.5 rounded-full ${u.status === 'active' ? 'bg-emerald-500' : 'bg-red-500'}"></span>
+                            ${u.status === 'active' ? 'Activo' : 'Inactivo'}
+                        </span>
+                    </td>
+                    <td class="px-6 py-4 text-xs text-slate-500">
+                        ${u.updatedAt ? new Date(u.updatedAt).toLocaleDateString() : 'N/A'}
+                    </td>
+                    <td class="px-6 py-4 text-right">
+                        <div class="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <button onclick="editUser('${u.id}')" class="p-2 rounded-lg hover:bg-white border border-transparent hover:border-slate-200 text-slate-400 hover:text-brand-primary transition-all shadow-sm" title="Editar">
+                                <span class="material-symbols-outlined text-[18px]">edit</span>
+                            </button>
+                            <button onclick="toggleUserStatus('${u.id}', '${u.status}')" class="p-2 rounded-lg hover:bg-white border border-transparent hover:border-slate-200 text-slate-400 hover:text-red-500 transition-all shadow-sm" title="${u.status === 'active' ? 'Desactivar' : 'Activar'}">
+                                <span class="material-symbols-outlined text-[18px]">${u.status === 'active' ? 'block' : 'check_circle'}</span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function getRoleStyle(roleName) {
+            if (!roleName) return 'bg-gray-50 text-gray-500 border-gray-200';
+            const name = roleName.toLowerCase();
+            if (name.includes('admin')) return 'bg-purple-50 text-purple-700 border-purple-100';
+            if (name.includes('abogado')) return 'bg-blue-50 text-blue-700 border-blue-100';
+            if (name.includes('operador')) return 'bg-amber-50 text-amber-700 border-amber-100';
+            return 'bg-emerald-50 text-emerald-700 border-emerald-100';
+        }
+
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => { clearTimeout(timeout); func(...args); };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+
+        async function toggleUserStatus(userId, currentStatus) {
+            if (!confirm(`¿Estás seguro de ${currentStatus === 'active' ? 'desactivar' : 'activar'} este usuario?`)) return;
+            
+            const newStatus = currentStatus === 'active' ? 'inactive' : 'active';
+            try {
+                const response = await fetch(`${window.API_URL}/users/${userId}/status`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${authToken}`
+                    },
+                    body: JSON.stringify({ status: newStatus })
+                });
+                
+                if (response.ok) {
+                    loadUsers();
+                } else {
+                    alert('Error al actualizar estado. Verifica tus permisos.');
+                }
+            } catch (error) {
+                console.error(error);
+                alert('Error de conexión');
+            }
+        }
+
+        function editUser(id) {
+            // Ideally redirect to edit page
+            // Since we are not sure if edit-user exists, we try new-user.html with ID
+            // Or just alert for now as requested by user to just "redesign"
+             window.location.href = `new-user.html?id=${id}`;
+        }
+
+        init();
+    </script>
+</body>
+</html>

@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html class="light" lang="es">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Mis Contratos - BrightLawyers</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "client-dark": "#0B1120", // Darker sidebar
+                        "client-primary": "#1e3a8a", 
+                        "client-accent": "#3b82f6",
+                        "client-bg": "#F8FAFC",
+                        "client-text": "#1e293b",
+                        "status-active": "#dcfce7",
+                        "status-active-text": "#166534",
+                        "status-pending": "#f3f4f6",
+                        "status-pending-text": "#4b5563",
+                    },
+                    fontFamily: {
+                        "sans": ["'Plus Jakarta Sans'", "sans-serif"],
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #F8FAFC; }
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 24px;
+            color: #94a3b8;
+            font-weight: 500;
+            transition: all 0.2s;
+            border-left: 3px solid transparent;
+        }
+        .sidebar-link:hover {
+            color: white;
+            background: rgba(255,255,255,0.05);
+        }
+        .sidebar-link.active {
+            background-color: rgba(59, 130, 246, 0.1);
+            color: #ffffff;
+            border-left-color: #3b82f6;
+        }
+        .contract-card {
+            transition: all 0.2s;
+        }
+        .contract-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+    </style>
+</head>
+<body class="text-client-text h-screen flex overflow-hidden">
+
+    <!-- Sidebar -->
+    <aside class="w-64 bg-client-dark flex flex-col flex-shrink-0 z-20">
+        <!-- Logo Area -->
+        <div class="h-20 flex items-center px-6 border-b border-gray-800">
+            <div class="flex items-center gap-3">
+                <div class="h-8 w-8 rounded bg-client-primary flex items-center justify-center text-white">
+                    <span class="material-symbols-outlined text-lg">balance</span>
+                </div>
+                <div>
+                    <h1 class="text-white font-bold leading-none tracking-wide">MI PROCESO</h1>
+                    <p class="text-xs text-gray-400 mt-1">Portal de Cliente</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="flex-1 overflow-y-auto py-6 space-y-1">
+            <a class="sidebar-link" href="dashboard.html">
+                <span class="material-symbols-outlined">grid_view</span>
+                Inicio
+            </a>
+            <a class="sidebar-link" href="cases.html">
+                <span class="material-symbols-outlined">folder</span>
+                Mis Casos
+            </a>
+            <a class="sidebar-link active" href="contracts.html">
+                <span class="material-symbols-outlined">description</span>
+                Contratos
+            </a>
+            <a class="sidebar-link" href="documents.html">
+                <span class="material-symbols-outlined">attach_file</span>
+                Documentos
+            </a>
+            <a class="sidebar-link" href="messages.html">
+                <span class="material-symbols-outlined">chat</span>
+                Mensajes
+            </a>
+            <a class="sidebar-link" href="profile.html">
+                <span class="material-symbols-outlined">person</span>
+                Mi Perfil
+            </a>
+        </nav>
+
+        <!-- Bottom Actions -->
+        <div class="p-4 border-t border-gray-800">
+            <button onclick="logout()" class="flex items-center gap-3 px-4 py-2 text-red-400 hover:text-red-300 transition-colors w-full text-sm font-medium">
+                <span class="material-symbols-outlined">logout</span>
+                Cerrar Sesión
+            </button>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 flex flex-col h-full overflow-hidden bg-client-bg">
+        
+        <!-- Header -->
+        <header class="h-20 bg-white border-b border-gray-100 flex items-center justify-between px-8 flex-shrink-0 z-10">
+            <div>
+                <h2 class="text-xl font-bold text-gray-900 uppercase tracking-tight">MIS CONTRATOS</h2>
+            </div>
+            
+            <div class="flex items-center gap-6">
+                <button class="text-gray-400 hover:text-client-primary transition-colors">
+                    <span class="material-symbols-outlined">notifications</span>
+                </button>
+                
+                <div class="h-8 w-px bg-gray-200"></div>
+
+                <div class="flex items-center gap-3">
+                    <div class="text-right hidden sm:block">
+                        <p class="text-sm font-bold text-gray-900" id="headerUserName">Cargando...</p>
+                        <p class="text-xs text-gray-500">Cliente Premium</p>
+                    </div>
+                    <div class="h-10 w-10 rounded-full bg-client-dark text-white flex items-center justify-center font-bold text-sm" id="headerUserInitials">
+                        --
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Content -->
+        <div class="flex-1 overflow-y-auto p-8">
+            <div class="max-w-7xl mx-auto">
+                
+                <!-- Page Title & Actions -->
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
+                    <div>
+                        <h1 class="text-3xl font-bold text-gray-900 mb-2">Mis contratos</h1>
+                        <p class="text-gray-500">Administra y firma tus documentos legales de manera segura.</p>
+                    </div>
+                    
+                    <button class="bg-client-dark text-white px-6 py-3 rounded-lg font-bold flex items-center gap-2 hover:bg-gray-800 transition-colors shadow-lg shadow-gray-900/10">
+                        <span class="material-symbols-outlined">add</span>
+                        Nuevo contrato
+                    </button>
+                </div>
+
+                <!-- Filters -->
+                <div class="flex flex-col sm:flex-row gap-4 mb-8">
+                    <div class="relative flex-1">
+                        <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">search</span>
+                        <input type="text" id="searchInput" placeholder="Buscar contratos por nombre o código..." 
+                               class="w-full pl-11 pr-4 py-3 bg-white border border-gray-200 rounded-xl focus:border-client-primary focus:ring-client-primary transition-shadow text-sm">
+                    </div>
+                    
+                    <div class="flex gap-2 overflow-x-auto pb-2 sm:pb-0">
+                        <button onclick="filterContracts('all')" class="filter-btn active whitespace-nowrap px-5 py-2.5 rounded-full text-sm font-bold bg-client-dark text-white transition-colors" data-filter="all">Todos</button>
+                        <button onclick="filterContracts('pending')" class="filter-btn whitespace-nowrap px-5 py-2.5 rounded-full text-sm font-bold bg-white text-gray-500 border border-gray-200 hover:bg-gray-50 transition-colors" data-filter="pending">Por firmar</button>
+                        <button onclick="filterContracts('draft')" class="filter-btn whitespace-nowrap px-5 py-2.5 rounded-full text-sm font-bold bg-white text-gray-500 border border-gray-200 hover:bg-gray-50 transition-colors" data-filter="draft">Borrador</button>
+                        <button onclick="filterContracts('signed')" class="filter-btn whitespace-nowrap px-5 py-2.5 rounded-full text-sm font-bold bg-white text-gray-500 border border-gray-200 hover:bg-gray-50 transition-colors" data-filter="signed">Firmados</button>
+                    </div>
+                </div>
+
+                <!-- Contracts Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="contractsGrid">
+                    <!-- Loading State -->
+                    <div class="col-span-full py-12 text-center text-gray-400">
+                        <span class="material-symbols-outlined text-4xl animate-spin mb-3">refresh</span>
+                        <p>Cargando contratos...</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Floating Theme Toggle -->
+    <button class="fixed bottom-8 right-8 h-12 w-12 bg-white rounded-full shadow-lg flex items-center justify-center text-gray-600 hover:text-client-primary transition-colors z-50">
+        <span class="material-symbols-outlined">dark_mode</span>
+    </button>
+
+<script src="../assets/js/auth.js"></script>
+<script>
+    // API_URL provided by auth.js
+    let authToken = getToken();
+    let allContracts = [];
+    let currentFilter = 'all';
+
+    // Auth Check
+    if (!authToken) window.location.href = '../public/login.html';
+
+    async function fetchAPI(endpoint, options = {}) {
+        const response = await fetch(`${API_URL}${endpoint}`, {
+            ...options,
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${authToken}`,
+                ...options.headers
+            }
+        });
+        if (response.status === 401) {
+            logout();
+            return null;
+        }
+        return response.ok ? response.json() : null;
+    }
+
+    async function init() {
+        loadUserProfile();
+        loadContracts();
+
+        // Search Listener
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            renderContracts(filterData(e.target.value));
+        });
+    }
+
+    async function loadUserProfile() {
+        try {
+            const data = await fetchAPI('/auth/me');
+            if (data && data.user) {
+                const user = data.user;
+                document.getElementById('headerUserName').textContent = user.name;
+                document.getElementById('headerUserInitials').textContent = user.name.substring(0, 2).toUpperCase();
+            }
+        } catch (e) { console.error(e); }
+    }
+
+    async function loadContracts() {
+        try {
+            const data = await fetchAPI('/contracts'); // Endpoint should support client view
+            allContracts = data ? (data.contracts || []) : [];
+            renderContracts(allContracts);
+        } catch (e) { console.error(e); }
+    }
+
+    function filterContracts(filter) {
+        currentFilter = filter;
+        
+        // Update UI Tabs
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            const isActive = btn.dataset.filter === filter;
+            btn.className = isActive 
+                ? 'filter-btn active whitespace-nowrap px-5 py-2.5 rounded-full text-sm font-bold bg-client-dark text-white transition-colors'
+                : 'filter-btn whitespace-nowrap px-5 py-2.5 rounded-full text-sm font-bold bg-white text-gray-500 border border-gray-200 hover:bg-gray-50 transition-colors';
+        });
+
+        const searchTerm = document.getElementById('searchInput').value;
+        renderContracts(filterData(searchTerm));
+    }
+
+    function filterData(searchTerm = '') {
+        let filtered = allContracts;
+        
+        // Status Filter logic
+        if (currentFilter === 'pending') {
+            filtered = filtered.filter(c => c.status === 'pending_signature' || c.status === 'draft'); // Adjust backend status
+        } else if (currentFilter === 'draft') {
+            filtered = filtered.filter(c => c.status === 'draft');
+        } else if (currentFilter === 'signed') {
+            filtered = filtered.filter(c => c.status === 'signed');
+        }
+
+        // Search Filter
+        if (searchTerm) {
+            const term = searchTerm.toLowerCase();
+            filtered = filtered.filter(c => 
+                c.title.toLowerCase().includes(term) || 
+                (c.contractNumber || '').toLowerCase().includes(term)
+            );
+        }
+
+        return filtered;
+    }
+
+    function formatCurrency(amount) {
+        return new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' }).format(amount);
+    }
+
+    function renderContracts(contracts) {
+        const grid = document.getElementById('contractsGrid');
+        grid.innerHTML = '';
+
+        // Add "New Contract" Placeholder Card at the end if you want, 
+        // but for now let's just render the list.
+        
+        if (contracts.length === 0) {
+            grid.innerHTML = `
+                <div class="col-span-full py-12 text-center">
+                    <div class="h-20 w-20 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="material-symbols-outlined text-gray-300 text-3xl">description</span>
+                    </div>
+                    <p class="text-gray-500 font-medium">No se encontraron contratos.</p>
+                </div>
+            `;
+            return;
+        }
+
+        contracts.forEach(c => {
+            // Determine Status Styling
+            let statusLabel = 'BORRADOR';
+            let statusClass = 'bg-gray-100 text-gray-600';
+            let actionText = 'Ver';
+            let actionIcon = 'arrow_forward';
+
+            // Extract Document ID from latest version
+            const latestVersion = c.versions && c.versions.length > 0 ? c.versions[0] : null;
+            const docId = latestVersion && latestVersion.document ? latestVersion.document.id : '';
+            const docName = latestVersion && latestVersion.document ? latestVersion.document.fileName : 'documento.pdf';
+
+            if (c.status === 'signed') {
+                statusLabel = 'FIRMADO';
+                statusClass = 'bg-green-50 text-green-700';
+                actionText = 'Descargar';
+                actionIcon = 'download';
+            } else if (c.status === 'pending_signature' || c.status === 'sent') {
+                statusLabel = 'POR FIRMAR';
+                statusClass = 'bg-blue-50 text-blue-700';
+                actionText = 'Firmar';
+                actionIcon = 'edit_document';
+            }
+
+            // Fee Logic
+            let feeDisplay = '$0.00';
+            if (c.feeType === 'fixed') feeDisplay = formatCurrency(c.feeFixed);
+            else if (c.feeType === 'percentage') feeDisplay = `${c.feePercentage}% Honorarios`;
+
+            const card = document.createElement('div');
+            card.className = 'contract-card bg-white p-6 rounded-xl border border-gray-100 shadow-sm flex flex-col justify-between h-64';
+            
+            // Check if document exists to determine button state
+            const hasDoc = !!docId;
+            const buttonClass = hasDoc 
+                ? "flex items-center gap-1 text-sm font-bold text-gray-900 hover:text-client-primary transition-colors" 
+                : "flex items-center gap-1 text-sm font-bold text-gray-400 cursor-not-allowed";
+            const buttonAction = hasDoc 
+                ? `handleContractAction('${c.id}', '${c.status}', '${docId}', '${docName}')` 
+                : "alert('Este contrato es un borrador y aún no tiene un archivo de documento generado.')";
+
+            card.innerHTML = `
+                <div>
+                    <div class="flex justify-between items-start mb-4">
+                        <span class="text-[10px] font-bold px-2 py-1 rounded uppercase tracking-wide ${statusClass}">${statusLabel}</span>
+                        <span class="text-xs text-gray-400">${new Date(c.createdAt).toLocaleDateString()}</span>
+                    </div>
+                    
+                    <h3 class="font-bold text-gray-900 text-lg leading-snug mb-1 line-clamp-2" title="${c.title}">${c.title}</h3>
+                    <p class="text-xs text-gray-400 font-mono mb-4">${c.contractNumber || 'BORRADOR'}</p>
+                </div>
+
+                <div>
+                    <div class="flex justify-between items-end">
+                        <div>
+                            <p class="text-xs text-gray-400 mb-1">Honorarios</p>
+                            <p class="font-bold text-gray-900 text-lg">${feeDisplay}</p>
+                        </div>
+                        <button onclick="${buttonAction}" class="${buttonClass}">
+                            ${actionText} <span class="material-symbols-outlined text-lg">${actionIcon}</span>
+                        </button>
+                    </div>
+                </div>
+            `;
+            grid.appendChild(card);
+        });
+
+        // Add the "New Contract" ghost card at the end
+        const ghostCard = document.createElement('div');
+        ghostCard.className = 'bg-gray-50 border-2 border-dashed border-gray-200 rounded-xl flex flex-col items-center justify-center p-6 h-64 cursor-pointer hover:bg-gray-100 hover:border-gray-300 transition-all group';
+        ghostCard.onclick = () => alert('Funcionalidad de crear contrato pendiente.');
+        ghostCard.innerHTML = `
+            <div class="h-12 w-12 bg-white rounded-full shadow-sm flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                <span class="material-symbols-outlined text-client-primary">add_notes</span>
+            </div>
+            <h3 class="font-bold text-gray-400 uppercase tracking-wide text-sm mb-1">Nuevo Contrato</h3>
+            <p class="text-xs text-gray-400 text-center">Crea un nuevo documento</p>
+        `;
+        grid.appendChild(ghostCard);
+    }
+
+    async function handleContractAction(id, status, docId, docName) {
+        if (!docId) {
+            alert('No se ha encontrado el documento asociado a este contrato.');
+            return;
+        }
+        
+        // Use fetch to handle Bearer token auth for download
+        const btn = event.currentTarget;
+        const originalText = btn.innerHTML;
+        btn.innerHTML = 'Cargando...';
+        btn.disabled = true;
+
+        try {
+            const response = await fetch(`${API_URL}/documents/${docId}/download`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${authToken}`
+                }
+            });
+
+            if (!response.ok) {
+                if (response.status === 403 || response.status === 401) {
+                    throw new Error('Acceso denegado. Su sesión puede haber expirado.');
+                }
+                throw new Error('Error al descargar el documento.');
+            }
+
+            const blob = await response.blob();
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.style.display = 'none';
+            a.href = url;
+            // Use the filename from the server or fallback
+            a.download = docName || 'contrato.pdf';
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(a);
+
+        } catch (error) {
+            console.error(error);
+            alert(error.message);
+        } finally {
+            btn.innerHTML = originalText;
+            btn.disabled = false;
+        }
+    }
+
+    // logout is handled by auth.js
+
+    init();
+</script>
+</body>
+</html>

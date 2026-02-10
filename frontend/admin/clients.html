@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html class="light" lang="es">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>BrightLawyers - Gestión de Clientes</title>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+    <!-- Material Symbols -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "brand-dark": "#0B1120",      // Sidebar bg (Dark Blue/Black)
+                        "brand-primary": "#1e3a8a",   // Blue 900 (Primary Action)
+                        "brand-accent": "#3b82f6",    // Blue 500 (Highlights)
+                        "brand-secondary": "#334155", // Slate 700
+                        "brand-bg": "#F8FAFC",        // Light background
+                        "brand-surface": "#FFFFFF",   // White surface
+                        "brand-mint": "#eff6ff",      // Blue 50 (Light Blue for active/hover)
+                    },
+                    fontFamily: {
+                        "sans": ["'Plus Jakarta Sans'", "sans-serif"]
+                    },
+                    boxShadow: {
+                        "card": "0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1)",
+                        "card-hover": "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1)",
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1.5rem;
+            color: #94a3b8; /* slate-400 */
+            font-weight: 500;
+            font-size: 0.875rem;
+            transition: all 0.2s;
+            border-left: 3px solid transparent;
+        }
+        .sidebar-link:hover {
+            color: white;
+            background: rgba(255,255,255,0.05);
+        }
+        .sidebar-link.active {
+            background-color: rgba(59, 130, 246, 0.1); /* Blue tint */
+            color: #ffffff;
+            border-left-color: #3b82f6; /* brand-accent */
+        }
+        
+        .skeleton {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: .5; }
+        }
+    </style>
+</head>
+<body class="bg-brand-bg text-slate-800 h-screen overflow-hidden flex">
+
+    <!-- Sidebar (Dark) -->
+    <aside class="w-64 bg-brand-dark text-white flex flex-col z-20 shadow-xl flex-shrink-0">
+        <!-- Logo Area -->
+        <div class="h-20 flex items-center px-6 border-b border-gray-800 flex-shrink-0">
+            <div class="flex items-center gap-3">
+                <div class="h-8 w-8 rounded bg-gradient-to-br from-blue-600 to-blue-800 flex items-center justify-center shadow-lg shadow-blue-500/30 text-white">
+                    <span class="material-symbols-outlined text-[20px]">balance</span>
+                </div>
+                <div>
+                    <h1 class="font-bold text-sm leading-tight tracking-wide">BrightLawyers</h1>
+                    <p class="text-[10px] text-gray-400 font-medium tracking-wider uppercase">ADMINISTRACIÓN</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="flex-1 overflow-y-auto py-6">
+            <a class="sidebar-link" href="admin.html">
+                <span class="material-symbols-outlined text-[20px]">dashboard</span>
+                Dashboard
+            </a>
+            <a class="sidebar-link" href="cases.html">
+                <span class="material-symbols-outlined text-[20px]">gavel</span>
+                Casos
+            </a>
+            <a class="sidebar-link" href="tasks.html">
+                <span class="material-symbols-outlined text-[20px]">task_alt</span>
+                Tareas
+            </a>
+            <a class="sidebar-link active" href="clients.html">
+                <span class="material-symbols-outlined text-[20px]">groups</span>
+                Clientes
+            </a>
+            <a class="sidebar-link" href="documents.html">
+                <span class="material-symbols-outlined text-[20px]">folder</span>
+                Documentos
+            </a>
+            <a class="sidebar-link" href="contracts.html">
+                <span class="material-symbols-outlined text-[20px]">description</span>
+                Contratos
+            </a>
+            <a class="sidebar-link" href="billing.html">
+                <span class="material-symbols-outlined text-[20px]">payments</span>
+                Facturación
+            </a>
+            <a class="sidebar-link" href="messages.html">
+                <span class="material-symbols-outlined text-[20px]">chat</span>
+                Mensajes
+            </a>
+
+            <div class="mt-6 mb-2 px-6 text-[10px] font-bold text-gray-500 uppercase tracking-wider">Gestión</div>
+            
+            <a class="sidebar-link" href="users.html">
+                <span class="material-symbols-outlined text-[20px]">manage_accounts</span>
+                Equipo Legal
+            </a>
+
+
+            <div class="mt-6 mb-2 px-6 text-[10px] font-bold text-gray-500 uppercase tracking-wider">Sistema</div>
+
+            <a class="sidebar-link" href="configuration.html">
+                <span class="material-symbols-outlined text-[20px]">settings</span>
+                Configuración
+            </a>
+            <button onclick="logout()" class="w-full sidebar-link text-left hover:text-red-400 hover:bg-white/5">
+                <span class="material-symbols-outlined text-[20px]">logout</span>
+                Cerrar Sesión
+            </button>
+        </nav>
+
+        <!-- User Profile (Bottom) -->
+        <div class="p-4 border-t border-gray-800 bg-black/20">
+            <div class="flex items-center gap-3">
+                <div class="h-9 w-9 rounded-full bg-blue-900 text-blue-100 flex items-center justify-center text-xs font-bold border border-blue-700" id="sidebarAvatar">--</div>
+                <div class="overflow-hidden">
+                    <p class="text-sm font-bold text-gray-200 truncate" id="sidebarName">Cargando...</p>
+                    <p class="text-xs text-gray-500 truncate" id="sidebarRole">Administrador</p>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 flex flex-col h-full overflow-hidden bg-brand-bg relative">
+        
+        <!-- Top Header -->
+        <header class="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-8 flex-shrink-0 z-10">
+            <h2 class="text-lg font-bold text-slate-800">Directorio de Clientes</h2>
+            
+            <div class="flex items-center gap-6">
+                <!-- Search -->
+                <div class="relative hidden md:block w-96">
+                    <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-[20px]">search</span>
+                    <input id="searchInput" type="text" placeholder="Buscar por nombre, documento o email..." 
+                           class="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-brand-accent/20 focus:border-brand-accent transition-all outline-none">
+                </div>
+
+                <div class="flex items-center gap-3">
+                    <button class="p-2 text-slate-500 hover:bg-slate-50 rounded-full relative">
+                        <span class="material-symbols-outlined text-[22px]">notifications</span>
+                        <span class="absolute top-2 right-2 h-2 w-2 bg-red-500 rounded-full border border-white"></span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Content -->
+        <div class="flex-1 overflow-y-auto p-8">
+            <div class="max-w-7xl mx-auto space-y-8">
+                
+                <!-- Title & Actions -->
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                    <div>
+                        <h1 class="text-2xl font-bold text-slate-900">Gestión de Clientes</h1>
+                        <p class="text-slate-500 mt-1">Administra la base de datos de clientes, sus expedientes y contactos.</p>
+                    </div>
+                    <div class="flex gap-3">
+                         <button onclick="loadClients()" class="flex items-center justify-center p-2 bg-white border border-slate-200 text-slate-700 rounded-lg font-medium hover:bg-slate-50 transition-colors shadow-sm">
+                            <span class="material-symbols-outlined">refresh</span>
+                        </button>
+                        <button onclick="window.location.href='new-client.html'" class="flex items-center gap-2 px-4 py-2 bg-brand-primary text-white rounded-lg font-medium hover:bg-blue-800 transition-colors shadow-sm shadow-blue-900/10">
+                            <span class="material-symbols-outlined text-[20px]">person_add</span>
+                            Nuevo Cliente
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Stats & Filters -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- Stat 1 -->
+                    <div class="bg-white p-5 rounded-xl border border-slate-100 shadow-card flex items-center gap-4">
+                         <div class="p-3 bg-blue-50 text-brand-primary rounded-lg">
+                            <span class="material-symbols-outlined text-2xl">person</span>
+                        </div>
+                        <div>
+                            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider">Personas Naturales</p>
+                            <h3 class="text-2xl font-bold text-slate-900" id="personCount">0</h3>
+                        </div>
+                    </div>
+                    <!-- Stat 2 -->
+                    <div class="bg-white p-5 rounded-xl border border-slate-100 shadow-card flex items-center gap-4">
+                        <div class="p-3 bg-amber-50 text-amber-600 rounded-lg">
+                            <span class="material-symbols-outlined text-2xl">business</span>
+                        </div>
+                        <div>
+                            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider">Empresas</p>
+                            <h3 class="text-2xl font-bold text-slate-900" id="companyCount">0</h3>
+                        </div>
+                    </div>
+                    <!-- Filter -->
+                    <div class="flex items-center">
+                        <select id="typeFilter" class="w-full h-full rounded-xl border-slate-200 bg-white text-sm focus:ring-2 focus:ring-brand-accent/20 focus:border-brand-accent transition-all shadow-sm">
+                            <option value="all">Ver todos los tipos</option>
+                            <option value="PERSON">Personas</option>
+                            <option value="COMPANY">Empresas</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Grid -->
+                <div id="clientGrid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                    <!-- Content will be loaded here -->
+                    <div class="col-span-full py-20 text-center text-slate-400">
+                         <div class="w-10 h-10 border-4 border-brand-primary border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+                         <p>Cargando directorio...</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+<script src="../assets/js/auth.js"></script>
+<script>
+    const authToken = localStorage.getItem('token');
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
+
+    async function init() {
+        if (!authToken) {
+            window.location.href = '../public/login.html';
+            return;
+        }
+
+        // Profile UI
+        const nameEl = document.getElementById('sidebarName');
+        const roleEl = document.getElementById('sidebarRole');
+        const avatarEl = document.getElementById('sidebarAvatar');
+
+        if (nameEl) nameEl.textContent = user.fullName || user.name || 'Usuario';
+        if (roleEl) roleEl.textContent = (user.userRoles?.[0]?.role?.name || 'Administrador').toUpperCase();
+        if (avatarEl) avatarEl.textContent = (user.fullName || user.name || 'U').split(' ').map(n => n[0]).join('').substring(0, 2);
+
+        await loadClients();
+
+        document.getElementById('typeFilter').addEventListener('change', loadClients);
+        document.getElementById('searchInput').addEventListener('input', debounce(loadClients, 500));
+    }
+
+    async function loadClients() {
+        const grid = document.getElementById('clientGrid');
+        const type = document.getElementById('typeFilter').value;
+        const search = document.getElementById('searchInput').value;
+
+        try {
+            const url = new URL(`${window.API_URL}/clients`);
+            if (type !== 'all') url.searchParams.append('clientType', type);
+            if (search) url.searchParams.append('search', search);
+
+            const response = await fetch(url, {
+                headers: { 'Authorization': `Bearer ${authToken}` }
+            });
+
+            if (!response.ok) throw new Error('Error al cargar clientes');
+
+            const data = await response.json();
+            const clients = data.clients || [];
+            renderClients(clients);
+            updateStats(clients);
+        } catch (error) {
+            console.error(error);
+            grid.innerHTML = `<div class="col-span-full py-10 text-center text-red-500 font-medium">Error al conectar con la base de datos.</div>`;
+        }
+    }
+
+    function renderClients(clients) {
+        const grid = document.getElementById('clientGrid');
+        if (clients.length === 0) {
+            grid.innerHTML = `
+                <div class="col-span-full py-16 text-center">
+                    <div class="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4 text-slate-400">
+                        <span class="material-symbols-outlined text-3xl">group_off</span>
+                    </div>
+                    <p class="text-slate-500 font-medium">No se encontraron clientes.</p>
+                    <p class="text-sm text-slate-400">Intenta cambiar los filtros o realizar una nueva búsqueda.</p>
+                </div>`;
+            return;
+        }
+
+        grid.innerHTML = clients.map(client => `
+            <div class="bg-white rounded-xl border border-slate-200 shadow-card hover:shadow-card-hover transition-all group relative flex flex-col p-5 h-full">
+                <div class="flex items-start justify-between mb-4">
+                    <div class="w-12 h-12 rounded-xl ${client.clientType === 'COMPANY' ? 'bg-amber-50 text-amber-600' : 'bg-blue-50 text-brand-primary'} flex items-center justify-center shadow-sm">
+                        <span class="material-symbols-outlined text-2xl">${client.clientType === 'COMPANY' ? 'business' : 'person'}</span>
+                    </div>
+                    <span class="px-2 py-1 rounded text-[10px] font-bold uppercase border ${client.status === 'active' ? 'bg-emerald-50 text-emerald-600 border-emerald-100' : 'bg-slate-100 text-slate-500 border-slate-200'}">
+                        ${client.status || 'Activo'}
+                    </span>
+                </div>
+                
+                <div class="mb-4">
+                    <h4 class="font-bold text-slate-900 text-lg leading-tight group-hover:text-brand-primary transition-colors mb-1">${client.fullNameOrBusinessName}</h4>
+                    <div class="flex items-center gap-1.5 text-xs text-slate-500 font-medium bg-slate-50 w-fit px-2 py-1 rounded border border-slate-100">
+                        <span class="uppercase tracking-wider">${client.documentType || 'DOC'}</span>
+                        <span class="text-slate-300">|</span>
+                        <span class="font-mono text-slate-600">${client.documentNumber || 'S/N'}</span>
+                    </div>
+                </div>
+
+                <div class="flex flex-col gap-2 mt-auto pt-4 border-t border-slate-100">
+                    <div class="flex items-center gap-2 text-sm text-slate-500">
+                        <span class="material-symbols-outlined text-[18px] text-slate-400">mail</span>
+                        <span class="truncate" title="${client.email}">${client.email || 'Sin correo registrado'}</span>
+                    </div>
+                    <div class="flex items-center gap-2 text-sm text-slate-500">
+                        <span class="material-symbols-outlined text-[18px] text-slate-400">phone</span>
+                        <span>${client.phone || 'Sin teléfono'}</span>
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-between mt-4 pt-3 border-t border-slate-50">
+                    <div class="flex items-center gap-1.5 text-xs font-bold text-slate-600 bg-slate-100 px-2 py-1 rounded-lg">
+                        <span class="material-symbols-outlined text-[16px]">gavel</span>
+                        ${client.cases?.length || 0} Casos
+                    </div>
+                    <button onclick="window.location.href='client-detail.html?id=${client.id}'" class="flex items-center gap-1 text-xs font-bold text-brand-primary hover:underline">
+                        Ver Expediente
+                        <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+                    </button>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    function updateStats(clients) {
+        // Use animateValue logic if available, or direct update
+        const pCount = clients.filter(c => c.clientType === 'PERSON').length;
+        const cCount = clients.filter(c => c.clientType === 'COMPANY').length;
+        
+        document.getElementById('personCount').textContent = pCount;
+        document.getElementById('companyCount').textContent = cCount;
+    }
+
+    function debounce(func, wait) {
+        let timeout;
+        return function executedFunction(...args) {
+            const later = () => {
+                clearTimeout(timeout);
+                func(...args);
+            };
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+        };
+    }
+
+    // Start
+    init();
+</script>
+</body>
+</html>

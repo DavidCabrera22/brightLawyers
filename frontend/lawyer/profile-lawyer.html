@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html class="light" lang="es">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>BrightLawyers - Perfil del Abogado</title>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+    <!-- Material Symbols -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "lawyer-primary": "#2c3e50",   // Dark Blue
+                        "lawyer-secondary": "#34495e", // Desaturated Blue
+                        "lawyer-accent": "#e67e22",    // Orange
+                        "lawyer-bg": "#ecf0f1",        // Light Gray
+                        "lawyer-card": "#ffffff",
+                        "lawyer-text": "#2c3e50",
+                        "lawyer-muted": "#7f8c8d",
+                        "slate-50": "#f8fafc",
+                        "slate-100": "#f1f5f9",
+                        "slate-200": "#e2e8f0",
+                        "slate-300": "#cbd5e1",
+                        "slate-400": "#94a3b8",
+                        "slate-500": "#64748b",
+                        "slate-600": "#475569",
+                        "slate-700": "#334155",
+                        "slate-800": "#1e293b",
+                        "slate-900": "#0f172a",
+                    },
+                    fontFamily: {
+                        "sans": ["'Plus Jakarta Sans'", "sans-serif"]
+                    },
+                    boxShadow: {
+                        "card": "0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1)",
+                        "card-hover": "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1)",
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #ecf0f1; }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1.5rem;
+            color: #bdc3c7; /* Light gray for contrast on dark bg */
+            font-weight: 500;
+            font-size: 0.875rem;
+            transition: all 0.2s;
+            border-left: 3px solid transparent;
+        }
+        .sidebar-link:hover {
+            color: white;
+            background: rgba(255,255,255,0.05);
+        }
+        .sidebar-link.active {
+            background-color: rgba(230, 126, 34, 0.1); /* Orange tint */
+            color: #ffffff;
+            border-left-color: #e67e22; /* lawyer-accent */
+        }
+        
+        .skeleton {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: .5; }
+        }
+    </style>
+</head>
+<body class="bg-lawyer-bg text-slate-800 h-screen overflow-hidden flex">
+
+    <!-- Sidebar (Lawyer Theme) -->
+    <aside class="w-64 bg-lawyer-secondary text-white flex flex-col z-20 shadow-xl flex-shrink-0">
+        <!-- Logo Area -->
+        <div class="h-20 flex items-center px-6 border-b border-white/10 flex-shrink-0">
+            <div class="flex items-center gap-3">
+                <div class="h-8 w-8 rounded bg-lawyer-accent text-white flex items-center justify-center shadow-lg">
+                    <span class="material-symbols-outlined text-[20px]">gavel</span>
+                </div>
+                <div>
+                    <h1 class="font-bold text-sm leading-tight tracking-wide text-white">BrightLawyers</h1>
+                    <p class="text-[10px] text-gray-400 font-medium tracking-wider uppercase">Panel de Abogado</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="flex-1 overflow-y-auto py-6">
+            <a class="sidebar-link" href="dashboard-lawyer.html">
+                <span class="material-symbols-outlined text-[20px]">dashboard</span>
+                Resumen
+            </a>
+            <a class="sidebar-link" href="cases-lawyer.html">
+                <span class="material-symbols-outlined text-[20px]">folder_open</span>
+                Mis Casos
+            </a>
+            <a class="sidebar-link" href="documents.html">
+                <span class="material-symbols-outlined text-[20px]">description</span>
+                Documentos
+            </a>
+            <a class="sidebar-link" href="contracts.html">
+                <span class="material-symbols-outlined text-[20px]">gavel</span>
+                Contratos
+            </a>
+            <a class="sidebar-link" href="tasks.html">
+                <span class="material-symbols-outlined text-[20px]">event_note</span>
+                Agenda Legal
+            </a>
+            <a class="sidebar-link" href="messages.html">
+                <span class="material-symbols-outlined text-[20px]">mail</span>
+                Comunicaciones
+            </a>
+            <a class="sidebar-link active" href="profile-lawyer.html">
+                <span class="material-symbols-outlined text-[20px]">person</span>
+                Perfil
+            </a>
+
+            <div class="mt-auto mb-2 pt-6 px-6 border-t border-white/5">
+                <button onclick="logout()" class="w-full sidebar-link text-left hover:text-red-400 hover:bg-white/5 px-0 pl-0 border-l-0">
+                    <span class="material-symbols-outlined text-[20px]">logout</span>
+                    Cerrar Sesión
+                </button>
+            </div>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 flex flex-col h-full overflow-hidden bg-lawyer-bg relative">
+        
+        <!-- Top Header -->
+        <header class="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-8 flex-shrink-0 z-10">
+            <h2 class="text-lg font-bold text-lawyer-primary">Perfil Profesional</h2>
+            
+            <div class="flex items-center gap-6">
+                <!-- Search -->
+                <div class="relative hidden md:block w-80">
+                    <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-[20px]">search</span>
+                    <input type="text" placeholder="Buscar..." 
+                           class="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-lawyer-accent/20 focus:border-lawyer-accent transition-all outline-none">
+                </div>
+
+                <div class="flex items-center gap-3">
+                    <button class="p-2 text-slate-500 hover:bg-slate-50 rounded-full relative">
+                        <span class="material-symbols-outlined text-[22px]">notifications</span>
+                        <span class="absolute top-2 right-2 h-2 w-2 bg-red-500 rounded-full border border-white"></span>
+                    </button>
+                    
+                    <div class="h-8 w-px bg-slate-200 mx-1"></div>
+                    
+                    <div class="flex items-center gap-2 cursor-pointer p-1 hover:bg-slate-50 rounded-lg transition-colors">
+                        <div class="h-8 w-8 rounded-full bg-lawyer-primary text-white flex items-center justify-center text-xs font-bold overflow-hidden" id="userInitials">
+                            --
+                        </div>
+                        <div class="hidden sm:block text-right leading-tight">
+                            <p class="text-sm font-bold text-lawyer-primary" id="userName">Cargando...</p>
+                            <p class="text-[10px] text-slate-500 uppercase">Abogado Senior</p>
+                        </div>
+                        <span class="material-symbols-outlined text-slate-400 text-[18px]">expand_more</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Content Scroll Area -->
+        <div class="flex-1 overflow-y-auto p-8">
+            <div class="max-w-4xl mx-auto space-y-8">
+                
+                <!-- Profile Header Card -->
+                <div class="bg-white rounded-xl border border-slate-100 shadow-card overflow-hidden">
+                    <div class="h-32 bg-gradient-to-r from-lawyer-primary to-lawyer-secondary"></div>
+                    <div class="px-8 pb-8 relative">
+                        <div class="relative -top-12 flex flex-col md:flex-row items-end md:items-end gap-6">
+                            <!-- Profile Picture -->
+                            <div class="relative h-32 w-32 rounded-xl border-4 border-white bg-slate-100 flex items-center justify-center overflow-hidden shadow-lg group cursor-pointer" onclick="document.getElementById('profilePicInput').click()" title="Click para cambiar foto">
+                                <span class="material-symbols-outlined text-6xl text-slate-300" id="profilePlaceholder">person</span>
+                                <img id="profileImageDisplay" src="" alt="Profile" class="w-full h-full object-cover hidden">
+                                
+                                <!-- Edit Overlay -->
+                                <div class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                    <span class="material-symbols-outlined text-white text-3xl">photo_camera</span>
+                                </div>
+                                <input type="file" id="profilePicInput" class="hidden" accept="image/*">
+                            </div>
+                            
+                            <!-- Info -->
+                            <div class="flex-1 mb-2 text-center md:text-left">
+                                <h1 class="text-2xl font-bold text-slate-800" id="profileName">Nombre del Abogado</h1>
+                                <p class="text-slate-500 font-medium">Abogado Especialista</p>
+                            </div>
+
+                            <!-- Actions -->
+                            <div class="mb-4">
+                                <button onclick="saveProfile()" class="px-5 py-2.5 bg-lawyer-accent hover:bg-orange-600 text-white font-medium rounded-lg shadow-sm shadow-orange-900/10 transition-colors flex items-center gap-2">
+                                    <span class="material-symbols-outlined text-[18px]">save</span>
+                                    Guardar Cambios
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Forms Grid -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-6">
+                            <!-- Personal Info -->
+                            <div>
+                                <h3 class="text-sm font-bold text-slate-800 uppercase tracking-wider border-b border-slate-100 pb-2 mb-4">Información Personal</h3>
+                                <div class="space-y-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-slate-700 mb-1">Nombre Completo</label>
+                                        <input type="text" id="fullName" class="w-full rounded-lg border-slate-200 text-sm focus:border-lawyer-accent focus:ring focus:ring-lawyer-accent/20 transition-all">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-slate-700 mb-1">Correo Electrónico</label>
+                                        <input type="email" id="email" readonly class="w-full rounded-lg border-slate-200 bg-slate-50 text-slate-500 text-sm shadow-sm cursor-not-allowed">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-slate-700 mb-1">Teléfono</label>
+                                        <input type="tel" id="phone" class="w-full rounded-lg border-slate-200 text-sm focus:border-lawyer-accent focus:ring focus:ring-lawyer-accent/20 transition-all">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-slate-700 mb-1">Ubicación</label>
+                                        <input type="text" id="location" class="w-full rounded-lg border-slate-200 text-sm focus:border-lawyer-accent focus:ring focus:ring-lawyer-accent/20 transition-all">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Professional Info -->
+                            <div>
+                                <h3 class="text-sm font-bold text-slate-800 uppercase tracking-wider border-b border-slate-100 pb-2 mb-4">Perfil Profesional</h3>
+                                <div class="space-y-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-slate-700 mb-1">Especialidades</label>
+                                        <input type="text" id="specialties" placeholder="Ej: Derecho Penal, Civil, Mercantil" class="w-full rounded-lg border-slate-200 text-sm focus:border-lawyer-accent focus:ring focus:ring-lawyer-accent/20 transition-all">
+                                        <p class="text-xs text-slate-400 mt-1">Separadas por comas</p>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-slate-700 mb-1">Número de Colegiado</label>
+                                        <input type="text" id="licenseNumber" class="w-full rounded-lg border-slate-200 text-sm focus:border-lawyer-accent focus:ring focus:ring-lawyer-accent/20 transition-all">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-slate-700 mb-1">Años de Experiencia</label>
+                                        <input type="number" id="experience" class="w-full rounded-lg border-slate-200 text-sm focus:border-lawyer-accent focus:ring focus:ring-lawyer-accent/20 transition-all">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-slate-700 mb-1">Universidad / Formación</label>
+                                        <input type="text" id="education" class="w-full rounded-lg border-slate-200 text-sm focus:border-lawyer-accent focus:ring focus:ring-lawyer-accent/20 transition-all">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Bio -->
+                        <div class="mt-8">
+                            <h3 class="text-sm font-bold text-slate-800 uppercase tracking-wider border-b border-slate-100 pb-2 mb-4">Biografía Profesional</h3>
+                            <textarea id="bio" rows="4" class="w-full rounded-lg border-slate-200 text-sm focus:border-lawyer-accent focus:ring focus:ring-lawyer-accent/20 transition-all" placeholder="Escriba una breve descripción de su trayectoria y enfoque profesional..."></textarea>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Documents Card -->
+                <div class="bg-white rounded-xl border border-slate-100 shadow-card p-6">
+                    <h3 class="text-sm font-bold text-slate-800 uppercase tracking-wider border-b border-slate-100 pb-2 mb-6">Documentación y Credenciales</h3>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="border-2 border-dashed border-slate-200 rounded-xl p-6 flex flex-col items-center justify-center text-center hover:bg-slate-50 hover:border-lawyer-accent/50 transition-all cursor-pointer group" onclick="document.getElementById('cvUpload').click()">
+                            <span class="material-symbols-outlined text-4xl text-slate-300 group-hover:text-lawyer-accent transition-colors mb-2">description</span>
+                            <h4 class="font-medium text-slate-700 group-hover:text-lawyer-primary">Curriculum Vitae</h4>
+                            <p class="text-xs text-slate-400 mb-3">PDF, DOCX (Max 5MB)</p>
+                            <button class="text-xs font-bold text-lawyer-accent hover:underline">SELECCIONAR ARCHIVO</button>
+                            <input type="file" id="cvUpload" class="hidden" accept=".pdf,.doc,.docx">
+                        </div>
+                        
+                        <div class="border-2 border-dashed border-slate-200 rounded-xl p-6 flex flex-col items-center justify-center text-center hover:bg-slate-50 hover:border-lawyer-accent/50 transition-all cursor-pointer group" onclick="document.getElementById('certUpload').click()">
+                            <span class="material-symbols-outlined text-4xl text-slate-300 group-hover:text-lawyer-accent transition-colors mb-2">workspace_premium</span>
+                            <h4 class="font-medium text-slate-700 group-hover:text-lawyer-primary">Certificados / Títulos</h4>
+                            <p class="text-xs text-slate-400 mb-3">PDF, JPG, PNG (Max 5MB)</p>
+                            <button class="text-xs font-bold text-lawyer-accent hover:underline">SUBIR DOCUMENTO</button>
+                            <input type="file" id="certUpload" class="hidden" accept=".pdf,.jpg,.jpeg,.png" multiple>
+                        </div>
+                    </div>
+                    
+                    <!-- Uploaded Files List -->
+                    <div class="mt-6 space-y-3" id="uploadedFilesList">
+                        <!-- Example item -->
+                        <div class="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-slate-100">
+                            <div class="flex items-center gap-3">
+                                <div class="h-8 w-8 rounded bg-red-100 text-red-500 flex items-center justify-center">
+                                    <span class="material-symbols-outlined text-lg">picture_as_pdf</span>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-medium text-slate-700">CV_Juan_Perez_2024.pdf</p>
+                                    <p class="text-[10px] text-slate-400">Subido el 15/01/2024</p>
+                                </div>
+                            </div>
+                            <button class="p-1.5 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-full transition-colors">
+                                <span class="material-symbols-outlined text-lg">delete</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <script src="../assets/js/auth.js"></script>
+    <script>
+        // Initialize user data
+        const user = getUser();
+        let uploadedFiles = []; // Store files metadata
+        let profileImageData = null; // Store base64 image data
+
+        if (!user) {
+            window.location.href = '../login.html';
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Load basic info from auth
+            if (user) {
+                const userNameEl = document.getElementById('userName');
+                if(userNameEl) userNameEl.textContent = user.name;
+                
+                const profileNameEl = document.getElementById('profileName');
+                if(profileNameEl) profileNameEl.textContent = user.name;
+                
+                const fullNameInput = document.getElementById('fullName');
+                if(fullNameInput) fullNameInput.value = user.name;
+                
+                const emailInput = document.getElementById('email');
+                if(emailInput) emailInput.value = user.email;
+                
+                const initialsDiv = document.getElementById('userInitials');
+                if(initialsDiv) {
+                    const initials = getInitials(user.name);
+                    initialsDiv.textContent = initials || '--';
+                }
+            }
+
+            // Handle Profile Picture Upload
+            const profileInput = document.getElementById('profilePicInput');
+            if(profileInput) {
+                profileInput.addEventListener('change', function(e) {
+                    if (this.files && this.files[0]) {
+                        const file = this.files[0];
+                        const reader = new FileReader();
+                        
+                        reader.onload = function(e) {
+                            profileImageData = e.target.result;
+                            
+                            // Update main profile view
+                            const img = document.getElementById('profileImageDisplay');
+                            const placeholder = document.getElementById('profilePlaceholder');
+                            
+                            if(img) {
+                                img.src = profileImageData;
+                                img.classList.remove('hidden');
+                            }
+                            if(placeholder) placeholder.classList.add('hidden');
+                            
+                            // Update navbar avatar
+                            updateNavbarAvatar(profileImageData);
+                        };
+                        
+                        reader.readAsDataURL(file);
+                    }
+                });
+            }
+
+            // Mock load other data (in a real app this would come from an API)
+            loadProfileData();
+        });
+
+        function updateNavbarAvatar(imageData) {
+            const initialsDiv = document.getElementById('userInitials');
+            if (imageData && initialsDiv) {
+                // Replace initials div content with image or set background
+                initialsDiv.innerHTML = `<img src="${imageData}" class="w-full h-full object-cover">`;
+                initialsDiv.classList.remove('bg-lawyer-primary', 'text-white'); // Remove background color to show image cleanly
+                // Ensure size is kept
+                initialsDiv.classList.add('overflow-hidden');
+            }
+        }
+
+        function loadProfileData() {
+            // Simulating data loading
+            // In production: fetch(`/api/lawyers/${user.id}/profile`)
+            try {
+                const savedProfile = localStorage.getItem('lawyer_profile_' + user.id);
+                if (savedProfile) {
+                    const data = JSON.parse(savedProfile);
+                    
+                    const fields = ['phone', 'location', 'specialties', 'licenseNumber', 'experience', 'education', 'bio'];
+                    fields.forEach(field => {
+                        const el = document.getElementById(field);
+                        if(el && data[field]) el.value = data[field];
+                    });
+                    
+                    if (data.profileImage) {
+                        profileImageData = data.profileImage;
+                        const img = document.getElementById('profileImageDisplay');
+                        const placeholder = document.getElementById('profilePlaceholder');
+                        
+                        if(img) {
+                            img.src = profileImageData;
+                            img.classList.remove('hidden');
+                        }
+                        if(placeholder) placeholder.classList.add('hidden');
+                        
+                        updateNavbarAvatar(profileImageData);
+                    }
+                }
+            } catch(e) {
+                console.error("Error loading profile:", e);
+            }
+        }
+
+        function saveProfile() {
+            const data = {
+                phone: document.getElementById('phone').value,
+                location: document.getElementById('location').value,
+                specialties: document.getElementById('specialties').value,
+                licenseNumber: document.getElementById('licenseNumber').value,
+                experience: document.getElementById('experience').value,
+                education: document.getElementById('education').value,
+                bio: document.getElementById('bio').value,
+                profileImage: profileImageData
+            };
+
+            // In production: POST /api/lawyers/${user.id}/profile
+            localStorage.setItem('lawyer_profile_' + user.id, JSON.stringify(data));
+            
+            // Show feedback
+            const btn = document.querySelector('button[onclick="saveProfile()"]');
+            const originalText = btn.innerHTML;
+            
+            btn.innerHTML = '<span class="material-symbols-outlined text-[18px] animate-spin">refresh</span> Guardando...';
+            btn.disabled = true;
+            
+            setTimeout(() => {
+                btn.innerHTML = '<span class="material-symbols-outlined text-[18px]">check</span> Guardado';
+                btn.classList.remove('bg-lawyer-accent');
+                btn.classList.add('bg-green-500');
+                
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                    btn.classList.add('bg-lawyer-accent');
+                    btn.classList.remove('bg-green-500');
+                    btn.disabled = false;
+                }, 2000);
+            }, 800);
+        }
+    </script>
+</body>
+</html>

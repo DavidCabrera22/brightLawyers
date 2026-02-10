@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html class="scroll-smooth" lang="es">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Contacto | Bright Lawyers</title>
+    <meta content="Contáctanos para recibir asesoría legal experta. Estamos listos para ayudarte en Cartagena y toda Colombia." name="description"/>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+    
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              primary: "#003D4D", // Petroleum Green
+              "background-light": "#F8FAFC",
+              "background-dark": "#020617",
+              accent: "#EAB308", // Gold for stars/accents
+            },
+            fontFamily: {
+              display: ["Manrope", "sans-serif"],
+              sans: ["Manrope", "sans-serif"],
+            },
+            borderRadius: {
+              DEFAULT: "0.5rem",
+              'xl': '1rem',
+              '2xl': '1.5rem',
+            },
+            animation: {
+              'fade-in': 'fadeIn 1s ease-out',
+              'fade-in-up': 'fadeInUp 0.8s ease-out forwards',
+              'pulse-slow': 'pulse 3s infinite',
+            },
+            keyframes: {
+              fadeIn: {
+                '0%': { opacity: '0', transform: 'translateY(10px)' },
+                '100%': { opacity: '1', transform: 'translateY(0)' },
+              },
+              fadeInUp: {
+                '0%': { opacity: '0', transform: 'translateY(20px)' },
+                '100%': { opacity: '1', transform: 'translateY(0)' },
+              }
+            },
+          },
+        },
+      };
+    </script>
+    
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .gradient-overlay {
+            background: linear-gradient(135deg, rgba(0, 61, 77, 0.95) 0%, rgba(0, 61, 77, 0.7) 100%);
+        }
+        /* Map grayscale filter */
+        .map-container iframe {
+            filter: grayscale(100%) invert(0%);
+            transition: filter 0.3s;
+        }
+        .map-container:hover iframe {
+            filter: grayscale(0%);
+        }
+        .dark .map-container iframe {
+            filter: grayscale(100%) invert(90%);
+        }
+        .dark .map-container:hover iframe {
+            filter: grayscale(0%) invert(90%);
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-800 dark:text-slate-200 font-sans transition-colors duration-300">
+
+    <!-- Navbar -->
+    <nav class="fixed top-0 w-full z-50 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
+        <div class="w-full px-4 h-20 flex items-center justify-between">
+            <div class="relative flex items-center h-full w-[300px] lg:w-[350px] mr-4">
+                <a href="index.html" class="absolute top-[-1rem] left-0 lg:top-[-4rem] lg:left-[5rem] z-50 flex items-center">
+                    <img src="../assets/images/logo2.png" alt="Bright Lawyers" class="h-28 lg:h-52 w-auto lg:max-w-none dark:hidden drop-shadow-lg filter transition-transform hover:scale-105 origin-top-left">
+                    <img src="../assets/images/logo11.png" alt="Bright Lawyers" class="h-28 lg:h-52 w-auto hidden dark:block lg:max-w-none drop-shadow-lg filter transition-transform hover:scale-105 origin-top-left">
+                </a>
+            </div>
+            <div class="hidden lg:flex items-center gap-6">
+                <a class="text-sm font-semibold hover:text-primary dark:hover:text-cyan-400 transition-colors whitespace-nowrap" href="index.html">Inicio</a>
+                <a class="text-sm font-semibold hover:text-primary dark:hover:text-cyan-400 transition-colors whitespace-nowrap" href="about.html">Sobre Nosotros</a>
+                <a class="text-sm font-semibold hover:text-primary dark:hover:text-cyan-400 transition-colors whitespace-nowrap" href="practice-areas.html">Servicios Jurídicos</a>
+                <a class="text-sm font-semibold hover:text-primary dark:hover:text-cyan-400 transition-colors whitespace-nowrap" href="case.html">Casos de Éxito</a>
+                <a class="text-sm font-semibold hover:text-primary dark:hover:text-cyan-400 transition-colors text-primary dark:text-cyan-400 whitespace-nowrap" href="contact.html">Contacto</a>
+            </div>
+            <div class="flex items-center gap-4">
+                <button class="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" onclick="document.documentElement.classList.toggle('dark')">
+                    <span class="material-symbols-outlined dark:hidden">dark_mode</span>
+                    <span class="material-symbols-outlined hidden dark:block text-yellow-400">light_mode</span>
+                </button>
+                <a class="hidden lg:flex bg-[#25D366] hover:bg-[#20ba5a] text-white px-6 py-2.5 rounded-full text-sm font-bold items-center gap-2 shadow-lg shadow-green-500/20 transition-all hover:scale-105 active:scale-95 whitespace-nowrap" href="https://wa.me/573123456789">
+                    <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884 0 2.225.569 3.807 1.532 5.273l-.998 3.642 3.955-.986z"></path></svg>
+                    Hablar por WhatsApp
+                </a>
+                <div class="hidden lg:flex items-center gap-4 pl-4 border-l border-slate-200 dark:border-slate-700">
+                    <a href="login.html" class="text-sm font-bold text-slate-700 dark:text-slate-200 hover:text-primary dark:hover:text-accent transition-colors whitespace-nowrap">Iniciar Sesión</a>
+                    <a href="register.html" class="bg-primary hover:bg-slate-800 text-white px-4 py-2 rounded-full text-sm font-bold transition-colors shadow-sm whitespace-nowrap">Crear Cuenta</a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-btn" class="lg:hidden p-2 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors ml-2">
+                    <span class="material-symbols-outlined text-3xl">menu</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden lg:hidden bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border-t border-slate-200 dark:border-slate-800 absolute top-20 left-0 w-full p-6 shadow-2xl flex-col gap-4 animate-fade-in">
+            <a class="text-lg font-semibold text-slate-700 dark:text-slate-200 hover:text-primary dark:hover:text-cyan-400 py-2 border-b border-slate-100 dark:border-slate-800 block" href="index.html">Inicio</a>
+            <a class="text-lg font-semibold text-slate-700 dark:text-slate-200 hover:text-primary dark:hover:text-cyan-400 py-2 border-b border-slate-100 dark:border-slate-800 block" href="about.html">Sobre Nosotros</a>
+            <a class="text-lg font-semibold text-slate-700 dark:text-slate-200 hover:text-primary dark:hover:text-cyan-400 py-2 border-b border-slate-100 dark:border-slate-800 block" href="practice-areas.html">Servicios Jurídicos</a>
+            <a class="text-lg font-semibold text-slate-700 dark:text-slate-200 hover:text-primary dark:hover:text-cyan-400 py-2 border-b border-slate-100 dark:border-slate-800 block" href="case.html">Casos de Éxito</a>
+            <a class="text-lg font-semibold text-slate-700 dark:text-slate-200 hover:text-primary dark:hover:text-cyan-400 py-2 border-b border-slate-100 dark:border-slate-800 block" href="contact.html">Contacto</a>
+            <div class="pt-4 flex flex-col gap-3">
+                <a href="login.html" class="text-center w-full py-3 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 font-bold hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">Iniciar Sesión</a>
+                <a href="register.html" class="text-center w-full py-3 rounded-xl bg-primary text-white font-bold hover:bg-slate-800 transition-colors shadow-lg shadow-primary/20">Crear Cuenta</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden bg-primary">
+        <div class="absolute inset-0 opacity-30">
+            <img alt="Contact Background" class="w-full h-full object-cover" src="../assets/images/bg_1.jpg"/>
+        </div>
+        <div class="absolute inset-0 gradient-overlay"></div>
+        <div class="relative max-w-7xl mx-auto px-6 text-center">
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-white text-xs font-bold mb-8 animate-fade-in">
+                <span class="w-2 h-2 rounded-full bg-accent animate-pulse"></span>
+                ESTAMOS PARA AYUDARTE
+            </div>
+            <h1 class="text-4xl lg:text-7xl font-extrabold text-white leading-tight mb-6 animate-fade-in">
+                Contáctanos <span class="text-accent">Hoy</span>
+            </h1>
+            <p class="text-lg lg:text-xl text-slate-200 max-w-2xl mx-auto leading-relaxed animate-fade-in">
+                Tu primera consulta es el primer paso hacia la solución. Nuestro equipo está listo para escuchar tu caso.
+            </p>
+        </div>
+    </header>
+
+    <!-- Main Content Section -->
+    <section class="py-24 bg-white dark:bg-background-dark">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
+                
+                <!-- Left Column: Contact Info & Map -->
+                <div class="space-y-12">
+                    <div>
+                        <h2 class="text-3xl font-extrabold text-slate-900 dark:text-white mb-6">Información de Contacto</h2>
+                        <p class="text-slate-600 dark:text-slate-400 mb-8 leading-relaxed">
+                            Visítanos en nuestra oficina principal o comunícate a través de nuestros canales digitales. Estamos comprometidos con brindarte una respuesta rápida y efectiva.
+                        </p>
+                        
+                        <div class="space-y-6">
+                            <!-- Address -->
+                            <div class="flex items-start gap-4">
+                                <div class="w-12 h-12 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center shrink-0 text-primary dark:text-cyan-400">
+                                    <span class="material-symbols-outlined">location_on</span>
+                                </div>
+                                <div>
+                                    <h3 class="font-bold text-slate-900 dark:text-white mb-1">Dirección</h3>
+                                    <p class="text-slate-600 dark:text-slate-400">Calle 34 #10-25, Oficina 203<br>Cartagena, Colombia</p>
+                                </div>
+                            </div>
+                            
+                            <!-- Phone -->
+                            <div class="flex items-start gap-4">
+                                <div class="w-12 h-12 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center shrink-0 text-primary dark:text-cyan-400">
+                                    <span class="material-symbols-outlined">phone</span>
+                                </div>
+                                <div>
+                                    <h3 class="font-bold text-slate-900 dark:text-white mb-1">Teléfono</h3>
+                                    <p class="text-slate-600 dark:text-slate-400">
+                                        <a href="tel:+573123456789" class="hover:text-primary dark:hover:text-cyan-400 transition-colors">+57 312 345 6789</a>
+                                    </p>
+                                </div>
+                            </div>
+                            
+                            <!-- Email -->
+                            <div class="flex items-start gap-4">
+                                <div class="w-12 h-12 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center shrink-0 text-primary dark:text-cyan-400">
+                                    <span class="material-symbols-outlined">mail</span>
+                                </div>
+                                <div>
+                                    <h3 class="font-bold text-slate-900 dark:text-white mb-1">Correo Electrónico</h3>
+                                    <p class="text-slate-600 dark:text-slate-400">
+                                        <a href="mailto:contacto@brightlawyers.com" class="hover:text-primary dark:hover:text-cyan-400 transition-colors">contacto@brightlawyers.com</a>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Map -->
+                    <div class="map-container rounded-3xl overflow-hidden shadow-lg h-80 bg-slate-100 dark:bg-slate-800">
+                        <iframe 
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d62788.63666276859!2d-75.54848248566904!3d10.400188796847846!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8ef625e7ae42bfb9%3A0x995469322032ecb8!2sCartagena%20de%20Indias%2C%20Bolivar!5e0!3m2!1sen!2sco!4v1706631234567!5m2!1sen!2sco" 
+                            width="100%" 
+                            height="100%" 
+                            style="border:0;" 
+                            allowfullscreen="" 
+                            loading="lazy" 
+                            referrerpolicy="no-referrer-when-downgrade">
+                        </iframe>
+                    </div>
+                </div>
+
+                <!-- Right Column: Form -->
+                <div class="bg-slate-50 dark:bg-slate-900 p-8 lg:p-12 rounded-3xl shadow-xl border border-slate-100 dark:border-slate-800 h-fit">
+                    <h3 class="text-2xl font-bold text-slate-900 dark:text-white mb-6">Envíanos un Mensaje</h3>
+                    
+                    <form id="contactForm" class="space-y-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="space-y-2">
+                                <label for="nombre" class="text-sm font-semibold text-slate-700 dark:text-slate-300">Nombre Completo</label>
+                                <input type="text" id="nombre" name="nombre" required placeholder="Tu nombre" 
+                                    class="w-full px-4 py-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:ring-2 focus:ring-primary dark:focus:ring-cyan-400 focus:border-transparent outline-none transition-all dark:text-white">
+                            </div>
+                            <div class="space-y-2">
+                                <label for="email" class="text-sm font-semibold text-slate-700 dark:text-slate-300">Correo Electrónico</label>
+                                <input type="email" id="email" name="email" required placeholder="tucorreo@ejemplo.com" 
+                                    class="w-full px-4 py-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:ring-2 focus:ring-primary dark:focus:ring-cyan-400 focus:border-transparent outline-none transition-all dark:text-white">
+                            </div>
+                        </div>
+                        
+                        <div class="space-y-2">
+                            <label for="asunto" class="text-sm font-semibold text-slate-700 dark:text-slate-300">Asunto</label>
+                            <input type="text" id="asunto" name="asunto" required placeholder="¿En qué podemos ayudarte?" 
+                                class="w-full px-4 py-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:ring-2 focus:ring-primary dark:focus:ring-cyan-400 focus:border-transparent outline-none transition-all dark:text-white">
+                        </div>
+                        
+                        <div class="space-y-2">
+                            <label for="mensaje" class="text-sm font-semibold text-slate-700 dark:text-slate-300">Mensaje</label>
+                            <textarea id="mensaje" name="mensaje" rows="5" required placeholder="Describe tu caso brevemente..." 
+                                class="w-full px-4 py-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:ring-2 focus:ring-primary dark:focus:ring-cyan-400 focus:border-transparent outline-none transition-all dark:text-white resize-none"></textarea>
+                        </div>
+                        
+                        <button type="submit" id="submitBtn" class="w-full bg-primary hover:bg-slate-800 dark:bg-cyan-600 dark:hover:bg-cyan-500 text-white font-bold py-4 rounded-xl shadow-lg hover:shadow-xl transition-all hover:-translate-y-1 flex items-center justify-center gap-2">
+                            <span>Enviar Mensaje</span>
+                            <span class="material-symbols-outlined text-sm">send</span>
+                        </button>
+                    </form>
+
+                    <!-- Status Messages -->
+                    <div id="mensaje-exito" class="hidden mt-6 p-4 rounded-xl bg-green-50 dark:bg-green-900/30 border border-green-200 dark:border-green-800 text-green-800 dark:text-green-300 text-center font-medium animate-fade-in">
+                        <div class="flex items-center justify-center gap-2">
+                            <span class="material-symbols-outlined">check_circle</span>
+                            ¡Mensaje enviado correctamente! Nos pondremos en contacto pronto.
+                        </div>
+                    </div>
+                    
+                    <div id="mensaje-error" class="hidden mt-6 p-4 rounded-xl bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 text-red-800 dark:text-red-300 text-center font-medium animate-fade-in">
+                        <div class="flex items-center justify-center gap-2">
+                            <span class="material-symbols-outlined">error</span>
+                            <span id="error-text">Error al enviar el mensaje.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-slate-950 text-white pt-24 pb-12" id="contacto">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-20">
+                <div class="space-y-6">
+                    <div class="flex items-center gap-1 font-extrabold text-2xl tracking-tight">
+                        <span class="material-symbols-outlined text-accent !text-3xl">wb_sunny</span>
+                        BRIGHT LAWYERS
+                    </div>
+                    <p class="text-slate-400 leading-relaxed">
+                        Liderando la transformación digital en el sector legal. Honestidad, transparencia y excelencia en cada caso.
+                    </p>
+                    <div class="flex gap-4">
+                        <a class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-primary transition-colors" href="#">
+                            <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"></path></svg>
+                        </a>
+                        <a class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-primary transition-colors" href="#">
+                            <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"></path></svg>
+                        </a>
+                        <a class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-primary transition-colors" href="#">
+                            <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"></path></svg>
+                        </a>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="text-lg font-bold mb-6">Mapa del Sitio</h4>
+                    <ul class="space-y-4 text-slate-400">
+                        <li><a class="hover:text-white transition-colors" href="index.html">Inicio</a></li>
+                        <li><a class="hover:text-white transition-colors" href="about.html">Nosotros</a></li>
+                        <li><a class="hover:text-white transition-colors" href="practice-areas.html">Servicios</a></li>
+                        <li><a class="hover:text-white transition-colors" href="case.html">Casos de Éxito</a></li>
+                        <li><a class="hover:text-white transition-colors" href="contact.html">Contacto</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-bold mb-6">Servicios Populares</h4>
+                    <ul class="space-y-4 text-slate-400">
+                        <li><a class="hover:text-white transition-colors" href="practice-areas.html">Derecho Corporativo</a></li>
+                        <li><a class="hover:text-white transition-colors" href="practice-areas.html">Derecho de Familia</a></li>
+                        <li><a class="hover:text-white transition-colors" href="practice-areas.html">Derecho Penal</a></li>
+                        <li><a class="hover:text-white transition-colors" href="practice-areas.html">Litigio Civil</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-bold mb-6">Contáctanos</h4>
+                    <ul class="space-y-4 text-slate-400">
+                        <li class="flex items-start gap-3">
+                            <span class="material-symbols-outlined text-accent shrink-0">location_on</span>
+                            <span>Calle 100 # 8A-55, Torre C, Oficina 405, Bogotá, Colombia</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <span class="material-symbols-outlined text-accent shrink-0">phone</span>
+                            <span>+57 (601) 789-4321</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <span class="material-symbols-outlined text-accent shrink-0">mail</span>
+                            <span>contacto@brightlawyers.com</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-slate-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+                <p class="text-slate-500 text-sm text-center md:text-left">
+                    © 2024 Bright Lawyers. Todos los derechos reservados.
+                </p>
+                <div class="flex gap-6 text-sm text-slate-500">
+                    <a class="hover:text-white transition-colors" href="#">Política de Privacidad</a>
+                    <a class="hover:text-white transition-colors" href="#">Términos de Servicio</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Supabase & Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+    <script>
+        // Navbar scroll effect
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 20) {
+                nav.classList.add('shadow-md');
+            } else {
+                nav.classList.remove('shadow-md');
+            }
+        });
+
+        // Configura tu Supabase
+        const SUPABASE_URL = 'https://hzxlkwfuvrbntoizszwd.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh6eGxrd2Z1dnJibnRvaXpzendkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTAxNzA2MjEsImV4cCI6MjA2NTc0NjYyMX0.rA1xx67438nvTotIZ13noRAXfdXyrQGZchoFxx3wPBc';
+        const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        // Selecciona el formulario
+        const form = document.getElementById('contactForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const successMsg = document.getElementById('mensaje-exito');
+        const errorMsg = document.getElementById('mensaje-error');
+        const errorText = document.getElementById('error-text');
+
+        form.addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            // Loading state
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span class="material-symbols-outlined animate-spin">refresh</span> Enviando...';
+            submitBtn.classList.add('opacity-75');
+
+            // Obtén los valores
+            const nombre = document.getElementById('nombre').value;
+            const email = document.getElementById('email').value;
+            const asunto = document.getElementById('asunto').value;
+            const mensaje = document.getElementById('mensaje').value;
+
+            // Inserta en Supabase
+            const { data, error } = await supabaseClient
+                .from('Contactos')
+                .insert([
+                    { nombre, email, asunto, mensaje }
+                ]);
+
+            // Reset UI
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = '<span>Enviar Mensaje</span><span class="material-symbols-outlined text-sm">send</span>';
+            submitBtn.classList.remove('opacity-75');
+
+            if (error) {
+                successMsg.classList.add('hidden');
+                errorMsg.classList.remove('hidden');
+                errorText.textContent = 'Error: ' + error.message;
+            } else {
+                errorMsg.classList.add('hidden');
+                successMsg.classList.remove('hidden');
+                form.reset();
+                
+                // Ocultar el mensaje después de 5 segundos
+                setTimeout(() => {
+                    successMsg.classList.add('hidden');
+                }, 5000);
+            }
+        });
+
+        // Mobile Menu Toggle
+        const mobileBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        if (mobileBtn && mobileMenu) {
+            mobileBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+                mobileMenu.classList.toggle('flex');
+                
+                const icon = mobileBtn.querySelector('span');
+                if (mobileMenu.classList.contains('hidden')) {
+                    icon.textContent = 'menu';
+                } else {
+                    icon.textContent = 'close';
+                }
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html class="light" lang="es">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>BrightLawyers - Gestión de Casos</title>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+    <!-- Material Symbols -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "brand-dark": "#0B1120",      // Sidebar bg (Dark Blue/Black)
+                        "brand-primary": "#1e3a8a",   // Blue 900 (Primary Action)
+                        "brand-accent": "#3b82f6",    // Blue 500 (Highlights)
+                        "brand-secondary": "#334155", // Slate 700
+                        "brand-bg": "#F8FAFC",        // Light background
+                        "brand-surface": "#FFFFFF",   // White surface
+                        "brand-mint": "#eff6ff",      // Blue 50 (Light Blue for active/hover)
+                    },
+                    fontFamily: {
+                        "sans": ["'Plus Jakarta Sans'", "sans-serif"]
+                    },
+                    boxShadow: {
+                        "card": "0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1)",
+                        "card-hover": "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1)",
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1.5rem;
+            color: #94a3b8; /* slate-400 */
+            font-weight: 500;
+            font-size: 0.875rem;
+            transition: all 0.2s;
+            border-left: 3px solid transparent;
+        }
+        .sidebar-link:hover {
+            color: white;
+            background: rgba(255,255,255,0.05);
+        }
+        .sidebar-link.active {
+            background-color: rgba(59, 130, 246, 0.1); /* Blue tint */
+            color: #ffffff;
+            border-left-color: #3b82f6; /* brand-accent */
+        }
+        
+        .skeleton {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: .5; }
+        }
+    </style>
+</head>
+<body class="bg-brand-bg text-slate-800 h-screen overflow-hidden flex">
+
+    <!-- Sidebar (Dark) -->
+    <aside class="w-64 bg-brand-dark text-white flex flex-col z-20 shadow-xl flex-shrink-0">
+        <!-- Logo Area -->
+        <div class="h-20 flex items-center px-6 border-b border-gray-800 flex-shrink-0">
+            <div class="flex items-center gap-3">
+                <div class="h-8 w-8 rounded bg-gradient-to-br from-blue-600 to-blue-800 flex items-center justify-center shadow-lg shadow-blue-500/30 text-white">
+                    <span class="material-symbols-outlined text-[20px]">balance</span>
+                </div>
+                <div>
+                    <h1 class="font-bold text-sm leading-tight tracking-wide">BrightLawyers</h1>
+                    <p class="text-[10px] text-gray-400 font-medium tracking-wider uppercase">ADMINISTRACIÓN</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="flex-1 overflow-y-auto py-6">
+            <a class="sidebar-link" href="admin.html">
+                <span class="material-symbols-outlined text-[20px]">dashboard</span>
+                Dashboard
+            </a>
+            <a class="sidebar-link active" href="cases.html">
+                <span class="material-symbols-outlined text-[20px]">gavel</span>
+                Casos
+            </a>
+            <a class="sidebar-link" href="tasks.html">
+                <span class="material-symbols-outlined text-[20px]">task_alt</span>
+                Tareas
+            </a>
+            <a class="sidebar-link" href="clients.html">
+                <span class="material-symbols-outlined text-[20px]">groups</span>
+                Clientes
+            </a>
+            <a class="sidebar-link" href="documents.html">
+                <span class="material-symbols-outlined text-[20px]">folder</span>
+                Documentos
+            </a>
+            <a class="sidebar-link" href="contracts.html">
+                <span class="material-symbols-outlined text-[20px]">description</span>
+                Contratos
+            </a>
+            <a class="sidebar-link" href="billing.html">
+                <span class="material-symbols-outlined text-[20px]">payments</span>
+                Facturación
+            </a>
+            <a class="sidebar-link" href="messages.html">
+                <span class="material-symbols-outlined text-[20px]">chat</span>
+                Mensajes
+            </a>
+
+            <div class="mt-6 mb-2 px-6 text-[10px] font-bold text-gray-500 uppercase tracking-wider">Gestión</div>
+            
+            <a class="sidebar-link" href="users.html">
+                <span class="material-symbols-outlined text-[20px]">manage_accounts</span>
+                Equipo Legal
+            </a>
+
+
+            <div class="mt-6 mb-2 px-6 text-[10px] font-bold text-gray-500 uppercase tracking-wider">Sistema</div>
+
+            <a class="sidebar-link" href="configuration.html">
+                <span class="material-symbols-outlined text-[20px]">settings</span>
+                Configuración
+            </a>
+            <button onclick="logout()" class="w-full sidebar-link text-left hover:text-red-400 hover:bg-white/5">
+                <span class="material-symbols-outlined text-[20px]">logout</span>
+                Cerrar Sesión
+            </button>
+        </nav>
+
+        <!-- User Profile (Bottom) -->
+        <div class="p-4 border-t border-gray-800 bg-black/20">
+            <div class="flex items-center gap-3">
+                <div class="h-9 w-9 rounded-full bg-blue-900 text-blue-100 flex items-center justify-center text-xs font-bold border border-blue-700" id="sidebarAvatar">--</div>
+                <div class="overflow-hidden">
+                    <p class="text-sm font-bold text-gray-200 truncate" id="sidebarName">Cargando...</p>
+                    <p class="text-xs text-gray-500 truncate" id="sidebarRole">Administrador</p>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 flex flex-col h-full overflow-hidden bg-brand-bg relative">
+        
+        <!-- Top Header -->
+        <header class="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-8 flex-shrink-0 z-10">
+            <h2 class="text-lg font-bold text-slate-800">Gestión de Casos</h2>
+            
+            <div class="flex items-center gap-6">
+                <!-- Search -->
+                <div class="relative hidden md:block w-96">
+                    <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-[20px]">search</span>
+                    <input id="searchInput" type="text" placeholder="Buscar casos por título, número o cliente..." 
+                           class="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-brand-accent/20 focus:border-brand-accent transition-all outline-none">
+                </div>
+
+                <div class="flex items-center gap-3">
+                    <button onclick="window.location.href='new-case.html'" class="flex items-center gap-2 px-4 py-2 bg-brand-primary text-white rounded-lg font-medium hover:bg-blue-800 transition-colors shadow-sm shadow-blue-900/10">
+                        <span class="material-symbols-outlined text-[20px]">add</span>
+                        Nuevo Caso
+                    </button>
+                    <button onclick="logout()" class="p-2 text-slate-500 hover:bg-red-50 hover:text-red-500 rounded-full transition-colors" title="Cerrar Sesión">
+                        <span class="material-symbols-outlined text-[22px]">logout</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Content -->
+        <div class="flex-1 overflow-y-auto p-8">
+            <div class="max-w-7xl mx-auto space-y-8">
+                
+                <!-- Page Title -->
+                <div>
+                    <h1 class="text-2xl font-bold text-slate-900">Gestión de Casos</h1>
+                    <p class="text-slate-500 mt-1">Listado completo de procesos legales y expedientes activos.</p>
+                </div>
+
+                <!-- KPI Cards -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <!-- Total -->
+                    <div class="bg-white p-6 rounded-xl border border-slate-100 border-l-4 border-l-brand-primary shadow-card hover:shadow-card-hover transition-all">
+                        <p class="text-xs text-slate-500 uppercase font-bold tracking-wider">Total</p>
+                        <h3 class="text-3xl font-bold text-slate-900 mt-2" id="totalCount">
+                            <div class="h-8 w-16 bg-slate-100 rounded skeleton"></div>
+                        </h3>
+                    </div>
+                    <!-- Activos -->
+                    <div class="bg-white p-6 rounded-xl border border-slate-100 border-l-4 border-l-emerald-500 shadow-card hover:shadow-card-hover transition-all">
+                        <p class="text-xs text-slate-500 uppercase font-bold tracking-wider">Activos</p>
+                        <h3 class="text-3xl font-bold text-emerald-600 mt-2" id="activeCount">
+                            <div class="h-8 w-16 bg-slate-100 rounded skeleton"></div>
+                        </h3>
+                    </div>
+                    <!-- En Apertura -->
+                    <div class="bg-white p-6 rounded-xl border border-slate-100 border-l-4 border-l-amber-500 shadow-card hover:shadow-card-hover transition-all">
+                        <p class="text-xs text-slate-500 uppercase font-bold tracking-wider">En Apertura</p>
+                        <h3 class="text-3xl font-bold text-amber-600 mt-2" id="intakeCount">
+                            <div class="h-8 w-16 bg-slate-100 rounded skeleton"></div>
+                        </h3>
+                    </div>
+                    <!-- Cerrados -->
+                    <div class="bg-white p-6 rounded-xl border border-slate-100 border-l-4 border-l-slate-400 shadow-card hover:shadow-card-hover transition-all">
+                        <p class="text-xs text-slate-500 uppercase font-bold tracking-wider">Cerrados</p>
+                        <h3 class="text-3xl font-bold text-slate-500 mt-2" id="closedCount">
+                            <div class="h-8 w-16 bg-slate-100 rounded skeleton"></div>
+                        </h3>
+                    </div>
+                </div>
+
+                <!-- Filters & Table -->
+                <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                    
+                    <!-- Filters Toolbar -->
+                    <div class="p-4 border-b border-slate-100 flex flex-wrap gap-2">
+                        <button onclick="setFilter('all')" id="filter-all" class="px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-brand-primary text-white shadow-sm">
+                            Todos
+                        </button>
+                        <button onclick="setFilter('active')" id="filter-active" class="px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-slate-100 text-slate-600 hover:bg-slate-200">
+                            Activos
+                        </button>
+                        <button onclick="setFilter('intake')" id="filter-intake" class="px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-slate-100 text-slate-600 hover:bg-slate-200">
+                            Apertura
+                        </button>
+                        <button onclick="setFilter('urgent')" id="filter-urgent" class="px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-slate-100 text-slate-600 hover:bg-slate-200">
+                            Urgentes
+                        </button>
+                    </div>
+
+                    <!-- Table -->
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-sm">
+                            <thead class="bg-slate-50 text-slate-500 font-semibold border-b border-slate-100 uppercase text-[11px] tracking-wider">
+                                <tr>
+                                    <th class="px-6 py-4">Expediente</th>
+                                    <th class="px-6 py-4">Título del Caso</th>
+                                    <th class="px-6 py-4">Cliente</th>
+                                    <th class="px-6 py-4">Abogado Asignado</th>
+                                    <th class="px-6 py-4">Área</th>
+                                    <th class="px-6 py-4">Estado</th>
+                                    <th class="px-6 py-4">Apertura</th>
+                                    <th class="px-6 py-4 text-right">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="casesTableBody" class="divide-y divide-slate-100">
+                                <!-- Loaded dynamically -->
+                                <tr>
+                                    <td colspan="8" class="px-6 py-20 text-center text-slate-400">
+                                        <div class="flex flex-col items-center gap-2">
+                                            <div class="w-8 h-8 border-4 border-brand-primary border-t-transparent rounded-full animate-spin"></div>
+                                            <p>Cargando casos...</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <!-- Pagination (Placeholder) -->
+                    <div class="px-6 py-4 border-t border-slate-100 flex items-center justify-between">
+                        <p class="text-sm text-slate-500">Mostrando <span class="font-bold text-slate-800" id="showingCount">0</span> casos</p>
+                        <div class="flex gap-2">
+                            <button class="p-2 rounded-lg border border-slate-200 text-slate-500 hover:bg-slate-50 disabled:opacity-50">
+                                <span class="material-symbols-outlined text-[18px]">chevron_left</span>
+                            </button>
+                            <button class="p-2 rounded-lg border border-slate-200 text-slate-500 hover:bg-slate-50 disabled:opacity-50">
+                                <span class="material-symbols-outlined text-[18px]">chevron_right</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+<script src="../assets/js/auth.js"></script>
+<script>
+    const authToken = localStorage.getItem('token');
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
+    let currentFilter = 'all';
+
+    // Initialize Page
+    async function init() {
+        if (!authToken) {
+            window.location.href = '../public/login.html';
+            return;
+        }
+
+        // Display User Info
+        const avatarEl = document.getElementById('sidebarAvatar');
+        const nameEl = document.getElementById('sidebarName');
+        const roleEl = document.getElementById('sidebarRole');
+        
+        if (nameEl) nameEl.textContent = user.fullName || user.name || 'Usuario';
+        if (roleEl) roleEl.textContent = (user.userRoles?.[0]?.role?.name || 'Administrador').toUpperCase();
+        if (avatarEl) avatarEl.textContent = (user.fullName || user.name || 'U').split(' ').map(n => n[0]).join('').substring(0, 2);
+
+        // Load data
+        await loadCases();
+
+        // Listen for search
+        document.getElementById('searchInput').addEventListener('input', debounce(loadCases, 500));
+    }
+
+    function setFilter(filter) {
+        currentFilter = filter;
+        
+        // Update buttons UI
+        const buttons = ['all', 'active', 'intake', 'urgent'];
+        buttons.forEach(btn => {
+            const el = document.getElementById(`filter-${btn}`);
+            if (btn === filter) {
+                el.className = "px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-brand-primary text-white shadow-sm";
+            } else {
+                el.className = "px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-slate-100 text-slate-600 hover:bg-slate-200";
+            }
+        });
+
+        loadCases();
+    }
+
+    async function loadCases() {
+        const tableBody = document.getElementById('casesTableBody');
+        const search = document.getElementById('searchInput').value;
+
+        try {
+            const url = new URL(`${window.API_URL}/cases`);
+            if (currentFilter !== 'all') {
+                // Map frontend filter names to backend status
+                // Backend statuses: intake, active, closed, suspended
+                if (currentFilter === 'urgent') {
+                    // Logic for urgent (if supported by backend, else maybe client side filter?)
+                    // For now, let's assume no backend support for "urgent" unless we filter by priority
+                    // We'll skip adding status param if urgent, and filter client side or assume active
+                } else {
+                    url.searchParams.append('status', currentFilter);
+                }
+            }
+            if (search) url.searchParams.append('search', search);
+
+            const response = await fetch(url, {
+                headers: { 'Authorization': `Bearer ${authToken}` }
+            });
+
+            if (response.status === 401) {
+                window.location.href = '../public/login.html';
+                return;
+            }
+
+            if (!response.ok) throw new Error('Error al cargar casos');
+
+            const data = await response.json();
+            let cases = data.cases || [];
+            
+            // Client-side filtering for urgent if needed
+            if (currentFilter === 'urgent') {
+                cases = cases.filter(c => c.priority === 'high' || c.priority === 'urgent');
+            }
+
+            renderCases(cases);
+            updateStats(cases); // Note: stats usually come from a separate endpoint or aggregation, but we'll calc from list for now or use separate API if available
+            
+            // If we have total counts from backend, use them, otherwise calculate
+            if (data.stats) {
+                updateStatsFromBackend(data.stats);
+            } else {
+                // rudimentary calc from current list (might be partial if paginated)
+                // Better to rely on separate stats endpoint if exists
+            }
+
+        } catch (error) {
+            console.error('Error loading cases:', error);
+            tableBody.innerHTML = `
+                <tr>
+                    <td colspan="8" class="px-6 py-10 text-center text-red-500">
+                        <div class="flex flex-col items-center gap-2">
+                             <span class="material-symbols-outlined text-4xl">error</span>
+                             <p class="font-bold">Error al conectar con el servidor</p>
+                             <p class="text-sm text-slate-500">${error.message}</p>
+                             <button onclick="loadCases()" class="mt-4 px-4 py-2 bg-brand-primary text-white rounded-lg text-sm hover:bg-blue-800">Intentar de nuevo</button>
+                        </div>
+                    </td>
+                </tr>
+            `;
+        }
+    }
+
+    function renderCases(cases) {
+        const tableBody = document.getElementById('casesTableBody');
+        const showingCount = document.getElementById('showingCount');
+        
+        // Check if user is admin
+        const isAdmin = (user.userRoles?.[0]?.role?.name || '').toLowerCase() === 'admin' || 
+                        (user.userRoles?.[0]?.role?.name || '').toLowerCase() === 'administrador';
+        
+        if (showingCount) showingCount.textContent = cases.length;
+
+        if (cases.length === 0) {
+            tableBody.innerHTML = `
+                <tr>
+                    <td colspan="8" class="px-6 py-10 text-center text-slate-500 italic">
+                        No se encontraron casos con los filtros seleccionados.
+                    </td>
+                </tr>
+            `;
+            return;
+        }
+
+        tableBody.innerHTML = cases.map(c => `
+            <tr class="hover:bg-slate-50 transition-colors group">
+                <td class="px-6 py-4 font-medium text-slate-500 text-xs uppercase tracking-wider">
+                    ${c.caseNumber || 'PENDIENTE'}
+                </td>
+                <td class="px-6 py-4">
+                    <div class="flex flex-col">
+                        <span class="font-bold text-slate-900">${c.title}</span>
+                        <span class="text-xs text-slate-500 truncate max-w-[200px]">${c.description || 'Sin descripción'}</span>
+                    </div>
+                </td>
+                <td class="px-6 py-4">
+                    <div class="flex items-center gap-3">
+                        <div class="h-8 w-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-xs font-bold uppercase">
+                            ${(c.client?.fullNameOrBusinessName || 'C').substring(0, 2)}
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-medium text-slate-900">${c.client?.fullNameOrBusinessName || 'Cliente Desconocido'}</span>
+                            <span class="text-xs text-slate-500">${c.client?.documentNumber || 'Sin ID'}</span>
+                        </div>
+                    </div>
+                </td>
+                <td class="px-6 py-4">
+                     ${c.lawyer ? `
+                        <div class="flex items-center gap-2">
+                            <img src="${c.lawyer.avatar || 'https://ui-avatars.com/api/?name=' + c.lawyer.name}" class="h-6 w-6 rounded-full" alt="">
+                            <span class="text-sm text-slate-700">${c.lawyer.name}</span>
+                        </div>
+                     ` : `
+                        <span class="text-slate-400 text-sm italic">--</span>
+                     `}
+                </td>
+                <td class="px-6 py-4">
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-100 text-slate-600 border border-slate-200">
+                        ${c.practiceArea?.name || 'General'}
+                    </span>
+                </td>
+                <td class="px-6 py-4">
+                    ${getStatusBadge(c.caseStatus)}
+                </td>
+                <td class="px-6 py-4 text-xs text-slate-500">
+                    ${new Date(c.openedAt).toLocaleDateString()}
+                </td>
+                <td class="px-6 py-4 text-right">
+                    <div class="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <button onclick="window.location.href='case-detail.html?id=${c.id}'" class="p-2 rounded-lg text-slate-400 hover:text-brand-primary hover:bg-blue-50 transition-colors" title="Ver detalle">
+                            <span class="material-symbols-outlined text-[18px]">visibility</span>
+                        </button>
+                        <button onclick="openAssignModal('${c.id}')" class="p-2 rounded-lg text-slate-400 hover:text-brand-primary hover:bg-blue-50 transition-colors" title="Asignar Abogado">
+                            <span class="material-symbols-outlined text-[18px]">person_add</span>
+                        </button>
+                        ${isAdmin ? `
+                        <button onclick="deleteCase('${c.id}')" class="p-2 rounded-lg text-slate-400 hover:text-red-600 hover:bg-red-50 transition-colors" title="Eliminar Caso">
+                            <span class="material-symbols-outlined text-[18px]">delete</span>
+                        </button>
+                        ` : ''}
+                    </div>
+                </td>
+            </tr>
+        `).join('');
+    }
+
+    async function deleteCase(id) {
+        if (!confirm('¿Estás seguro de eliminar este caso? Esta acción eliminará permanentemente el caso, sus tareas, notas y eventos asociados.')) return;
+        
+        try {
+            const res = await fetch(`${window.API_URL}/cases/${id}`, {
+                method: 'DELETE',
+                headers: { 'Authorization': `Bearer ${authToken}` }
+            });
+            
+            if (res.ok) {
+                // Show toast or alert? Just reload for now
+                loadCases();
+            } else {
+                const data = await res.json();
+                alert('Error al eliminar caso: ' + (data.error || 'Error desconocido'));
+            }
+        } catch (e) {
+            console.error(e);
+            alert('Error de conexión al eliminar caso');
+        }
+    }
+
+    function getStatusBadge(status) {
+        const styles = {
+            'active': 'bg-green-100 text-green-700 border-green-200',
+            'open': 'bg-green-100 text-green-700 border-green-200',
+            'intake': 'bg-amber-100 text-amber-700 border-amber-200',
+            'closed': 'bg-slate-100 text-slate-600 border-slate-200',
+            'suspended': 'bg-red-100 text-red-700 border-red-200'
+        };
+        
+        const labels = {
+            'active': 'ACTIVO',
+            'open': 'ACTIVO',
+            'intake': 'APERTURA',
+            'closed': 'CERRADO',
+            'suspended': 'SUSPENDIDO'
+        };
+
+        const style = styles[status] || styles['active'];
+        const label = labels[status] || status.toUpperCase();
+
+        return `<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold border ${style}">${label}</span>`;
+    }
+
+    function updateStats(cases) {
+        // Simple client-side stats calculation for now
+        // Ideally this should come from an API
+        const total = cases.length;
+        const active = cases.filter(c => c.caseStatus === 'active' || c.caseStatus === 'open').length;
+        const intake = cases.filter(c => c.caseStatus === 'intake').length;
+        const closed = cases.filter(c => c.caseStatus === 'closed').length;
+
+        animateValue('totalCount', parseInt(document.getElementById('totalCount').innerText) || 0, total, 1000);
+        animateValue('activeCount', parseInt(document.getElementById('activeCount').innerText) || 0, active, 1000);
+        animateValue('intakeCount', parseInt(document.getElementById('intakeCount').innerText) || 0, intake, 1000);
+        animateValue('closedCount', parseInt(document.getElementById('closedCount').innerText) || 0, closed, 1000);
+    }
+
+    function animateValue(id, start, end, duration) {
+        const obj = document.getElementById(id);
+        if (!obj) return;
+        
+        // If it's the first load (skeleton), start from 0
+        if (obj.querySelector('.skeleton')) start = 0;
+
+        let startTimestamp = null;
+        const step = (timestamp) => {
+            if (!startTimestamp) startTimestamp = timestamp;
+            const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+            obj.innerHTML = Math.floor(progress * (end - start) + start);
+            if (progress < 1) {
+                window.requestAnimationFrame(step);
+            }
+        };
+        window.requestAnimationFrame(step);
+    }
+
+    function debounce(func, wait) {
+        let timeout;
+        return function executedFunction(...args) {
+            const later = () => {
+                clearTimeout(timeout);
+                func(...args);
+            };
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+        };
+    }
+
+    // Modal placeholders
+    function openAssignModal(id) {
+        console.log('Open assign modal for', id);
+        // Implement modal logic later
+    }
+
+    // Start
+    init();
+
+</script>
+</body>
+</html>

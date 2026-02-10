@@ -1,0 +1,679 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// --- CORE: Organization & Users ---
+
+// --- CORE: Organization & Users ---
+
+model Organization {
+  id        String   @id @default(uuid()) @db.Uuid
+  name      String   @db.VarChar(200)
+  nit       String?  @unique @db.VarChar(30)
+  country   String?  @db.VarChar(80)
+  city      String?  @db.VarChar(80)
+  timezone  String   @default("America/Bogota") @db.VarChar(50)
+  is_active Boolean  @default(true)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  users            User[]
+  roles            Role[]
+  practiceAreas    PracticeArea[]    @relation("OrgPracticeAreas")
+  auditLogs        AuditLog[]
+  documents        Document[]
+  contracts        Contract[]
+  clients          Client[]
+  emailLogs        EmailLog[]
+  invoices         Invoice[]
+  proceduralStages ProceduralStage[]
+  tasks            Task[]
+  alerts           Alert[]
+  cases            Case[]
+
+  @@map("organizations")
+}
+
+model User {
+  id                 String    @id @default(uuid()) @db.Uuid
+  organizationId     String    @map("organization_id") @db.Uuid
+  email              String    @unique @db.VarChar(254)
+  phone              String?   @db.VarChar(30)
+  avatarUrl          String?   @map("avatar_url") @db.VarChar(500)
+  passwordHash       String?   @map("password_hash") @db.Text
+  fullName           String    @map("full_name") @db.VarChar(200)
+  status             String    @default("active") @db.VarChar(20)
+  lastLoginAt        DateTime? @map("last_login_at")
+  mustChangePassword Boolean   @default(false) @map("must_change_password")
+  twoFactorEnabled   Boolean   @default(false) @map("two_factor_enabled")
+  createdAt          DateTime  @default(now()) @map("created_at")
+  updatedAt          DateTime  @updatedAt @map("updated_at")
+
+  // Relations
+  organization Organization   @relation(fields: [organizationId], references: [id])
+  profile      LawyerProfile?
+
+  userRoles       UserRole[] // Explicit N-N
+  auditLogs       AuditLog[]
+  documents       Document[] // Uploaded documents
+  contracts       Contract[] // Created contracts
+  clientUsers     ClientUser[]
+  caseParties     CaseParty[] // Parties in cases
+  createdCases    Case[]              @relation("CaseCreator")
+  contractSigners ContractSigner[]
+  caseAssignments CaseAssignment[]
+  timelineEvents  CaseTimelineEvent[]
+  tasks           Task[]              @relation("TaskAssignedTo")
+  alerts          Alert[]
+  caseNotes       CaseNote[]
+  sentMessages    CaseMessage[]
+
+  @@map("users")
+}
+
+model Role {
+  id             String   @id @default(uuid()) @db.Uuid
+  organizationId String   @map("organization_id") @db.Uuid
+  name           String   @db.VarChar(60)
+  description    String?  @db.Text
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  organization    Organization     @relation(fields: [organizationId], references: [id])
+  userRoles       UserRole[]
+  rolePermissions RolePermission[]
+
+  @@unique([organizationId, name])
+  @@map("roles")
+}
+
+model Permission {
+  id          String   @id @default(uuid()) @db.Uuid
+  code        String   @unique @db.VarChar(80)
+  description String?  @db.Text
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  rolePermissions RolePermission[]
+
+  @@map("permissions")
+}
+
+// Explicit Join Table: user_roles
+model UserRole {
+  userId String @map("user_id") @db.Uuid
+  roleId String @map("role_id") @db.Uuid
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role Role @relation(fields: [roleId], references: [id], onDelete: Cascade)
+
+  @@id([userId, roleId])
+  @@index([roleId])
+  @@map("user_roles")
+}
+
+// Explicit Join Table: role_permissions
+model RolePermission {
+  roleId       String @map("role_id") @db.Uuid
+  permissionId String @map("permission_id") @db.Uuid
+
+  role       Role       @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  permission Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+
+  @@id([roleId, permissionId])
+  @@map("role_permissions")
+}
+
+model AuditLog {
+  id             String   @id @default(uuid()) @db.Uuid
+  organizationId String   @map("organization_id") @db.Uuid
+  actorUserId    String?  @map("actor_user_id") @db.Uuid
+  action         String   @db.VarChar(80)
+  entityType     String   @map("entity_type") @db.VarChar(60)
+  entityId       String   @map("entity_id") @db.Uuid
+  metadata       Json?    @db.JsonB
+  ipAddress      String?  @map("ip_address") @db.VarChar(60)
+  userAgent      String?  @map("user_agent") @db.Text
+  createdAt      DateTime @default(now()) @map("created_at")
+
+  // Relations
+  organization Organization @relation(fields: [organizationId], references: [id])
+  actor        User?        @relation(fields: [actorUserId], references: [id])
+
+  @@index([organizationId, createdAt(sort: Desc)])
+  @@index([entityType, entityId])
+  @@map("audit_logs")
+}
+
+// --- BUSINESS: Lawyer Profile & Practice Areas ---
+
+model LawyerProfile {
+  id                      String   @id @default(uuid()) @db.Uuid
+  organizationId          String   @map("organization_id") @db.Uuid
+  userId                  String   @unique @map("user_id") @db.Uuid
+  professionalCardNumber  String?  @map("professional_card_number") @db.VarChar(60)
+  professionalCardCountry String?  @map("professional_card_country") @db.VarChar(80)
+  bio                     String?  @db.Text
+  yearsExperience         Int      @default(0) @map("years_experience")
+  hourlyRate              Decimal? @map("hourly_rate") @db.Decimal(14, 2)
+  isFeatured              Boolean  @default(false) @map("is_featured")
+  availabilityStatus      String   @default("available") @map("availability_status") @db.VarChar(20) // available|busy|off
+  ratingAvg               Decimal? @map("rating_avg") @db.Decimal(3, 2)
+  casesCapacity           Int?     @map("cases_capacity")
+  createdAt               DateTime @default(now()) @map("created_at")
+  updatedAt               DateTime @default(now()) @updatedAt @map("updated_at")
+
+  // Relations
+  user             User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
+  practices        LawyerPracticeArea[]
+  experiences      LawyerExperience[]
+  lawyerEducations LawyerEducation[]
+
+  @@map("lawyer_profiles")
+}
+
+model PracticeArea {
+  id             String   @id @default(uuid()) @db.Uuid
+  organizationId String   @map("organization_id") @db.Uuid
+  name           String   @db.VarChar(120)
+  description    String?  @db.Text
+  createdAt      DateTime @default(now()) @map("created_at")
+
+  // Relations
+  organization Organization         @relation("OrgPracticeAreas", fields: [organizationId], references: [id])
+  lawyers      LawyerPracticeArea[]
+  cases        Case[]
+  contracts    Contract[]
+
+  @@map("practice_areas")
+}
+
+model LawyerPracticeArea {
+  lawyerProfileId String @map("lawyer_profile_id") @db.Uuid
+  practiceAreaId  String @map("practice_area_id") @db.Uuid
+  level           String @default("senior") @db.VarChar(20) // junior|senior|experto
+
+  lawyerProfile LawyerProfile @relation(fields: [lawyerProfileId], references: [id], onDelete: Cascade)
+  practiceArea  PracticeArea  @relation(fields: [practiceAreaId], references: [id], onDelete: Cascade)
+
+  @@id([lawyerProfileId, practiceAreaId])
+  @@index([practiceAreaId])
+  @@map("lawyer_practice_areas")
+}
+
+model LawyerExperience {
+  id              String    @id @default(uuid()) @db.Uuid
+  lawyerProfileId String    @map("lawyer_profile_id") @db.Uuid
+  companyOrEntity String    @map("company_or_entity") @db.VarChar(200)
+  roleTitle       String    @map("role_title") @db.VarChar(200)
+  startDate       DateTime  @map("start_date") @db.Date
+  endDate         DateTime? @map("end_date") @db.Date
+  description     String?   @db.Text
+  createdAt       DateTime  @default(now()) @map("created_at")
+  updatedAt       DateTime  @default(now()) @updatedAt @map("updated_at")
+
+  // Relations
+  lawyerProfile LawyerProfile @relation(fields: [lawyerProfileId], references: [id], onDelete: Cascade)
+
+  @@index([lawyerProfileId])
+  @@map("lawyer_experiences")
+}
+
+model LawyerEducation {
+  id              String   @id @default(uuid()) @db.Uuid
+  lawyerProfileId String   @map("lawyer_profile_id") @db.Uuid
+  institution     String   @db.VarChar(200)
+  degree          String   @db.VarChar(80)
+  field           String?  @db.VarChar(120)
+  startYear       Int?     @map("start_year") @db.SmallInt
+  endYear         Int?     @map("end_year") @db.SmallInt
+  description     String?  @db.Text
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @default(now()) @updatedAt @map("updated_at")
+
+  lawyerProfile LawyerProfile @relation(fields: [lawyerProfileId], references: [id], onDelete: Cascade)
+
+  @@map("lawyer_education")
+}
+
+model Client {
+  id                     String   @id @default(uuid()) @db.Uuid
+  organizationId         String   @map("organization_id") @db.Uuid
+  clientType             String   @map("client_type") @db.VarChar(10) // PERSON|COMPANY
+  fullNameOrBusinessName String   @map("full_name_or_business_name") @db.VarChar(220)
+  documentType           String?  @map("document_type") @db.VarChar(10)
+  documentNumber         String?  @map("document_number") @db.VarChar(40)
+  email                  String?  @db.VarChar(254)
+  phone                  String?  @db.VarChar(30)
+  address                String?  @db.Text
+  status                 String   @default("active") @db.VarChar(20)
+  createdFromLeadId      String?  @map("created_from_lead_id") @db.Uuid
+  createdAt              DateTime @default(now()) @map("created_at")
+  updatedAt              DateTime @default(now()) @updatedAt @map("updated_at")
+
+  // Relations
+  organization Organization @relation(fields: [organizationId], references: [id])
+  cases        Case[]
+  users        ClientUser[]
+  contracts    Contract[]
+  invoices     Invoice[]
+
+  @@index([organizationId, documentNumber])
+  @@index([email])
+  @@index([phone])
+  @@map("clients")
+}
+
+model ClientUser {
+  clientId     String @map("client_id") @db.Uuid
+  userId       String @map("user_id") @db.Uuid
+  relationship String @default("titular") @db.VarChar(30)
+
+  client Client @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([clientId, userId])
+  @@map("client_users")
+}
+
+model Case {
+  id                   String    @id @default(uuid()) @db.Uuid
+  organizationId       String    @map("organization_id") @db.Uuid
+  clientId             String    @map("client_id") @db.Uuid
+  practiceAreaId       String    @map("practice_area_id") @db.Uuid
+  caseNumberInternal   String    @map("case_number_internal") @db.VarChar(40)
+  title                String    @db.VarChar(220)
+  description          String?   @db.Text
+  caseStatus           String    @default("intake") @map("case_status") @db.VarChar(20) // intake|active|suspended|closed|archived
+  documentRequestActive Boolean  @default(false) @map("document_request_active")
+  lastReminderSentAt    DateTime? @map("last_reminder_sent_at")
+  openedAt             DateTime  @default(now()) @map("opened_at")
+  closedAt             DateTime? @map("closed_at")
+  confidentialityLevel String    @default("normal") @map("confidentiality_level") @db.VarChar(10) // normal|alta
+  createdBy            String?   @map("created_by") @db.Uuid
+  createdAt            DateTime  @default(now()) @map("created_at")
+  updatedAt            DateTime  @default(now()) @updatedAt @map("updated_at")
+
+  // Relations
+  organization Organization        @relation(fields: [organizationId], references: [id])
+  client       Client              @relation(fields: [clientId], references: [id], onDelete: Restrict)
+  practiceArea PracticeArea        @relation(fields: [practiceAreaId], references: [id])
+  creator      User?               @relation("CaseCreator", fields: [createdBy], references: [id])
+  documents    DocumentLink[]
+  parties      CaseParty[]
+  assignments  CaseAssignment[]
+  timeline     CaseTimelineEvent[]
+  tasks        Task[]
+  alerts       Alert[]
+  notes        CaseNote[]
+  messages     CaseMessage[]
+  contracts    Contract[]
+  invoices     Invoice[]
+
+  @@unique([organizationId, caseNumberInternal])
+  @@index([organizationId, caseStatus])
+  @@index([clientId])
+  @@map("cases")
+}
+
+model CaseParty {
+  id                     String   @id @default(uuid()) @db.Uuid
+  caseId                 String   @map("case_id") @db.Uuid
+  partyRole              String   @map("party_role") @db.VarChar(20) // CLIENT|OPPOSING|THIRD|WITNESS
+  fullNameOrBusinessName String   @map("full_name_or_business_name") @db.VarChar(220)
+  documentNumber         String?  @map("document_number") @db.VarChar(40)
+  contactEmail           String?  @map("contact_email") @db.VarChar(254)
+  contactPhone           String?  @map("contact_phone") @db.VarChar(30)
+  notes                  String?  @db.Text
+  createdAt              DateTime @default(now()) @map("created_at")
+  updatedAt              DateTime @default(now()) @updatedAt @map("updated_at")
+
+  // Relations
+  case   Case    @relation(fields: [caseId], references: [id], onDelete: Cascade)
+  user   User?   @relation(fields: [userId], references: [id])
+  userId String? @db.Uuid
+
+  @@index([caseId, partyRole])
+  @@map("case_parties")
+}
+
+model CaseAssignment {
+  id             String    @id @default(uuid()) @db.Uuid
+  caseId         String    @map("case_id") @db.Uuid
+  assignedUserId String    @map("assigned_user_id") @db.Uuid
+  assignmentRole String    @map("assignment_role") @db.VarChar(20) // LEAD_LAWYER|SUPPORT_LAWYER|OPERATOR|PARALEGAL|COMMERCIAL
+  assignedAt     DateTime  @default(now()) @map("assigned_at")
+  endedAt        DateTime? @map("ended_at")
+  isPrimary      Boolean   @default(false) @map("is_primary")
+  createdAt      DateTime  @default(now()) @map("created_at")
+  updatedAt      DateTime  @default(now()) @updatedAt @map("updated_at")
+
+  // Relations
+  case Case @relation(fields: [caseId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [assignedUserId], references: [id])
+
+  @@index([caseId, assignmentRole])
+  @@index([assignedUserId, assignedAt(sort: Desc)])
+  @@map("case_assignments")
+}
+
+model ProceduralStage {
+  id             String   @id @default(uuid()) @db.Uuid
+  organizationId String   @map("organization_id") @db.Uuid
+  name           String   @db.VarChar(120)
+  description    String?  @db.Text
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @default(now()) @updatedAt @map("updated_at")
+
+  // Relations
+  organization   Organization        @relation(fields: [organizationId], references: [id])
+  timelineEvents CaseTimelineEvent[]
+
+  @@unique([organizationId, name])
+  @@map("procedural_stages")
+}
+
+model CaseTimelineEvent {
+  id                String   @id @default(uuid()) @db.Uuid
+  caseId            String   @map("case_id") @db.Uuid
+  stageId           String?  @map("stage_id") @db.Uuid
+  eventType         String   @map("event_type") @db.VarChar(30) // ACTUACION|AUDIENCIA|AUTO|SENTENCIA|RADICACION|REQUERIMIENTO
+  eventDate         DateTime @map("event_date")
+  summary           String   @db.Text
+  details           String?  @db.Text
+  createdBy         String?  @map("created_by") @db.Uuid
+  relatedDocumentId String?  @map("related_document_id") @db.Uuid
+  createdAt         DateTime @default(now()) @map("created_at")
+  updatedAt         DateTime @default(now()) @updatedAt @map("updated_at")
+
+  // Relations
+  case     Case             @relation(fields: [caseId], references: [id], onDelete: Cascade)
+  stage    ProceduralStage? @relation(fields: [stageId], references: [id])
+  creator  User?            @relation(fields: [createdBy], references: [id])
+  document Document?        @relation(fields: [relatedDocumentId], references: [id])
+
+  @@index([caseId, eventDate(sort: Desc)])
+  @@index([eventType])
+  @@map("case_timeline_events")
+}
+
+model Task {
+  id               String    @id @default(uuid()) @db.Uuid
+  organizationId   String    @map("organization_id") @db.Uuid
+  caseId           String?   @map("case_id") @db.Uuid
+  title            String    @db.VarChar(200)
+  description      String?   @db.Text
+  taskType         String    @map("task_type") @db.VarChar(30) // deadline|follow_up|document_request|hearing_prep
+  priority         String    @default("med") @db.VarChar(10) // low|med|high
+  status           String    @default("todo") @db.VarChar(20) // todo|doing|done|cancelled
+  assignedToUserId String?   @map("assigned_to_user_id") @db.Uuid
+  dueAt            DateTime? @map("due_at")
+  completedAt      DateTime? @map("completed_at")
+  createdAt        DateTime  @default(now()) @map("created_at")
+  updatedAt        DateTime  @default(now()) @updatedAt @map("updated_at")
+
+  // Relations
+  organization Organization @relation(fields: [organizationId], references: [id])
+  case         Case?        @relation(fields: [caseId], references: [id], onDelete: Cascade)
+  assignedTo   User?        @relation("TaskAssignedTo", fields: [assignedToUserId], references: [id])
+
+  @@index([assignedToUserId, status, dueAt])
+  @@index([caseId, dueAt])
+  @@map("tasks")
+}
+
+model Alert {
+  id              String    @id @default(uuid()) @db.Uuid
+  organizationId  String    @map("organization_id") @db.Uuid
+  caseId          String?   @map("case_id") @db.Uuid
+  taskId          String?   @map("task_id") @db.Uuid
+  alertType       String    @map("alert_type") @db.VarChar(30) // due_soon|overdue|new_message|doc_uploaded
+  recipientUserId String    @map("recipient_user_id") @db.Uuid
+  channel         String    @db.VarChar(15) // in_app|email|whatsapp
+  scheduledAt     DateTime  @map("scheduled_at")
+  sentAt          DateTime? @map("sent_at")
+  status          String    @default("pending") @db.VarChar(20) // pending|sent|failed
+  payload         Json?     @db.JsonB
+  createdAt       DateTime  @default(now()) @map("created_at")
+  updatedAt       DateTime  @default(now()) @updatedAt @map("updated_at")
+
+  // Relations
+  organization Organization @relation(fields: [organizationId], references: [id])
+  case         Case?        @relation(fields: [caseId], references: [id], onDelete: Cascade)
+  recipient    User         @relation(fields: [recipientUserId], references: [id])
+
+  @@index([recipientUserId, status, scheduledAt])
+  @@index([caseId])
+  @@map("alerts")
+}
+
+model CaseNote {
+  id           String   @id @default(uuid()) @db.Uuid
+  caseId       String   @map("case_id") @db.Uuid
+  authorUserId String   @map("author_user_id") @db.Uuid
+  visibility   String   @db.VarChar(20) // internal|client_visible
+  note         String   @db.Text
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  // Relations
+  case   Case @relation(fields: [caseId], references: [id], onDelete: Cascade)
+  author User @relation(fields: [authorUserId], references: [id])
+
+  @@index([caseId, createdAt(sort: Desc)])
+  @@index([visibility])
+  @@map("case_notes")
+}
+
+model CaseMessage {
+  id           String   @id @default(uuid()) @db.Uuid
+  caseId       String   @map("case_id") @db.Uuid
+  senderUserId String?  @map("sender_user_id") @db.Uuid
+  senderRole   String   @map("sender_role") @db.VarChar(20) // client|lawyer|operator|system
+  messageText  String   @map("message_text") @db.Text
+  isRead       Boolean  @default(false) @map("is_read")
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  //  Relations
+  case   Case @relation(fields: [caseId], references: [id], onDelete: Cascade)
+  sender User? @relation(fields: [senderUserId], references: [id])
+
+  @@index([caseId, createdAt])
+  @@map("case_messages")
+}
+
+model Document {
+  id              String   @id @default(uuid()) @db.Uuid
+  organizationId  String   @map("organization_id") @db.Uuid
+  ownerUserId     String?  @map("owner_user_id") @db.Uuid
+  storageProvider String   @map("storage_provider") @db.VarChar(30) // s3|gcs|azure|local
+  storageKey      String   @map("storage_key") @db.Text
+  fileName        String   @map("file_name") @db.VarChar(255)
+  mimeType        String   @map("mime_type") @db.VarChar(120)
+  sizeBytes       BigInt   @map("size_bytes")
+  sha256          String?  @db.Char(64)
+  isConfidential  Boolean  @default(true) @map("is_confidential")
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @default(now()) @updatedAt @map("updated_at")
+
+  // Relations
+  organization       Organization        @relation(fields: [organizationId], references: [id])
+  owner              User?               @relation(fields: [ownerUserId], references: [id])
+  links              DocumentLink[]
+  contractVersions   ContractVersion[]
+  caseTimelineEvents CaseTimelineEvent[]
+
+  @@index([organizationId, createdAt(sort: Desc)])
+  @@index([sha256])
+  @@map("documents")
+}
+
+model DocumentLink {
+  id             String   @id @default(uuid()) @db.Uuid
+  organizationId String   @map("organization_id") @db.Uuid
+  documentId     String   @map("document_id") @db.Uuid
+  entityType     String   @map("entity_type") @db.VarChar(60) // CASE|CLIENT|CONTRACT
+  entityId       String   @map("entity_id") @db.Uuid
+  docCategory    String   @map("doc_category") @db.VarChar(60) // PODER|DEMANDA|PRUEBA
+  notes          String?  @db.Text
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @default(now()) @updatedAt @map("updated_at")
+
+  // Relations
+  document Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  // Polymorphic relation manually handled by application logic
+  case     Case?    @relation(fields: [entityId], references: [id], map: "DocumentLink_Case_fkey") // Optional link to Case to enforce FK for Cases
+  // Note: For polymorphic relation to multiple tables with strict FKs in Prisma is hard. 
+  // Often we just store UUID and check existence in app, OR add optional FKs for each type.
+  // For now I'll adding explicit optional FK to Case as it is the most common one.
+
+  @@index([entityType, entityId])
+  @@index([docCategory])
+  @@map("document_links")
+}
+
+model Contract {
+  id             String    @id @default(uuid()) @db.Uuid
+  organizationId String    @map("organization_id") @db.Uuid
+  clientId       String    @map("client_id") @db.Uuid
+  caseId         String?   @map("case_id") @db.Uuid
+  contractNumber String    @map("contract_number") @db.VarChar(40)
+  practiceAreaId String?   @map("practice_area_id") @db.Uuid
+  title          String    @db.VarChar(200)
+  status         String    @default("draft") @db.VarChar(20) // draft|sent|signed|cancelled
+  feeType        String    @default("FIXED") @map("fee_type") @db.VarChar(20) // FIXED|PERCENTAGE|MIXED
+  feePercentage  Decimal?  @map("fee_percentage") @db.Decimal(5, 2)
+  feeFixed       Decimal?  @map("fee_fixed") @db.Decimal(14, 2)
+  contractValue  Decimal?  @map("contract_value") @db.Decimal(14, 2)
+  currency       String    @default("COP") @db.VarChar(10)
+  signedAt       DateTime? @map("signed_at")
+  createdBy      String?   @map("created_by") @db.Uuid
+  createdAt      DateTime  @default(now()) @map("created_at")
+  updatedAt      DateTime  @default(now()) @updatedAt @map("updated_at")
+
+  // Relations
+  organization Organization      @relation(fields: [organizationId], references: [id])
+  client       Client            @relation(fields: [clientId], references: [id])
+  case         Case?             @relation(fields: [caseId], references: [id])
+  practiceArea PracticeArea?     @relation(fields: [practiceAreaId], references: [id])
+  creator      User?             @relation(fields: [createdBy], references: [id])
+  versions     ContractVersion[]
+  signers      ContractSigner[]
+
+  @@unique([organizationId, contractNumber])
+  @@index([clientId, status])
+  @@map("contracts")
+}
+
+model ContractVersion {
+  id            String   @id @default(uuid()) @db.Uuid
+  contractId    String   @map("contract_id") @db.Uuid
+  versionNumber Int      @map("version_number")
+  documentId    String   @map("document_id") @db.Uuid
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  // Relations
+  contract Contract @relation(fields: [contractId], references: [id], onDelete: Cascade)
+  document Document @relation(fields: [documentId], references: [id])
+
+  @@unique([contractId, versionNumber])
+  @@map("contract_versions")
+}
+
+model ContractSigner {
+  id                String    @id @default(uuid()) @db.Uuid
+  contractId        String    @map("contract_id") @db.Uuid
+  signerType        String    @map("signer_type") @db.VarChar(20) // CLIENT|LAWYER|REPRESENTATIVE
+  signerUserId      String?   @map("signer_user_id") @db.Uuid
+  signerName        String    @map("signer_name") @db.VarChar(200)
+  signerEmail       String    @map("signer_email") @db.VarChar(254)
+  status            String    @default("pending") @db.VarChar(20) // pending|signed|rejected
+  signedAt          DateTime? @map("signed_at")
+  signatureEvidence Json?     @map("signature_evidence") @db.JsonB
+  createdAt         DateTime  @default(now()) @map("created_at")
+  updatedAt         DateTime  @default(now()) @updatedAt @map("updated_at")
+
+  // Relations
+  contract Contract @relation(fields: [contractId], references: [id], onDelete: Cascade)
+  user     User?    @relation(fields: [signerUserId], references: [id])
+
+  @@index([contractId, status])
+  @@map("contract_signers")
+}
+
+model EmailLog {
+  id                String    @id @default(uuid()) @db.Uuid
+  organizationId    String    @map("organization_id") @db.Uuid
+  entityType        String    @map("entity_type") @db.VarChar(60) // CASE|CONTRACT...
+  entityId          String    @map("entity_id") @db.Uuid
+  toEmail           String    @map("to_email") @db.VarChar(254)
+  subject           String    @db.VarChar(200)
+  bodyPreview       String?   @map("body_preview") @db.Text
+  providerMessageId String?   @map("provider_message_id") @db.VarChar(120)
+  status            String    @default("queued") @db.VarChar(20) // queued|sent|failed
+  sentAt            DateTime? @map("sent_at")
+  createdAt         DateTime  @default(now()) @map("created_at")
+
+  // Relations
+  organization Organization @relation(fields: [organizationId], references: [id])
+
+  @@index([entityType, entityId])
+  @@index([organizationId, status, createdAt(sort: Desc)])
+  @@map("email_log")
+}
+
+// --- BILLING: Invoices & Payments ---
+
+model Invoice {
+  id             String    @id @default(uuid()) @db.Uuid
+  organizationId String    @map("organization_id") @db.Uuid
+  clientId       String    @map("client_id") @db.Uuid
+  caseId         String?   @map("case_id") @db.Uuid
+  invoiceNumber  String    @map("invoice_number") @db.VarChar(40)
+  status         String    @default("draft") @db.VarChar(20) // draft|issued|paid|overdue|void
+  issueDate      DateTime  @map("issue_date") @db.Date
+  dueDate        DateTime? @map("due_date") @db.Date
+  subtotal       Decimal   @default(0) @db.Decimal(14, 2)
+  tax            Decimal   @default(0) @db.Decimal(14, 2)
+  total          Decimal   @default(0) @db.Decimal(14, 2)
+  currency       String    @default("COP") @db.VarChar(10)
+  createdAt      DateTime  @default(now()) @map("created_at")
+  updatedAt      DateTime  @default(now()) @updatedAt @map("updated_at")
+
+  // Relations
+  organization Organization @relation(fields: [organizationId], references: [id])
+  client       Client       @relation(fields: [clientId], references: [id])
+  case         Case?        @relation(fields: [caseId], references: [id])
+  payments     Payment[]
+
+  @@unique([organizationId, invoiceNumber])
+  @@index([clientId, status])
+  @@map("invoices")
+}
+
+model Payment {
+  id          String   @id @default(uuid()) @db.Uuid
+  invoiceId   String   @map("invoice_id") @db.Uuid
+  paymentDate DateTime @map("payment_date") @db.Date
+  amount      Decimal  @db.Decimal(14, 2)
+  method      String   @db.VarChar(20) // transfer|cash|card|pse
+  reference   String?  @db.VarChar(120)
+  proofImage  String?  @map("proof_image") @db.VarChar(500)
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @default(now()) @updatedAt @map("updated_at")
+
+  // Relations
+  invoice Invoice @relation(fields: [invoiceId], references: [id])
+
+  @@map("payments")
+}

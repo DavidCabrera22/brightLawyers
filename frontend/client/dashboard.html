@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html class="light" lang="es">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>BrightLawyers - Portal de Clientes</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "client-dark": "#0B1120", // Darker sidebar
+                        "client-primary": "#1e3a8a", 
+                        "client-accent": "#3b82f6",
+                        "client-bg": "#F8FAFC",
+                        "client-text": "#1e293b",
+                        "status-active": "#dcfce7",
+                        "status-active-text": "#166534",
+                        "status-pending": "#f3f4f6",
+                        "status-pending-text": "#4b5563",
+                    },
+                    fontFamily: {
+                        "sans": ["'Plus Jakarta Sans'", "sans-serif"],
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #F8FAFC; }
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 24px;
+            color: #94a3b8;
+            font-weight: 500;
+            transition: all 0.2s;
+            border-left: 3px solid transparent;
+        }
+        .sidebar-link:hover {
+            color: white;
+            background: rgba(255,255,255,0.05);
+        }
+        .sidebar-link.active {
+            background-color: rgba(59, 130, 246, 0.1);
+            color: #ffffff;
+            border-left-color: #3b82f6;
+        }
+        .card-shadow {
+            box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+        }
+    </style>
+</head>
+<body class="text-client-text h-screen flex overflow-hidden">
+
+    <!-- Sidebar -->
+    <aside class="w-64 bg-client-dark flex flex-col flex-shrink-0 z-20">
+        <!-- Logo Area -->
+        <div class="h-20 flex items-center px-6 border-b border-gray-800">
+            <div class="flex items-center gap-3">
+                <div class="h-8 w-8 rounded bg-client-primary flex items-center justify-center text-white">
+                    <span class="material-symbols-outlined text-lg">balance</span>
+                </div>
+                <div>
+                    <h1 class="text-white font-bold leading-none tracking-wide">MI PROCESO</h1>
+                    <p class="text-xs text-gray-400 mt-1">Portal de Cliente</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="flex-1 overflow-y-auto py-6 space-y-1">
+            <a class="sidebar-link active" href="dashboard.html">
+                <span class="material-symbols-outlined">grid_view</span>
+                Inicio
+            </a>
+            <a class="sidebar-link" href="cases.html">
+                <span class="material-symbols-outlined">folder</span>
+                Mis Casos
+            </a>
+            <a class="sidebar-link" href="contracts.html">
+                <span class="material-symbols-outlined">description</span>
+                Contratos
+            </a>
+            <a class="sidebar-link" href="documents.html">
+                <span class="material-symbols-outlined">attach_file</span>
+                Documentos
+            </a>
+            <a class="sidebar-link" href="messages.html">
+                <span class="material-symbols-outlined">chat</span>
+                Mensajes
+            </a>
+            <a class="sidebar-link" href="profile.html">
+                <span class="material-symbols-outlined">person</span>
+                Mi Perfil
+            </a>
+        </nav>
+
+        <!-- Bottom Actions -->
+        <div class="p-4 border-t border-gray-800">
+            <button onclick="logout()" class="flex items-center gap-3 px-4 py-2 text-red-400 hover:text-red-300 transition-colors w-full text-sm font-medium">
+                <span class="material-symbols-outlined">logout</span>
+                Cerrar Sesión
+            </button>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 flex flex-col h-full overflow-hidden bg-client-bg">
+        
+        <!-- Header -->
+        <header class="h-20 bg-white border-b border-gray-100 flex items-center justify-between px-8 flex-shrink-0">
+            <div>
+                <h2 class="text-xl font-bold text-gray-900" id="headerGreeting">Hola, Cliente</h2>
+                <p class="text-sm text-gray-500">Bienvenido de nuevo a tu portal legal.</p>
+            </div>
+            
+            <div class="flex items-center gap-6">
+                <button class="relative text-gray-400 hover:text-client-primary transition-colors">
+                    <span class="material-symbols-outlined">notifications</span>
+                    <span class="absolute top-0 right-0 h-2 w-2 bg-red-500 rounded-full border-2 border-white"></span>
+                </button>
+                
+                <div class="flex items-center gap-3 pl-6 border-l border-gray-100">
+                    <div class="text-right hidden sm:block">
+                        <p class="text-sm font-bold text-gray-900" id="headerUserName">Cargando...</p>
+                        <p class="text-xs text-gray-500">Cliente Premium</p>
+                    </div>
+                    <div class="h-10 w-10 rounded-full bg-client-dark text-white flex items-center justify-center font-bold text-sm" id="headerUserInitials">
+                        --
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Dashboard Content -->
+        <div class="flex-1 overflow-y-auto p-8">
+            <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8">
+                
+                <!-- Left Column (4 cols) -->
+                <div class="lg:col-span-4 flex flex-col gap-8">
+                    
+                    <!-- Status Card -->
+                    <div class="bg-[#1e293b] text-white rounded-xl p-6 shadow-lg relative overflow-hidden flex-shrink-0">
+                        <!-- Decorative circle -->
+                        <div class="absolute -right-10 -top-10 w-40 h-40 bg-white opacity-5 rounded-full blur-2xl"></div>
+                        
+                        <div class="relative z-10">
+                            <p class="text-xs font-bold tracking-wider text-gray-400 uppercase mb-4">ESTADO ACTUAL</p>
+                            
+                            <h3 class="text-2xl font-bold text-white mb-2 capitalize" id="statusTitle">CASO: REVISIÓN</h3>
+                            <p class="text-sm text-gray-400 mb-8 leading-relaxed">No hay requerimientos urgentes pendientes por su parte en este momento.</p>
+                            
+                            <button onclick="window.location.href='messages.html'" class="w-full bg-white text-client-dark font-bold py-3 px-4 rounded-lg hover:bg-gray-50 transition-colors flex items-center justify-center gap-2 text-sm">
+                                <span class="material-symbols-outlined text-[18px]">chat_bubble</span>
+                                Contactar Abogado
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Upcoming Events -->
+                    <div class="bg-white rounded-xl p-6 card-shadow h-full min-h-[300px] flex flex-col">
+                        <h3 class="text-sm font-bold text-gray-900 uppercase tracking-wide mb-6">PRÓXIMOS EVENTOS</h3>
+                        
+                        <div id="eventsContainer" class="flex-1 flex flex-col items-center justify-center text-center">
+                            <div class="h-12 w-12 bg-gray-50 rounded-full flex items-center justify-center mb-3">
+                                <span class="material-symbols-outlined text-gray-400">calendar_today</span>
+                            </div>
+                            <p class="text-sm text-gray-500 italic">No hay eventos próximos programados.</p>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Right Column (8 cols) -->
+                <div class="lg:col-span-8 flex flex-col gap-8">
+                    
+                    <!-- Cases Table -->
+                    <div class="bg-white rounded-xl card-shadow overflow-hidden">
+                        <div class="px-6 py-5 border-b border-gray-100 flex justify-between items-center">
+                            <h3 class="text-sm font-bold text-gray-900 uppercase tracking-wide">MIS CASOS</h3>
+                            <a href="cases.html" class="text-xs font-bold text-client-primary hover:text-blue-700 uppercase">VER TODO</a>
+                        </div>
+                        
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left">
+                                <thead>
+                                    <tr class="text-xs font-bold text-gray-400 uppercase border-b border-gray-50">
+                                        <th class="px-6 py-4">Caso / Referencia</th>
+                                        <th class="px-6 py-4">Estado</th>
+                                        <th class="px-6 py-4">Última Actualización</th>
+                                        <th class="px-6 py-4 text-right">Detalles</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="casesTableBody" class="divide-y divide-gray-50">
+                                    <tr>
+                                        <td colspan="4" class="px-6 py-8 text-center text-gray-400 text-sm">
+                                            Cargando información...
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Shared Documents -->
+                    <div class="bg-white rounded-xl card-shadow overflow-hidden">
+                        <div class="px-6 py-5 border-b border-gray-100 flex justify-between items-center">
+                            <h3 class="text-sm font-bold text-gray-900 uppercase tracking-wide">DOCUMENTOS COMPARTIDOS</h3>
+                            <a href="documents.html" class="text-xs font-bold text-client-primary hover:text-blue-700 uppercase">VER TODO</a>
+                        </div>
+                        
+                        <div id="documentsList" class="divide-y divide-gray-50">
+                            <div class="px-6 py-8 text-center text-gray-400 text-sm">
+                                Cargando documentos...
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+            
+            <!-- Footer -->
+            <footer class="mt-12 pt-8 border-t border-gray-200 flex flex-col sm:flex-row justify-between items-center text-xs text-gray-400">
+                <p>&copy; 2024 Mi Proceso Legal S.A.S. Todos los derechos reservados.</p>
+                <div class="flex gap-6 mt-4 sm:mt-0">
+                    <a href="#" class="hover:text-gray-600">Términos de Servicio</a>
+                    <a href="#" class="hover:text-gray-600">Política de Privacidad</a>
+                    <a href="#" class="hover:text-gray-600">Soporte</a>
+                </div>
+            </footer>
+
+        </div>
+    </main>
+
+    <!-- Floating Theme Toggle (Optional) -->
+    <button class="fixed bottom-8 right-8 h-12 w-12 bg-white rounded-full shadow-lg flex items-center justify-center text-gray-600 hover:text-client-primary transition-colors z-50">
+        <span class="material-symbols-outlined">dark_mode</span>
+    </button>
+
+    <script src="../assets/js/auth.js"></script>
+    <script src="../assets/js/notifications.js"></script>
+<script>
+    let authToken = localStorage.getItem('token');
+
+    function getAuthHeaders() {
+        return {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${authToken}`
+        };
+    }
+
+    async function fetchAPI(endpoint, options = {}) {
+        const response = await fetch(`${API_URL}${endpoint}`, {
+            ...options,
+            headers: {
+                ...getAuthHeaders(),
+                ...options.headers
+            }
+        });
+        if (response.status === 401) {
+            logout();
+            return null;
+        }
+        return response.json();
+    }
+
+    async function initDashboard() {
+        if (!authToken) {
+            window.location.href = '../public/login.html';
+            return;
+        }
+        
+        try {
+            const data = await fetchAPI('/auth/me');
+            if (data && data.user) {
+                const user = data.user;
+                const firstName = user.fullName ? user.fullName.split(' ')[0] : 'Cliente';
+                
+                document.getElementById('headerGreeting').textContent = `Hola, ${firstName}`;
+                document.getElementById('headerUserName').textContent = user.fullName || user.name;
+                
+                const initials = (user.fullName || user.name || 'C').substring(0,2).toUpperCase();
+                document.getElementById('headerUserInitials').textContent = initials;
+                
+                loadCases();
+                loadDocuments();
+                loadEvents();
+            }
+        } catch (error) {
+            console.error('Error loading profile:', error);
+        }
+    }
+
+    function formatBytes(bytes, decimals = 2) {
+        if (!+bytes) return '0 Bytes';
+        const k = 1024;
+        const dm = decimals < 0 ? 0 : decimals;
+        const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+        const i = Math.floor(Math.log(bytes) / Math.log(k));
+        return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`;
+    }
+
+    async function loadCases() {
+        try {
+            const data = await fetchAPI('/cases');
+            const cases = data ? (data.cases || []) : [];
+            const tbody = document.getElementById('casesTableBody');
+            tbody.innerHTML = '';
+
+            if (cases.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="4" class="px-6 py-8 text-center text-gray-400 text-sm">
+                            No tienes casos activos.
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            cases.slice(0, 5).forEach(c => {
+                const tr = document.createElement('tr');
+                tr.className = 'group hover:bg-gray-50 transition-colors';
+                
+                const statusClass = c.caseStatus === 'active' 
+                    ? 'bg-status-active text-status-active-text' 
+                    : 'bg-status-pending text-status-pending-text';
+                
+                tr.innerHTML = `
+                    <td class="px-6 py-4">
+                        <div class="font-bold text-gray-900 text-sm group-hover:text-client-primary transition-colors">${c.title}</div>
+                        <div class="text-xs text-gray-400 uppercase tracking-wider mt-0.5">${c.caseNumberInternal || 'JUDGE-2024-001'}</div>
+                    </td>
+                    <td class="px-6 py-4">
+                        <span class="px-2.5 py-1 rounded-full text-xs font-bold ${statusClass}">
+                            ${c.caseStatus === 'active' ? 'Activo' : c.caseStatus}
+                        </span>
+                    </td>
+                    <td class="px-6 py-4 text-sm text-gray-500">
+                        ${new Date(c.updatedAt).toLocaleDateString()}
+                    </td>
+                    <td class="px-6 py-4 text-right">
+                        <a href="cases.html?id=${c.id}" class="text-[10px] font-bold text-gray-900 hover:text-client-primary uppercase flex items-center justify-end gap-1">
+                            VER DETALLES
+                        </a>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+            
+            // Update Status Card
+            if (cases.length > 0) {
+                const active = cases.find(c => c.caseStatus === 'active') || cases[0];
+                document.getElementById('statusTitle').textContent = active.title;
+            }
+
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    async function loadDocuments() {
+        try {
+            const data = await fetchAPI('/documents');
+            const docs = data ? (data.documents || []) : [];
+            const container = document.getElementById('documentsList');
+            container.innerHTML = '';
+
+            if (docs.length === 0) {
+                container.innerHTML = `
+                    <div class="px-6 py-8 text-center text-gray-400 text-sm">
+                        No hay documentos compartidos.
+                    </div>
+                `;
+                return;
+            }
+
+            docs.slice(0, 5).forEach(doc => {
+                const isPdf = doc.mimeType && doc.mimeType.includes('pdf');
+                const iconColor = isPdf ? 'text-red-500 bg-red-50' : 'text-blue-500 bg-blue-50';
+                const iconName = isPdf ? 'picture_as_pdf' : 'image';
+                
+                const div = document.createElement('div');
+                div.className = 'px-6 py-4 flex items-center justify-between hover:bg-gray-50 transition-colors cursor-pointer group';
+                div.onclick = () => window.location.href = 'documents.html';
+
+                div.innerHTML = `
+                    <div class="flex items-center gap-4">
+                        <div class="h-10 w-10 rounded-lg ${iconColor} flex items-center justify-center flex-shrink-0">
+                            <span class="material-symbols-outlined text-xl">${iconName}</span>
+                        </div>
+                        <div>
+                            <h4 class="text-sm font-bold text-gray-900 group-hover:text-client-primary transition-colors line-clamp-1">${doc.fileName}</h4>
+                            <p class="text-xs text-gray-400 mt-0.5">${formatBytes(doc.sizeBytes)} • ${new Date(doc.createdAt).toLocaleDateString()}</p>
+                        </div>
+                    </div>
+                    <span class="material-symbols-outlined text-gray-300 group-hover:text-client-primary text-lg">chevron_right</span>
+                `;
+                container.appendChild(div);
+            });
+
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    async function loadEvents() {
+        try {
+            const data = await fetchAPI('/tasks?upcoming=true');
+            const tasks = data ? (data.tasks || []) : [];
+            const container = document.getElementById('eventsContainer');
+
+            if (tasks.length === 0) {
+                container.innerHTML = `
+                    <div class="h-12 w-12 bg-gray-50 rounded-full flex items-center justify-center mb-3">
+                        <span class="material-symbols-outlined text-gray-400">calendar_today</span>
+                    </div>
+                    <p class="text-sm text-gray-500 italic">No hay eventos próximos programados.</p>
+                `;
+                return;
+            }
+
+            container.innerHTML = '';
+            container.className = 'space-y-4';
+            
+            tasks.slice(0,3).forEach(task => {
+                const el = document.createElement('div');
+                el.className = 'w-full flex items-center gap-3 p-3 rounded-lg border border-gray-100 hover:border-blue-100 bg-white transition-colors';
+                
+                const date = new Date(task.dueAt);
+                const day = date.getDate();
+                const month = date.toLocaleDateString('es-ES', { month: 'short' }).toUpperCase();
+                
+                el.innerHTML = `
+                     <div class="flex-shrink-0 flex flex-col items-center justify-center w-10 h-10 bg-blue-50 text-client-primary rounded-lg">
+                        <span class="text-[10px] font-bold uppercase leading-none">${month}</span>
+                        <span class="text-sm font-bold leading-none mt-0.5">${day}</span>
+                    </div>
+                    <div class="min-w-0">
+                        <p class="text-sm font-bold text-gray-900 truncate">${task.title}</p>
+                        <p class="text-xs text-gray-500 truncate">${task.description || 'Evento'}</p>
+                    </div>
+                `;
+                container.appendChild(el);
+            });
+
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', initDashboard);
+</script>
+</body>
+</html>

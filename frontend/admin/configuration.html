@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html class="light" lang="es">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>BrightLawyers - Configuración</title>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+    <!-- Material Symbols -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "brand-dark": "#0B1120",      // Sidebar bg (Dark Blue/Black)
+                        "brand-primary": "#1e3a8a",   // Blue 900 (Primary Action)
+                        "brand-accent": "#3b82f6",    // Blue 500 (Highlights)
+                        "brand-secondary": "#334155", // Slate 700
+                        "brand-bg": "#F8FAFC",        // Light background
+                        "brand-surface": "#FFFFFF",   // White surface
+                        "brand-mint": "#eff6ff",      // Blue 50 (Light Blue for active/hover)
+                    },
+                    fontFamily: {
+                        "sans": ["'Plus Jakarta Sans'", "sans-serif"]
+                    },
+                    boxShadow: {
+                        "card": "0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1)",
+                        "card-hover": "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1)",
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1.5rem;
+            color: #94a3b8; /* slate-400 */
+            font-weight: 500;
+            font-size: 0.875rem;
+            transition: all 0.2s;
+            border-left: 3px solid transparent;
+        }
+        .sidebar-link:hover {
+            color: white;
+            background: rgba(255,255,255,0.05);
+        }
+        .sidebar-link.active {
+            background-color: rgba(59, 130, 246, 0.1); /* Blue tint */
+            color: #ffffff;
+            border-left-color: #3b82f6; /* brand-accent */
+        }
+    </style>
+</head>
+<body class="bg-brand-bg text-slate-800 h-screen overflow-hidden flex">
+
+    <!-- Sidebar (Dark) -->
+    <aside class="w-64 bg-brand-dark text-white flex flex-col z-20 shadow-xl flex-shrink-0">
+        <!-- Logo Area -->
+        <div class="h-20 flex items-center px-6 border-b border-gray-800 flex-shrink-0">
+            <div class="flex items-center gap-3">
+                <div class="h-8 w-8 rounded bg-gradient-to-br from-blue-600 to-blue-800 flex items-center justify-center shadow-lg shadow-blue-500/30 text-white">
+                    <span class="material-symbols-outlined text-[20px]">balance</span>
+                </div>
+                <div>
+                    <h1 class="font-bold text-sm leading-tight tracking-wide">BrightLawyers</h1>
+                    <p class="text-[10px] text-gray-400 font-medium tracking-wider uppercase">ADMINISTRACIÓN</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="flex-1 overflow-y-auto py-6">
+            <a class="sidebar-link" href="admin.html">
+                <span class="material-symbols-outlined text-[20px]">dashboard</span>
+                Dashboard
+            </a>
+            <a class="sidebar-link" href="cases.html">
+                <span class="material-symbols-outlined text-[20px]">gavel</span>
+                Casos
+            </a>
+            <a class="sidebar-link" href="tasks.html">
+                <span class="material-symbols-outlined text-[20px]">task_alt</span>
+                Tareas
+            </a>
+            <a class="sidebar-link" href="clients.html">
+                <span class="material-symbols-outlined text-[20px]">groups</span>
+                Clientes
+            </a>
+            <a class="sidebar-link" href="documents.html">
+                <span class="material-symbols-outlined text-[20px]">folder</span>
+                Documentos
+            </a>
+            <a class="sidebar-link" href="contracts.html">
+                <span class="material-symbols-outlined text-[20px]">description</span>
+                Contratos
+            </a>
+            <a class="sidebar-link" href="billing.html">
+                <span class="material-symbols-outlined text-[20px]">payments</span>
+                Facturación
+            </a>
+            <a class="sidebar-link" href="messages.html">
+                <span class="material-symbols-outlined text-[20px]">chat</span>
+                Mensajes
+            </a>
+
+            <div class="mt-6 mb-2 px-6 text-[10px] font-bold text-gray-500 uppercase tracking-wider">Gestión</div>
+            
+            <a class="sidebar-link" href="users.html">
+                <span class="material-symbols-outlined text-[20px]">manage_accounts</span>
+                Equipo Legal
+            </a>
+
+
+            <div class="mt-6 mb-2 px-6 text-[10px] font-bold text-gray-500 uppercase tracking-wider">Sistema</div>
+
+            <a class="sidebar-link active" href="configuration.html">
+                <span class="material-symbols-outlined text-[20px]">settings</span>
+                Configuración
+            </a>
+            <button onclick="logout()" class="w-full sidebar-link text-left hover:text-red-400 hover:bg-white/5">
+                <span class="material-symbols-outlined text-[20px]">logout</span>
+                Cerrar Sesión
+            </button>
+        </nav>
+
+        <!-- User Profile (Bottom) -->
+        <div class="p-4 border-t border-gray-800 bg-black/20">
+            <div class="flex items-center gap-3">
+                <div class="h-9 w-9 rounded-full bg-blue-900 text-blue-100 flex items-center justify-center text-xs font-bold border border-blue-700" id="sidebarAvatar">--</div>
+                <div class="overflow-hidden">
+                    <p class="text-sm font-bold text-gray-200 truncate" id="sidebarName">Cargando...</p>
+                    <p class="text-xs text-gray-500 truncate">Administrador</p>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 flex flex-col h-full overflow-hidden bg-brand-bg relative">
+        
+        <!-- Top Header -->
+        <header class="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-8 flex-shrink-0 z-10">
+            <h2 class="text-lg font-bold text-slate-800">Configuración del Sistema</h2>
+            
+            <div class="flex items-center gap-6">
+                <!-- Search -->
+                <div class="relative hidden md:block w-96">
+                    <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-[20px]">search</span>
+                    <input type="text" placeholder="Buscar configuración..." 
+                           class="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-brand-accent/20 focus:border-brand-accent transition-all outline-none">
+                </div>
+
+                <div class="flex items-center gap-3">
+                    <button class="p-2 text-slate-500 hover:bg-slate-50 rounded-full relative">
+                        <span class="material-symbols-outlined text-[22px]">notifications</span>
+                        <span class="absolute top-2 right-2 h-2 w-2 bg-red-500 rounded-full border border-white"></span>
+                    </button>
+                    <button class="p-2 text-slate-500 hover:bg-slate-50 rounded-full">
+                        <span class="material-symbols-outlined text-[22px]">help</span>
+                    </button>
+                    
+                    <div class="h-8 w-px bg-slate-200 mx-1"></div>
+                    
+                    <div class="flex items-center gap-2 cursor-pointer p-1 hover:bg-slate-50 rounded-lg transition-colors">
+                        <div class="h-8 w-8 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center text-xs font-bold">AD</div>
+                        <span class="text-sm font-medium text-slate-700 hidden sm:block">Admin</span>
+                        <span class="material-symbols-outlined text-slate-400 text-[18px]">expand_more</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Scrollable Content -->
+        <div class="flex-1 overflow-y-auto p-8">
+            <div class="max-w-7xl mx-auto space-y-8">
+                
+                <!-- Page Title -->
+                <div>
+                    <h1 class="text-2xl font-bold text-slate-900">Configuración General</h1>
+                    <p class="text-slate-500 mt-1">Gestiona la información de la organización, áreas de práctica y usuarios del sistema.</p>
+                </div>
+
+                <!-- Organization Settings -->
+                <div class="bg-white rounded-xl border border-slate-100 shadow-card hover:shadow-card-hover transition-all p-6">
+                    <div class="flex justify-between items-center mb-6">
+                        <div>
+                            <h2 class="text-lg font-bold text-slate-900">Información de la Organización</h2>
+                            <p class="text-sm text-slate-500">Actualiza los datos básicos de tu firma legal.</p>
+                        </div>
+                        <button onclick="saveOrganization()" class="px-4 py-2 bg-brand-primary text-white rounded-lg text-sm font-medium hover:bg-blue-800 transition-colors shadow-sm shadow-blue-900/10">
+                            Guardar Cambios
+                        </button>
+                    </div>
+                    <form id="orgForm" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Nombre de la Firma</label>
+                            <input type="text" id="orgName" class="w-full rounded-lg border-slate-200 bg-slate-50 text-slate-900 text-sm focus:ring-brand-accent focus:border-brand-accent transition-all">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">NIT / Identificación Fiscal</label>
+                            <input type="text" id="orgNit" class="w-full rounded-lg border-slate-200 bg-slate-50 text-slate-900 text-sm focus:ring-brand-accent focus:border-brand-accent transition-all">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Ciudad</label>
+                            <input type="text" id="orgCity" class="w-full rounded-lg border-slate-200 bg-slate-50 text-slate-900 text-sm focus:ring-brand-accent focus:border-brand-accent transition-all">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">País</label>
+                            <input type="text" id="orgCountry" class="w-full rounded-lg border-slate-200 bg-slate-50 text-slate-900 text-sm focus:ring-brand-accent focus:border-brand-accent transition-all">
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Practice Areas -->
+                <div class="bg-white rounded-xl border border-slate-100 shadow-card hover:shadow-card-hover transition-all overflow-hidden">
+                    <div class="p-6 border-b border-slate-100 flex justify-between items-center">
+                        <div>
+                            <h2 class="text-lg font-bold text-slate-900">Áreas de Práctica</h2>
+                            <p class="text-sm text-slate-500">Gestiona las especialidades legales ofrecidas.</p>
+                        </div>
+                        <button onclick="openAreaModal()" class="flex items-center gap-2 px-4 py-2 bg-brand-primary text-white rounded-lg text-sm font-medium hover:bg-blue-800 transition-colors shadow-sm shadow-blue-900/10">
+                            <span class="material-symbols-outlined text-[18px]">add</span>
+                            <span>Nueva Área</span>
+                        </button>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-sm">
+                            <thead class="bg-slate-50 text-slate-500 font-semibold border-b border-slate-100 uppercase text-[11px] tracking-wider">
+                                <tr>
+                                    <th class="px-6 py-4">Nombre</th>
+                                    <th class="px-6 py-4">Descripción</th>
+                                    <th class="px-6 py-4 text-right">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="areasTableBody" class="divide-y divide-slate-100">
+                                 <!-- Dynamically loaded -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Create Lawyer -->
+                <div class="bg-white rounded-xl border border-slate-100 shadow-card hover:shadow-card-hover transition-all p-6">
+                    <div class="flex justify-between items-center mb-6">
+                        <div>
+                            <h2 class="text-lg font-bold text-slate-900">Registrar Abogado</h2>
+                            <p class="text-sm text-slate-500">Crea una cuenta para un nuevo abogado con todos sus detalles.</p>
+                        </div>
+                        <button onclick="createLawyer()" class="px-4 py-2 bg-brand-primary text-white rounded-lg text-sm font-medium hover:bg-blue-800 transition-colors shadow-sm shadow-blue-900/10">
+                            Crear Abogado
+                        </button>
+                    </div>
+                    <form id="lawyerForm" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Personal Info -->
+                        <div class="col-span-full">
+                            <h3 class="text-sm font-bold text-brand-primary uppercase tracking-wider mb-4 border-b border-slate-100 pb-2">Información Personal</h3>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Nombre Completo</label>
+                            <input type="text" id="lawyerName" required class="w-full rounded-lg border-slate-200 bg-slate-50 text-slate-900 text-sm focus:ring-brand-accent focus:border-brand-accent transition-all">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Email</label>
+                            <input type="email" id="lawyerEmail" required class="w-full rounded-lg border-slate-200 bg-slate-50 text-slate-900 text-sm focus:ring-brand-accent focus:border-brand-accent transition-all">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Contraseña</label>
+                            <input type="password" id="lawyerPassword" required class="w-full rounded-lg border-slate-200 bg-slate-50 text-slate-900 text-sm focus:ring-brand-accent focus:border-brand-accent transition-all">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Teléfono</label>
+                            <input type="text" id="lawyerPhone" class="w-full rounded-lg border-slate-200 bg-slate-50 text-slate-900 text-sm focus:ring-brand-accent focus:border-brand-accent transition-all">
+                        </div>
+
+                        <!-- Professional Info -->
+                        <div class="col-span-full mt-2">
+                            <h3 class="text-sm font-bold text-brand-primary uppercase tracking-wider mb-4 border-b border-slate-100 pb-2">Información Profesional</h3>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">No. Tarjeta Profesional</label>
+                            <input type="text" id="lawyerCard" class="w-full rounded-lg border-slate-200 bg-slate-50 text-slate-900 text-sm focus:ring-brand-accent focus:border-brand-accent transition-all">
+                        </div>
+                         <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">País de Emisión</label>
+                            <input type="text" id="lawyerCountry" class="w-full rounded-lg border-slate-200 bg-slate-50 text-slate-900 text-sm focus:ring-brand-accent focus:border-brand-accent transition-all">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Años de Experiencia</label>
+                            <input type="number" id="lawyerExperience" min="0" class="w-full rounded-lg border-slate-200 bg-slate-50 text-slate-900 text-sm focus:ring-brand-accent focus:border-brand-accent transition-all">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Tarifa por Hora ($)</label>
+                            <input type="number" id="lawyerRate" min="0" step="0.01" class="w-full rounded-lg border-slate-200 bg-slate-50 text-slate-900 text-sm focus:ring-brand-accent focus:border-brand-accent transition-all">
+                        </div>
+                        <div class="col-span-full">
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Biografía</label>
+                            <textarea id="lawyerBio" rows="3" class="w-full rounded-lg border-slate-200 bg-slate-50 text-slate-900 text-sm focus:ring-brand-accent focus:border-brand-accent transition-all"></textarea>
+                        </div>
+                        
+                        <!-- Practice Areas Selection -->
+                        <div class="col-span-full">
+                            <label class="block text-sm font-medium text-slate-700 mb-2">Áreas de Práctica</label>
+                            <div id="lawyerPracticeAreas" class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                                <!-- Dynamically populated checkboxes -->
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- Practice Area Modal -->
+    <div id="areaModal" class="hidden fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+        <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <div class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm transition-opacity" aria-hidden="true" onclick="closeAreaModal()"></div>
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+            <div class="inline-block align-bottom bg-white rounded-xl text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg w-full">
+                <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4 border-b border-slate-100">
+                    <h3 class="text-lg leading-6 font-bold text-slate-900" id="areaModalTitle">Nueva Área de Práctica</h3>
+                    <form id="areaForm" onsubmit="event.preventDefault(); saveArea();" class="mt-4">
+                        <input type="hidden" id="areaId">
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-slate-700 mb-1">Nombre del Área</label>
+                                <input type="text" id="areaName" required class="w-full rounded-lg border-slate-200 bg-slate-50 text-slate-900 text-sm focus:ring-brand-accent focus:border-brand-accent transition-all" placeholder="Ej: Derecho Penal">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-slate-700 mb-1">Descripción</label>
+                                <textarea id="areaDescription" rows="3" class="w-full rounded-lg border-slate-200 bg-slate-50 text-slate-900 text-sm focus:ring-brand-accent focus:border-brand-accent transition-all" placeholder="Breve descripción..."></textarea>
+                            </div>
+                        </div>
+                        <div class="mt-6 flex justify-end gap-3">
+                            <button type="button" onclick="closeAreaModal()" class="px-4 py-2 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50 text-sm font-medium transition-colors">Cancelar</button>
+                            <button type="submit" class="px-4 py-2 rounded-lg bg-brand-primary text-white hover:bg-blue-800 text-sm font-medium transition-colors shadow-sm shadow-blue-900/10">Guardar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../assets/js/auth.js"></script>
+    <script>
+        const authToken = localStorage.getItem('token');
+        const user = JSON.parse(localStorage.getItem('user') || '{}');
+
+        async function init() {
+            if (!authToken) { window.location.href = '../public/login.html'; return; }
+            
+            const isAdmin = user.userRoles?.some(ur => ur.role?.name === 'admin' || ur.role?.name === 'administrador');
+            // Dashboard link is now hardcoded in sidebar but this check is fine
+            if (isAdmin && document.getElementById('dashLink')) document.getElementById('dashLink').href = 'admin.html';
+
+            if (document.getElementById('sidebarName')) {
+                document.getElementById('sidebarName').textContent = user.fullName || user.name || 'Usuario';
+            }
+            if (document.getElementById('sidebarRole')) {
+                // Role hardcoded in HTML as Administrador, but can be dynamic if needed
+            }
+            if (document.getElementById('sidebarAvatar')) {
+                const initials = (user.fullName || user.name || 'U').split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+                document.getElementById('sidebarAvatar').textContent = initials;
+            }
+
+            await loadOrganization();
+            await loadPracticeAreas();
+        }
+
+        // --- Organization Logic ---
+        async function loadOrganization() {
+            try {
+                const response = await fetch(`${API_URL}/organization`, {
+                    headers: { 'Authorization': `Bearer ${authToken}` }
+                });
+                if (response.ok) {
+                    const org = await response.json();
+                    document.getElementById('orgName').value = org.name || '';
+                    document.getElementById('orgNit').value = org.nit || '';
+                    document.getElementById('orgCity').value = org.city || '';
+                    document.getElementById('orgCountry').value = org.country || '';
+                }
+            } catch (error) {
+                console.error('Error loading organization:', error);
+            }
+        }
+
+        async function saveOrganization() {
+            const data = {
+                name: document.getElementById('orgName').value,
+                nit: document.getElementById('orgNit').value,
+                city: document.getElementById('orgCity').value,
+                country: document.getElementById('orgCountry').value
+            };
+
+            try {
+                const response = await fetch(`${API_URL}/organization`, {
+                    method: 'PUT',
+                    headers: { 
+                        'Authorization': `Bearer ${authToken}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+                if (response.ok) {
+                    alert('Organización actualizada correctamente');
+                } else {
+                    alert('Error al actualizar organización');
+                }
+            } catch (error) {
+                console.error('Error saving organization:', error);
+                alert('Error al conectar con el servidor');
+            }
+        }
+
+        // --- Practice Areas Logic ---
+        async function loadPracticeAreas() {
+            const tableBody = document.getElementById('areasTableBody');
+            const lawyerAreasContainer = document.getElementById('lawyerPracticeAreas');
+
+            try {
+                const response = await fetch(`${API_URL}/practice-areas`, {
+                    headers: { 'Authorization': `Bearer ${authToken}` }
+                });
+                const areas = await response.json();
+                
+                // Populate Table
+                if (areas.length === 0) {
+                    tableBody.innerHTML = `<tr><td colspan="3" class="px-6 py-4 text-center text-slate-500">No hay áreas registradas.</td></tr>`;
+                } else {
+                    tableBody.innerHTML = areas.map(area => `
+                        <tr class="hover:bg-slate-50 transition-colors">
+                            <td class="px-6 py-4 font-medium text-slate-900">${area.name}</td>
+                            <td class="px-6 py-4 text-slate-500 truncate max-w-xs">${area.description || '-'}</td>
+                            <td class="px-6 py-4 text-right">
+                                <button onclick='editArea(${JSON.stringify(area).replace(/'/g, "&#39;")})' class="text-brand-accent hover:text-blue-700 mr-2 transition-colors">
+                                    <span class="material-symbols-outlined text-[20px]">edit</span>
+                                </button>
+                                <button onclick="deleteArea('${area.id}')" class="text-slate-400 hover:text-red-500 transition-colors">
+                                    <span class="material-symbols-outlined text-[20px]">delete</span>
+                                </button>
+                            </td>
+                        </tr>
+                    `).join('');
+                }
+
+                // Populate Checkboxes for Lawyer Creation
+                if (lawyerAreasContainer) {
+                    if (areas.length === 0) {
+                        lawyerAreasContainer.innerHTML = '<p class="text-sm text-slate-500 col-span-full">No hay áreas de práctica disponibles. Crea una primero.</p>';
+                    } else {
+                        lawyerAreasContainer.innerHTML = areas.map(area => `
+                            <div class="flex items-center gap-2 p-2 rounded-lg border border-slate-200 bg-slate-50 hover:bg-white transition-colors">
+                                <input type="checkbox" id="area_${area.id}" value="${area.id}" class="rounded border-slate-300 text-brand-primary focus:ring-brand-accent">
+                                <label for="area_${area.id}" class="text-sm text-slate-700 cursor-pointer select-none">${area.name}</label>
+                            </div>
+                        `).join('');
+                    }
+                }
+
+            } catch (error) {
+                console.error('Error loading areas:', error);
+                tableBody.innerHTML = `<tr><td colspan="3" class="px-6 py-4 text-center text-red-500">Error al cargar áreas.</td></tr>`;
+            }
+        }
+
+        // --- Lawyer Creation Logic ---
+        async function createLawyer() {
+            const fullName = document.getElementById('lawyerName').value;
+            const email = document.getElementById('lawyerEmail').value;
+            const password = document.getElementById('lawyerPassword').value;
+            const phone = document.getElementById('lawyerPhone').value;
+            
+            // Professional Info
+            const professionalCardNumber = document.getElementById('lawyerCard').value;
+            const professionalCardCountry = document.getElementById('lawyerCountry').value;
+            const yearsExperience = document.getElementById('lawyerExperience').value;
+            const hourlyRate = document.getElementById('lawyerRate').value;
+            const bio = document.getElementById('lawyerBio').value;
+
+            // Get selected practice areas
+            const practiceAreaIds = Array.from(document.querySelectorAll('#lawyerPracticeAreas input[type="checkbox"]:checked'))
+                .map(cb => cb.value);
+
+            if (!fullName || !email || !password) {
+                alert('Por favor completa los campos obligatorios (Nombre, Email, Contraseña)');
+                return;
+            }
+
+            const data = {
+                fullName,
+                email,
+                password,
+                phone,
+                professionalCardNumber,
+                professionalCardCountry,
+                yearsExperience: yearsExperience ? parseInt(yearsExperience) : 0,
+                hourlyRate: hourlyRate ? parseFloat(hourlyRate) : 0,
+                bio,
+                practiceAreaIds
+            };
+
+            try {
+                const response = await fetch(`${API_URL}/users/lawyers`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${authToken}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    alert('Abogado creado exitosamente');
+                    document.getElementById('lawyerForm').reset();
+                } else {
+                    alert(`Error: ${result.error || 'No se pudo crear el abogado'}`);
+                }
+            } catch (error) {
+                console.error('Error creating lawyer:', error);
+                alert('Error al conectar con el servidor');
+            }
+        }
+
+        function openAreaModal(area = null) {
+            document.getElementById('areaModal').classList.remove('hidden');
+            if (area) {
+                document.getElementById('areaModalTitle').textContent = 'Editar Área de Práctica';
+                document.getElementById('areaId').value = area.id;
+                document.getElementById('areaName').value = area.name;
+                document.getElementById('areaDescription').value = area.description || '';
+            } else {
+                document.getElementById('areaModalTitle').textContent = 'Nueva Área de Práctica';
+                document.getElementById('areaForm').reset();
+                document.getElementById('areaId').value = '';
+            }
+        }
+
+        function closeAreaModal() {
+            document.getElementById('areaModal').classList.add('hidden');
+        }
+
+        function editArea(area) {
+            openAreaModal(area);
+        }
+
+        async function deleteArea(id) {
+            if (!confirm('¿Estás seguro de eliminar esta área?')) return;
+            
+            try {
+                const response = await fetch(`${API_URL}/practice-areas/${id}`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${authToken}` }
+                });
+                if (response.ok) {
+                    loadPracticeAreas();
+                } else {
+                    alert('Error al eliminar área');
+                }
+            } catch (error) {
+                console.error('Error deleting area:', error);
+            }
+        }
+
+        async function saveArea() {
+            const id = document.getElementById('areaId').value;
+            const name = document.getElementById('areaName').value;
+            const description = document.getElementById('areaDescription').value;
+
+            const method = id ? 'PUT' : 'POST';
+            const url = id ? `${API_URL}/practice-areas/${id}` : `${API_URL}/practice-areas`;
+
+            try {
+                const response = await fetch(url, {
+                    method: method,
+                    headers: { 
+                        'Authorization': `Bearer ${authToken}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ name, description })
+                });
+
+                if (response.ok) {
+                    closeAreaModal();
+                    loadPracticeAreas();
+                } else {
+                    alert('Error al guardar área');
+                }
+            } catch (error) {
+                console.error('Error saving area:', error);
+            }
+        }
+
+        // Initialize
+        init();
+    </script>
+</body>
+</html>

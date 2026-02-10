@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html class="light" lang="es">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Comunicaciones - BrightLawyers</title>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+    <!-- Material Symbols -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "lawyer-primary": "#2c3e50",   // Dark Blue
+                        "lawyer-secondary": "#34495e", // Desaturated Blue
+                        "lawyer-accent": "#e67e22",    // Orange
+                        "lawyer-bg": "#ecf0f1",        // Light Gray
+                        "lawyer-card": "#ffffff",
+                        "lawyer-text": "#2c3e50",
+                        "lawyer-muted": "#7f8c8d",
+                        // Admin style matches
+                        "slate-50": "#f8fafc",
+                        "slate-100": "#f1f5f9",
+                        "slate-200": "#e2e8f0",
+                        "slate-300": "#cbd5e1",
+                        "slate-400": "#94a3b8",
+                        "slate-500": "#64748b",
+                        "slate-600": "#475569",
+                        "slate-700": "#334155",
+                        "slate-800": "#1e293b",
+                        "slate-900": "#0f172a",
+                    },
+                    fontFamily: {
+                        "sans": ["'Plus Jakarta Sans'", "sans-serif"]
+                    },
+                    boxShadow: {
+                        "card": "0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1)",
+                        "card-hover": "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1)",
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #ecf0f1; }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1.5rem;
+            color: #bdc3c7; /* Light gray for contrast on dark bg */
+            font-weight: 500;
+            font-size: 0.875rem;
+            transition: all 0.2s;
+            border-left: 3px solid transparent;
+        }
+        .sidebar-link:hover {
+            color: white;
+            background: rgba(255,255,255,0.05);
+        }
+        .sidebar-link.active {
+            background-color: rgba(230, 126, 34, 0.1); /* Orange tint */
+            color: #ffffff;
+            border-left-color: #e67e22; /* lawyer-accent */
+        }
+    </style>
+</head>
+<body class="bg-lawyer-bg text-slate-800 h-screen overflow-hidden flex">
+
+    <!-- Sidebar (Lawyer Theme) -->
+    <aside class="w-64 bg-lawyer-secondary text-white flex flex-col z-20 shadow-xl flex-shrink-0">
+        <!-- Logo Area -->
+        <div class="h-20 flex items-center px-6 border-b border-white/10 flex-shrink-0">
+            <div class="flex items-center gap-3">
+                <div class="h-8 w-8 rounded bg-lawyer-accent text-white flex items-center justify-center shadow-lg">
+                    <span class="material-symbols-outlined text-[20px]">gavel</span>
+                </div>
+                <div>
+                    <h1 class="font-bold text-sm leading-tight tracking-wide text-white">BrightLawyers</h1>
+                    <p class="text-[10px] text-gray-400 font-medium tracking-wider uppercase">Panel de Abogado</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="flex-1 overflow-y-auto py-6">
+            <a class="sidebar-link" href="dashboard-lawyer.html">
+                <span class="material-symbols-outlined text-[20px]">dashboard</span>
+                Resumen
+            </a>
+            <a class="sidebar-link" href="cases-lawyer.html">
+                <span class="material-symbols-outlined text-[20px]">folder_open</span>
+                Mis Casos
+            </a>
+            <a class="sidebar-link" href="documents.html">
+                <span class="material-symbols-outlined text-[20px]">description</span>
+                Documentos
+            </a>
+            <a class="sidebar-link" href="contracts.html">
+                <span class="material-symbols-outlined text-[20px]">gavel</span>
+                Contratos
+            </a>
+            <a class="sidebar-link" href="tasks.html">
+                <span class="material-symbols-outlined text-[20px]">event_note</span>
+                Agenda Legal
+            </a>
+            <a class="sidebar-link active" href="messages.html">
+                <span class="material-symbols-outlined text-[20px]">mail</span>
+                Comunicaciones
+            </a>
+            <a class="sidebar-link" href="profile-lawyer.html">
+                <span class="material-symbols-outlined text-[20px]">person</span>
+                Perfil
+            </a>
+
+            <div class="mt-auto mb-2 pt-6 px-6 border-t border-white/5">
+                <button onclick="logout()" class="w-full sidebar-link text-left hover:text-red-400 hover:bg-white/5 px-0 pl-0 border-l-0">
+                    <span class="material-symbols-outlined text-[20px]">logout</span>
+                    Cerrar Sesión
+                </button>
+            </div>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 flex flex-col h-full overflow-hidden bg-lawyer-bg relative">
+        
+        <!-- Top Header -->
+        <header class="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-8 flex-shrink-0 z-10">
+            <h2 class="text-lg font-bold text-lawyer-primary">Comunicaciones</h2>
+            
+            <div class="flex items-center gap-6">
+                <!-- Search -->
+                <div class="relative hidden md:block w-80">
+                    <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-[20px]">search</span>
+                    <input type="text" 
+                           id="searchGlobal" 
+                           placeholder="Buscar..." 
+                           class="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-lawyer-accent/20 focus:border-lawyer-accent transition-all outline-none">
+                </div>
+
+                <div class="flex items-center gap-3">
+                    <button class="p-2 text-slate-500 hover:bg-slate-50 rounded-full relative">
+                        <span class="material-symbols-outlined text-[22px]">notifications</span>
+                        <span class="absolute top-2 right-2 h-2 w-2 bg-red-500 rounded-full border border-white"></span>
+                    </button>
+                    
+                    <div class="h-8 w-px bg-slate-200 mx-1"></div>
+                    
+                    <div class="flex items-center gap-2 cursor-pointer p-1 hover:bg-slate-50 rounded-lg transition-colors">
+                        <div class="text-right hidden sm:block">
+                            <p class="text-xs font-bold text-slate-700" id="userName">Cargando...</p>
+                            <p class="text-[10px] text-slate-500">Abogado</p>
+                        </div>
+                        <div class="h-8 w-8 rounded-full bg-lawyer-primary text-white flex items-center justify-center text-xs font-bold overflow-hidden" id="userInitials">
+                            --
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Chat Interface Container -->
+        <div class="flex-1 overflow-hidden p-6 md:p-8">
+            <div class="bg-white rounded-xl border border-slate-100 shadow-card flex h-full overflow-hidden">
+                
+                <!-- Conversations List (Left) -->
+                <div class="w-full lg:w-80 border-r border-slate-100 flex flex-col z-0 bg-slate-50/50">
+                    <div class="p-4 border-b border-slate-100 space-y-3 bg-white">
+                        <button onclick="openNewMessageModal()" class="w-full flex items-center justify-center gap-2 bg-lawyer-primary hover:bg-lawyer-secondary text-white py-2.5 rounded-lg shadow-sm hover:shadow transition-all text-sm font-semibold">
+                            <span class="material-symbols-outlined text-[18px]">add_comment</span>
+                            Nueva Conversación
+                        </button>
+                        <div class="relative">
+                            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 material-symbols-outlined text-[18px]">search</span>
+                            <input id="searchConversations" class="h-10 w-full rounded-lg border-slate-200 bg-slate-50 pl-10 pr-4 text-sm focus:ring-lawyer-accent focus:border-lawyer-accent text-slate-700 placeholder-slate-400" placeholder="Buscar conversaciones..." type="text"/>
+                        </div>
+                    </div>
+                    <div id="conversationsList" class="flex-1 overflow-y-auto">
+                        <!-- Conversations will be loaded here -->
+                        <div class="flex flex-col items-center justify-center h-40 text-slate-400">
+                            <div class="w-6 h-6 border-2 border-lawyer-accent border-t-transparent rounded-full animate-spin mb-2"></div>
+                            <span class="text-xs font-medium">Cargando...</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chat Area (Right) -->
+                <div id="chatArea" class="hidden lg:flex flex-1 flex-col bg-white relative">
+                    <!-- Chat Header -->
+                    <div class="h-16 border-b border-slate-100 flex items-center justify-between px-6 bg-white">
+                        <div class="flex items-center gap-3">
+                            <div class="h-10 w-10 rounded-full bg-lawyer-secondary text-white flex items-center justify-center font-bold text-sm" id="chatAvatar">
+                                --
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-slate-800 text-sm" id="chatClientName">Selecciona una conversación</h3>
+                                <p class="text-xs text-slate-500" id="chatCaseTitle">--</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <button id="btnRequestDocs" onclick="toggleDocumentRequestCurrent()" class="hidden px-3 py-1.5 bg-lawyer-accent text-white text-xs font-bold rounded hover:bg-orange-600 transition-colors flex items-center gap-1">
+                                <span class="material-symbols-outlined text-[16px]">upload_file</span>
+                                Solicitar Docs
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Messages -->
+                    <div id="messagesContainer" class="flex-1 overflow-y-auto p-6 space-y-4 bg-slate-50">
+                        <!-- Messages will appear here -->
+                        <div class="flex h-full items-center justify-center text-slate-400">
+                            <div class="text-center">
+                                <span class="material-symbols-outlined text-5xl mb-3 opacity-20">chat_bubble_outline</span>
+                                <p class="font-medium text-sm">Selecciona una conversación para ver los mensajes</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Input Area -->
+                    <div class="p-4 bg-white border-t border-slate-100">
+                        <form id="messageForm" class="flex items-end gap-2">
+                            <textarea id="messageInput" rows="1" class="flex-1 rounded-lg border-slate-200 bg-slate-50 p-3 text-sm focus:ring-1 focus:ring-lawyer-accent focus:border-lawyer-accent resize-none text-slate-700 placeholder-slate-400" placeholder="Escribe un mensaje..."></textarea>
+                            <button type="submit" class="h-11 w-11 rounded-lg bg-lawyer-primary text-white flex items-center justify-center hover:bg-lawyer-secondary transition-colors shadow-sm hover:shadow">
+                                <span class="material-symbols-outlined text-[20px]">send</span>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- New Message Modal -->
+    <div id="newMessageModal" class="fixed inset-0 bg-black/50 z-50 hidden items-center justify-center backdrop-blur-sm">
+        <div class="bg-white rounded-xl shadow-2xl max-w-lg w-full mx-4 p-6 transform transition-all scale-100">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-lg font-bold text-lawyer-primary" id="modal-title">Nueva Conversación</h3>
+                <button onclick="closeNewMessageModal()" class="text-slate-400 hover:text-red-500 transition-colors">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+            
+            <div class="mb-4">
+                <label for="searchCaseInput" class="block text-sm font-medium text-slate-700 mb-2">Buscar Caso o Cliente</label>
+                <div class="relative">
+                    <span class="absolute left-3 top-1/2 -translate-y-1/2 material-symbols-outlined text-slate-400 text-[20px]">search</span>
+                    <input type="text" id="searchCaseInput" class="w-full rounded-lg border-slate-300 bg-slate-50 py-2.5 pl-10 pr-4 text-sm focus:ring-lawyer-accent focus:border-lawyer-accent" placeholder="Escribe nombre o número de caso...">
+                </div>
+            </div>
+            
+            <div id="searchResults" class="mt-2 h-64 overflow-y-auto border border-slate-200 rounded-lg bg-slate-50">
+                <div class="flex flex-col items-center justify-center h-full text-slate-400">
+                    <span class="material-symbols-outlined text-3xl opacity-50 mb-2">search</span>
+                    <p class="text-sm">Busca un caso para iniciar el chat</p>
+                </div>
+            </div>
+            
+            <div class="mt-6 flex justify-end">
+                <button type="button" class="px-4 py-2 text-sm font-medium text-slate-600 hover:text-slate-800 hover:bg-slate-100 rounded-lg transition-colors" onclick="closeNewMessageModal()">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../assets/js/auth.js"></script>
+    <script src="../assets/js/notifications.js"></script>
+    <script>
+        let currentCaseId = null;
+        let currentUser = null;
+        let socket = null;
+        let allConversations = []; // Store loaded conversations for filtering
+        let displayedMessageIds = new Set();
+
+        // Check Auth and Load Data
+        document.addEventListener('DOMContentLoaded', async () => {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                window.location.href = '../public/index.html';
+                return;
+            }
+
+            // Init Socket
+            try {
+                 const socketUrl = (typeof API_URL !== 'undefined') ? API_URL.replace('/api', '') : 'http://localhost:4000';
+                 socket = io(socketUrl, { auth: { token } });
+                 socket.on('connect', () => console.log('Connected to socket'));
+                 socket.on('new_message', (msg) => {
+                     if (currentCaseId && msg.caseId === currentCaseId) {
+                         appendMessage(msg);
+                     }
+                 });
+            } catch (e) {
+                 console.error('Socket init error', e);
+            }
+
+            try {
+                const response = await fetch(`${API_URL}/auth/me`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                
+                if (!response.ok) throw new Error('Auth failed');
+                
+                const data = await response.json();
+                currentUser = data.user;
+                updateUserInfo(currentUser);
+                loadConversations();
+                
+                // Handle URL params if directed from case page
+                const urlParams = new URLSearchParams(window.location.search);
+                const caseId = urlParams.get('caseId');
+                if (caseId) {
+                    // We will load this conversation after loading list
+                    setTimeout(() => loadMessages(caseId), 500);
+                }
+
+                // Listen for global notification events to refresh UI if needed
+                if (window.NotificationSystem && window.NotificationSystem.socket) {
+                     window.NotificationSystem.socket.on('notification', (data) => {
+                         if (data.type === 'message') {
+                             // Refresh conversation list to show new message preview
+                             loadConversations();
+                             // If we are in the chat, mark as read
+                             if (currentCaseId === data.data.caseId) {
+                                 markAsRead(currentCaseId);
+                             }
+                         }
+                     });
+                }
+
+                // Setup Search Filter
+                document.getElementById('searchConversations').addEventListener('input', (e) => {
+                    const query = e.target.value.toLowerCase();
+                    filterConversations(query);
+                });
+
+                // Setup Modal Search
+                let searchTimeout;
+                document.getElementById('searchCaseInput').addEventListener('input', (e) => {
+                    clearTimeout(searchTimeout);
+                    const query = e.target.value;
+                    if (query.length < 2) return;
+                    
+                    searchTimeout = setTimeout(() => searchCases(query), 300);
+                });
+
+            } catch (error) {
+                console.error('Error:', error);
+                if (error.message.includes('Auth failed') || error.message.includes('401')) {
+                    logout();
+                } else {
+                    showToast('Error cargando datos del usuario: ' + error.message, 'error');
+                }
+            }
+        });
+
+        function showToast(message, type = 'info') {
+            const div = document.createElement('div');
+            const colorClass = type === 'error' ? 'bg-red-600' : 'bg-slate-800';
+            div.className = `fixed bottom-4 right-4 ${colorClass} text-white px-6 py-3 rounded-lg shadow-lg z-50 animate-bounce text-sm font-medium`;
+            div.textContent = message;
+            document.body.appendChild(div);
+            setTimeout(() => div.remove(), 4000);
+        }
+
+        function updateUserInfo(user) {
+            if (!user) return;
+            const userNameEl = document.getElementById('userName');
+            if(userNameEl) userNameEl.textContent = user.fullName || 'Usuario';
+            
+            const initials = (user.fullName || 'Usuario').split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+            document.getElementById('userInitials').textContent = initials;
+            
+            // Check for profile picture
+            const savedProfile = localStorage.getItem('lawyer_profile_' + user.id);
+            if (savedProfile) {
+                try {
+                    const pData = JSON.parse(savedProfile);
+                    if (pData.profileImage) {
+                        const initialsDiv = document.getElementById('userInitials');
+                        initialsDiv.innerHTML = `<img src="${pData.profileImage}" class="w-full h-full object-cover rounded-full">`;
+                        initialsDiv.classList.remove('bg-lawyer-primary', 'text-white');
+                        initialsDiv.classList.add('overflow-hidden');
+                    }
+                } catch (e) { console.error('Error loading profile pic:', e); }
+            }
+        }
+
+        async function loadConversations() {
+            const listContainer = document.getElementById('conversationsList');
+            try {
+                const token = localStorage.getItem('token');
+                const response = await fetch(`${API_URL}/messages/conversations`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                if (!response.ok) throw new Error('Failed to load conversations');
+                const cases = await response.json();
+
+                // Preserve current new conversation if not in backend list yet
+                if (currentCaseId) {
+                    const inResponse = cases.find(c => c.id === currentCaseId);
+                    if (!inResponse) {
+                        const localCurrent = allConversations.find(c => c.id === currentCaseId);
+                        if (localCurrent) {
+                            cases.unshift(localCurrent);
+                        }
+                    }
+                }
+
+                allConversations = cases; // Store for filtering
+                renderConversations(cases);
+            } catch (error) {
+                console.error(error);
+                listContainer.innerHTML = '<div class="p-4 text-center text-red-500 text-sm">Error cargando conversaciones</div>';
+            }
+        }
+
+        function renderConversations(cases) {
+            const listContainer = document.getElementById('conversationsList');
+            listContainer.innerHTML = '';
+
+            if (cases.length === 0) {
+                listContainer.innerHTML = '<div class="p-8 text-center text-slate-400 text-sm">No hay conversaciones activas</div>';
+                return;
+            }
+
+            cases.forEach(c => {
+                const el = document.createElement('div');
+                // Logic to determine client name (could be user or actual client)
+                const clientName = c.client ? (c.client.fullName || c.client.fullNameOrBusinessName) : 'Cliente Desconocido';
+                const initials = clientName.substring(0,2).toUpperCase();
+                
+                // Check if active
+                const isActive = c.id === currentCaseId;
+                const bgClass = isActive ? 'bg-orange-50 border-l-4 border-lawyer-accent' : 'hover:bg-slate-50 border-l-4 border-transparent';
+
+                el.className = `p-4 cursor-pointer border-b border-slate-100 transition-colors ${bgClass}`;
+                el.onclick = () => loadMessages(c.id);
+                
+                el.innerHTML = `
+                    <div class="flex items-center gap-3">
+                        <div class="h-10 w-10 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center font-bold text-xs flex-shrink-0">
+                            ${initials}
+                        </div>
+                        <div class="overflow-hidden flex-1">
+                            <h4 class="font-bold text-slate-800 text-sm truncate">${clientName}</h4>
+                            <p class="text-xs text-slate-500 truncate">${c.title || 'Sin asunto'}</p>
+                        </div>
+                        ${c.unreadCount > 0 ? `<div class="h-5 w-5 rounded-full bg-red-500 text-white flex items-center justify-center text-[10px] font-bold shadow-sm">${c.unreadCount}</div>` : ''}
+                    </div>
+                `;
+                listContainer.appendChild(el);
+            });
+        }
+
+        function filterConversations(query) {
+            const filtered = allConversations.filter(c => {
+                const clientName = c.client ? (c.client.fullName || c.client.fullNameOrBusinessName) : '';
+                return clientName.toLowerCase().includes(query) || 
+                       (c.title && c.title.toLowerCase().includes(query));
+            });
+            renderConversations(filtered);
+        }
+
+        async function toggleDocumentRequestCurrent() {
+            if (!currentCaseId) return;
+            const btn = document.getElementById('btnRequestDocs');
+            const isActive = btn.dataset.active === 'true';
+            
+            // Optimistic update
+            const newStatus = !isActive;
+            updateRequestButtonUI(newStatus);
+            
+            try {
+                const token = localStorage.getItem('token');
+                const response = await fetch(`${API_URL}/cases/${currentCaseId}/document-request`, {
+                    method: 'POST',
+                    headers: { 
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ active: newStatus })
+                });
+                
+                if (!response.ok) throw new Error('Error toggling request');
+                const data = await response.json();
+                
+                // Update local state in allConversations
+                const conv = allConversations.find(c => c.id === currentCaseId);
+                if (conv) conv.documentRequestActive = newStatus;
+                
+                updateRequestButtonUI(newStatus);
+                showToast(newStatus ? 'Solicitud activada' : 'Solicitud desactivada');
+                
+            } catch (error) {
+                console.error(error);
+                showToast('Error al actualizar solicitud', 'error');
+                updateRequestButtonUI(isActive); // Revert
+            }
+        }
+
+        function updateRequestButtonUI(isActive) {
+            const btn = document.getElementById('btnRequestDocs');
+            if (!btn) return;
+            
+            btn.classList.remove('hidden');
+            btn.dataset.active = isActive;
+            
+            if (isActive) {
+                btn.classList.remove('bg-lawyer-accent', 'hover:bg-orange-600');
+                btn.classList.add('bg-red-500', 'hover:bg-red-600');
+                btn.innerHTML = '<span class="material-symbols-outlined text-[16px]">cancel</span> Cancelar Solicitud';
+            } else {
+                btn.classList.remove('bg-red-500', 'hover:bg-red-600');
+                btn.classList.add('bg-lawyer-accent', 'hover:bg-orange-600');
+                btn.innerHTML = '<span class="material-symbols-outlined text-[16px]">upload_file</span> Solicitar Docs';
+            }
+        }
+
+        async function loadMessages(caseId) {
+            currentCaseId = caseId;
+            
+            // UI Update for Active State
+            renderConversations(allConversations);
+            
+            // Show Chat Area on Mobile
+            const chatArea = document.getElementById('chatArea');
+            chatArea.classList.remove('hidden');
+            chatArea.classList.add('flex');
+            
+            // Update Header
+            const conversation = allConversations.find(c => c.id === caseId);
+            if (conversation) {
+                const clientName = conversation.client ? (conversation.client.fullName || conversation.client.fullNameOrBusinessName) : 'Cliente';
+                document.getElementById('chatClientName').textContent = clientName;
+                document.getElementById('chatCaseTitle').textContent = conversation.title || 'Caso #' + conversation.caseNumber;
+                document.getElementById('chatAvatar').textContent = clientName.substring(0,2).toUpperCase();
+                
+                // Update Request Button
+                updateRequestButtonUI(conversation.documentRequestActive);
+            }
+
+            const messagesContainer = document.getElementById('messagesContainer');
+            messagesContainer.innerHTML = '<div class="flex h-full items-center justify-center text-slate-400"><div class="w-8 h-8 border-4 border-lawyer-accent border-t-transparent rounded-full animate-spin"></div></div>';
+
+            try {
+                const token = localStorage.getItem('token');
+                const response = await fetch(`${API_URL}/messages/${caseId}`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                if (!response.ok) throw new Error('Failed to load messages');
+                const messages = await response.json();
+
+                renderMessages(messages);
+                
+                // Scroll to bottom
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
+                // Mark as read
+                markAsRead(caseId);
+
+            } catch (error) {
+                console.error(error);
+                messagesContainer.innerHTML = '<div class="text-center p-4 text-red-500 text-sm">Error cargando mensajes</div>';
+            }
+        }
+
+        async function markAsRead(caseId) {
+            try {
+                const token = localStorage.getItem('token');
+                await fetch(`${API_URL}/messages/mark-read`, {
+                    method: 'POST',
+                    headers: { 
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ caseId })
+                });
+                
+                // Refresh unread count in global badge
+                if (window.NotificationSystem) {
+                    window.NotificationSystem.fetchUnreadCount();
+                }
+            } catch (e) {
+                console.error('Error marking as read', e);
+            }
+        }
+
+        function renderMessages(messages) {
+            const container = document.getElementById('messagesContainer');
+            container.innerHTML = '';
+            displayedMessageIds.clear(); // Reset tracked IDs
+            
+            if (messages.length === 0) {
+                container.innerHTML = '<div class="flex h-full items-center justify-center text-slate-400 text-sm"><p>No hay mensajes aún. ¡Inicia la conversación!</p></div>';
+                return;
+            }
+
+            let lastDate = null;
+
+            messages.forEach(msg => {
+                displayedMessageIds.add(msg.id); // Track ID
+
+                // Fix: Use senderRole to distinguish alignment, handling "self-messaging" test cases
+                // If senderRole is available, use it (lawyers on right, clients on left)
+                // Fallback to ID check if role is missing
+                let isMe = false;
+                if (msg.senderRole) {
+                    // Treat any non-client role as "Firm/Me" side (Lawyer, Admin, Operator)
+                    isMe = msg.senderRole !== 'client';
+                } else {
+                    isMe = currentUser && msg.senderUserId === currentUser.id;
+                }
+                
+                const date = new Date(msg.createdAt);
+                const dateStr = date.toLocaleDateString();
+                
+                // Date Divider
+                if (dateStr !== lastDate) {
+                    const divider = document.createElement('div');
+                    divider.className = 'flex justify-center my-4';
+                    divider.innerHTML = `<span class="bg-slate-200 text-slate-600 text-[10px] px-2 py-1 rounded-full font-medium">${dateStr}</span>`;
+                    container.appendChild(divider);
+                    lastDate = dateStr;
+                }
+
+                const wrapper = document.createElement('div');
+                wrapper.className = `flex ${isMe ? 'justify-end' : 'justify-start'} mb-3`;
+                
+                const timeStr = date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                
+                wrapper.innerHTML = `
+                    <div class="max-w-[80%] md:max-w-[70%]">
+                        <div class="px-4 py-2.5 rounded-2xl text-sm shadow-sm ${isMe ? 'bg-lawyer-primary text-white rounded-tr-none' : 'bg-white text-slate-800 border border-slate-100 rounded-tl-none'}">
+                            <p>${msg.messageText}</p>
+                        </div>
+                        <p class="text-[10px] text-slate-400 mt-1 ${isMe ? 'text-right' : 'text-left'}">${timeStr}</p>
+                    </div>
+                `;
+                container.appendChild(wrapper);
+            });
+        }
+
+        function appendMessage(msg) {
+            if (displayedMessageIds.has(msg.id)) return; // Prevent duplicates
+            displayedMessageIds.add(msg.id);
+
+            const container = document.getElementById('messagesContainer');
+            if (!container) return;
+            
+            // Remove "no messages" placeholder if exists
+            if (container.children.length > 0 && container.firstElementChild.textContent.includes('No hay mensajes')) {
+                container.innerHTML = '';
+            }
+
+            let isMe = false;
+            if (msg.senderRole) {
+                isMe = msg.senderRole !== 'client';
+            } else {
+                isMe = currentUser && msg.senderUserId === currentUser.id;
+            }
+            
+            const date = new Date(msg.createdAt);
+            const wrapper = document.createElement('div');
+            wrapper.className = `flex ${isMe ? 'justify-end' : 'justify-start'} mb-3`;
+            
+            const timeStr = date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+            
+            wrapper.innerHTML = `
+                <div class="max-w-[80%] md:max-w-[70%]">
+                    <div class="px-4 py-2.5 rounded-2xl text-sm shadow-sm ${isMe ? 'bg-lawyer-primary text-white rounded-tr-none' : 'bg-white text-slate-800 border border-slate-100 rounded-tl-none'}">
+                        <p>${msg.messageText}</p>
+                    </div>
+                    <p class="text-[10px] text-slate-400 mt-1 ${isMe ? 'text-right' : 'text-left'}">${timeStr}</p>
+                </div>
+            `;
+            container.appendChild(wrapper);
+            container.scrollTop = container.scrollHeight;
+        }
+
+        // Send Message
+        document.getElementById('messageForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            if (!currentCaseId) return;
+
+            const input = document.getElementById('messageInput');
+            const content = input.value.trim();
+            if (!content) return;
+
+            // Optimistic UI update could go here
+            
+            try {
+                const token = localStorage.getItem('token');
+                const response = await fetch(`${API_URL}/messages`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        caseId: currentCaseId,
+                        messageText: content
+                    })
+                });
+
+                if (!response.ok) throw new Error('Failed to send');
+                
+                const savedMsg = await response.json();
+                input.value = '';
+                
+                // Append immediately (deduplicated by ID check if socket comes later)
+                appendMessage(savedMsg);
+                
+            } catch (error) {
+                console.error(error);
+                showToast('Error al enviar mensaje', 'error');
+            }
+        });
+
+        // Auto-resize textarea and Enter to send
+        const tx = document.getElementById('messageInput');
+        if (tx) {
+            tx.setAttribute('style', 'height:' + (tx.scrollHeight) + 'px;overflow-y:hidden;');
+            tx.addEventListener("input", function() {
+                this.style.height = 'auto';
+                this.style.height = (this.scrollHeight) + 'px';
+            }, false);
+
+            tx.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    document.getElementById('messageForm').dispatchEvent(new Event('submit'));
+                }
+            });
+        }
+
+        // Search Cases for New Conversation
+        async function searchCases(query) {
+            const resultsContainer = document.getElementById('searchResults');
+            resultsContainer.innerHTML = '<div class="p-4 text-center text-slate-400"><div class="w-6 h-6 border-2 border-lawyer-accent border-t-transparent rounded-full animate-spin mx-auto"></div></div>';
+            
+            try {
+                const token = localStorage.getItem('token');
+                // This endpoint needs to exist on backend to search cases available to lawyer
+                const response = await fetch(`${API_URL}/cases?search=${encodeURIComponent(query)}`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                if (!response.ok) throw new Error('Search failed');
+                const data = await response.json();
+                
+                renderSearchResults(data.cases || []);
+            } catch (error) {
+                console.error(error);
+                resultsContainer.innerHTML = '<div class="p-4 text-center text-red-500 text-sm">Error en la búsqueda</div>';
+            }
+        }
+
+        function renderSearchResults(cases) {
+            const container = document.getElementById('searchResults');
+            container.innerHTML = '';
+            
+            if (cases.length === 0) {
+                container.innerHTML = '<div class="p-4 text-center text-slate-500 text-sm">No se encontraron casos</div>';
+                return;
+            }
+            
+            const ul = document.createElement('ul');
+            ul.className = 'divide-y divide-slate-100';
+            
+            cases.forEach(c => {
+                const li = document.createElement('li');
+                li.className = 'p-3 hover:bg-slate-50 cursor-pointer transition-colors flex items-center justify-between';
+                li.onclick = () => startConversation(c);
+                
+                li.innerHTML = `
+                    <div>
+                        <p class="font-bold text-sm text-slate-800">${c.title}</p>
+                        <p class="text-xs text-slate-500">Caso #${c.caseNumber}</p>
+                    </div>
+                    <span class="material-symbols-outlined text-lawyer-accent text-[20px]">arrow_forward</span>
+                `;
+                ul.appendChild(li);
+            });
+            
+            container.appendChild(ul);
+        }
+
+        function startConversation(caseObj) {
+            closeNewMessageModal();
+            
+            // Check if already exists in list
+            const existing = allConversations.find(c => c.id === caseObj.id);
+            if (existing) {
+                loadMessages(existing.id);
+            } else {
+                // Add temporary entry to list
+                const newConv = {
+                    id: caseObj.id,
+                    title: caseObj.title,
+                    caseNumber: caseObj.caseNumber,
+                    client: caseObj.client, // Assuming case object has client info
+                    unreadCount: 0,
+                    createdAt: new Date().toISOString()
+                };
+                
+                allConversations.unshift(newConv);
+                renderConversations(allConversations);
+                loadMessages(caseObj.id);
+            }
+        }
+
+        // Modal Controls
+        function openNewMessageModal() {
+            const modal = document.getElementById('newMessageModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            document.getElementById('searchCaseInput').value = '';
+            document.getElementById('searchResults').innerHTML = '<div class="flex flex-col items-center justify-center h-full text-slate-400"><span class="material-symbols-outlined text-3xl opacity-50 mb-2">search</span><p class="text-sm">Busca un caso para iniciar el chat</p></div>';
+            document.getElementById('searchCaseInput').focus();
+        }
+
+        function closeNewMessageModal() {
+            const modal = document.getElementById('newMessageModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        // Close modal on outside click
+        document.getElementById('newMessageModal').addEventListener('click', (e) => {
+            if (e.target === document.getElementById('newMessageModal')) {
+                closeNewMessageModal();
+            }
+        });
+    </script>
+</body>
+</html>

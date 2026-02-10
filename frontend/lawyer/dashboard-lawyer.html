@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html class="light" lang="es">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>BrightLawyers - Portal de Abogados</title>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+    <!-- Material Symbols -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "lawyer-primary": "#2c3e50",   // Dark Blue
+                        "lawyer-secondary": "#34495e", // Desaturated Blue
+                        "lawyer-accent": "#e67e22",    // Orange
+                        "lawyer-bg": "#ecf0f1",        // Light Gray
+                        "lawyer-card": "#ffffff",
+                        "lawyer-text": "#2c3e50",
+                        "lawyer-muted": "#7f8c8d",
+                        // Admin style matches
+                        "slate-50": "#f8fafc",
+                        "slate-100": "#f1f5f9",
+                        "slate-200": "#e2e8f0",
+                        "slate-300": "#cbd5e1",
+                        "slate-400": "#94a3b8",
+                        "slate-500": "#64748b",
+                        "slate-600": "#475569",
+                        "slate-700": "#334155",
+                        "slate-800": "#1e293b",
+                        "slate-900": "#0f172a",
+                    },
+                    fontFamily: {
+                        "sans": ["'Plus Jakarta Sans'", "sans-serif"]
+                    },
+                    boxShadow: {
+                        "card": "0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1)",
+                        "card-hover": "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1)",
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #ecf0f1; }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1.5rem;
+            color: #bdc3c7; /* Light gray for contrast on dark bg */
+            font-weight: 500;
+            font-size: 0.875rem;
+            transition: all 0.2s;
+            border-left: 3px solid transparent;
+        }
+        .sidebar-link:hover {
+            color: white;
+            background: rgba(255,255,255,0.05);
+        }
+        .sidebar-link.active {
+            background-color: rgba(230, 126, 34, 0.1); /* Orange tint */
+            color: #ffffff;
+            border-left-color: #e67e22; /* lawyer-accent */
+        }
+        
+        .skeleton {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: .5; }
+        }
+    </style>
+</head>
+<body class="bg-lawyer-bg text-slate-800 h-screen overflow-hidden flex">
+
+    <!-- Sidebar (Lawyer Theme) -->
+    <aside class="w-64 bg-lawyer-secondary text-white flex flex-col z-20 shadow-xl flex-shrink-0">
+        <!-- Logo Area -->
+        <div class="h-20 flex items-center px-6 border-b border-white/10 flex-shrink-0">
+            <div class="flex items-center gap-3">
+                <div class="h-8 w-8 rounded bg-lawyer-accent text-white flex items-center justify-center shadow-lg">
+                    <span class="material-symbols-outlined text-[20px]">gavel</span>
+                </div>
+                <div>
+                    <h1 class="font-bold text-sm leading-tight tracking-wide text-white">BrightLawyers</h1>
+                    <p class="text-[10px] text-gray-400 font-medium tracking-wider uppercase">Panel de Abogado</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="flex-1 overflow-y-auto py-6">
+            <a class="sidebar-link active" href="dashboard-lawyer.html">
+                <span class="material-symbols-outlined text-[20px]">dashboard</span>
+                Resumen
+            </a>
+            <a class="sidebar-link" href="cases-lawyer.html">
+                <span class="material-symbols-outlined text-[20px]">folder_open</span>
+                Mis Casos
+            </a>
+            <a class="sidebar-link" href="documents.html">
+                <span class="material-symbols-outlined text-[20px]">description</span>
+                Documentos
+            </a>
+            <a class="sidebar-link" href="contracts.html">
+                <span class="material-symbols-outlined text-[20px]">gavel</span>
+                Contratos
+            </a>
+            <a class="sidebar-link" href="tasks.html">
+                <span class="material-symbols-outlined text-[20px]">event_note</span>
+                Agenda Legal
+            </a>
+            <a class="sidebar-link" href="messages.html">
+                <span class="material-symbols-outlined text-[20px]">mail</span>
+                Comunicaciones
+            </a>
+            <a class="sidebar-link" href="profile-lawyer.html">
+                <span class="material-symbols-outlined text-[20px]">person</span>
+                Perfil
+            </a>
+
+            <div class="mt-auto mb-2 pt-6 px-6 border-t border-white/5">
+                <button onclick="logout()" class="w-full sidebar-link text-left hover:text-red-400 hover:bg-white/5 px-0 pl-0 border-l-0">
+                    <span class="material-symbols-outlined text-[20px]">logout</span>
+                    Cerrar Sesión
+                </button>
+            </div>
+        </nav>
+    </aside>
+    
+    <!-- Main Content -->
+    <main class="flex-1 flex flex-col h-full overflow-hidden bg-lawyer-bg relative">
+        <!-- Top Header -->
+        <header class="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-8 flex-shrink-0 z-10">
+            <h2 class="text-lg font-bold text-lawyer-primary" id="welcomeMsg">Bienvenido, Abogado</h2>
+            
+            <div class="flex items-center gap-6">
+                <!-- Search -->
+                <div class="relative hidden md:block w-80">
+                    <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-[20px]">search</span>
+                    <input type="text" placeholder="Buscar expedientes, documentos..." 
+                           class="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-lawyer-accent/20 focus:border-lawyer-accent transition-all outline-none">
+                </div>
+
+                <div class="flex items-center gap-3">
+                    <button class="p-2 text-slate-500 hover:bg-slate-50 rounded-full relative">
+                        <span class="material-symbols-outlined text-[22px]">notifications</span>
+                        <span class="absolute top-2 right-2 h-2 w-2 bg-red-500 rounded-full border border-white"></span>
+                    </button>
+                    
+                    <div class="h-8 w-px bg-slate-200 mx-1"></div>
+                    
+                    <div class="flex items-center gap-2 cursor-pointer p-1 hover:bg-slate-50 rounded-lg transition-colors">
+                        <div class="h-8 w-8 rounded-full bg-lawyer-primary text-white flex items-center justify-center text-xs font-bold overflow-hidden" id="userInitials">
+                            --
+                        </div>
+                        <div class="hidden sm:block text-right leading-tight">
+                            <p class="text-sm font-bold text-lawyer-primary" id="userName">Cargando...</p>
+                            <p class="text-[10px] text-slate-500 uppercase">Abogado Senior</p>
+                        </div>
+                        <span class="material-symbols-outlined text-slate-400 text-[18px]">expand_more</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+        
+        <!-- Dashboard Grid -->
+        <div class="flex-1 overflow-y-auto p-8">
+            <div class="max-w-7xl mx-auto space-y-8">
+                
+                <!-- KPI Cards (Admin Style) -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <!-- Card 1: Date -->
+                    <div class="bg-white p-6 rounded-xl border border-slate-100 shadow-card hover:shadow-card-hover transition-all group">
+                        <div class="flex justify-between items-start mb-4">
+                            <div class="p-3 bg-blue-50 text-blue-600 rounded-lg group-hover:bg-blue-100 transition-colors">
+                                <span class="material-symbols-outlined text-[24px]">calendar_month</span>
+                            </div>
+                            <span class="text-xs font-bold text-slate-400 uppercase">Hoy</span>
+                        </div>
+                        <p class="text-slate-500 font-medium text-sm">Fecha Actual</p>
+                        <h3 class="text-xl font-bold text-slate-900 mt-1 capitalize" id="currentDate">--</h3>
+                    </div>
+
+                    <!-- Card 2: Next Event -->
+                    <div class="bg-white p-6 rounded-xl border border-slate-100 shadow-card hover:shadow-card-hover transition-all group">
+                        <div class="flex justify-between items-start mb-4">
+                            <div class="p-3 bg-orange-50 text-orange-600 rounded-lg group-hover:bg-orange-100 transition-colors">
+                                <span class="material-symbols-outlined text-[24px]">event</span>
+                            </div>
+                            <span class="bg-orange-50 text-orange-700 text-xs font-bold px-2 py-1 rounded-full flex items-center gap-1" id="nextEventTime">
+                                --:--
+                            </span>
+                        </div>
+                        <p class="text-slate-500 font-medium text-sm">Próxima Actividad</p>
+                        <h3 class="text-lg font-bold text-slate-900 mt-1 truncate" id="nextEventTitle">
+                            <div class="h-6 w-24 bg-slate-100 rounded skeleton"></div>
+                        </h3>
+                    </div>
+
+                    <!-- Card 3: Active Cases -->
+                    <div class="bg-white p-6 rounded-xl border border-slate-100 shadow-card hover:shadow-card-hover transition-all group">
+                        <div class="flex justify-between items-start mb-4">
+                            <div class="p-3 bg-green-50 text-green-600 rounded-lg group-hover:bg-green-100 transition-colors">
+                                <span class="material-symbols-outlined text-[24px]">folder_open</span>
+                            </div>
+                            <span class="bg-green-50 text-green-700 text-xs font-bold px-2 py-1 rounded-full flex items-center gap-1">
+                                <span class="material-symbols-outlined text-[14px]">trending_up</span> Activos
+                            </span>
+                        </div>
+                        <p class="text-slate-500 font-medium text-sm">Mis Casos</p>
+                        <h3 class="text-3xl font-bold text-slate-900 mt-1" id="kpiCases">
+                            <div class="h-8 w-16 bg-slate-100 rounded skeleton"></div>
+                        </h3>
+                    </div>
+
+                    <!-- Card 4: Notifications -->
+                    <div class="bg-white p-6 rounded-xl border border-slate-100 shadow-card hover:shadow-card-hover transition-all group">
+                        <div class="flex justify-between items-start mb-4">
+                            <div class="p-3 bg-red-50 text-red-600 rounded-lg group-hover:bg-red-100 transition-colors">
+                                <span class="material-symbols-outlined text-[24px]">notifications</span>
+                            </div>
+                            <span class="bg-red-50 text-red-700 text-xs font-bold px-2 py-1 rounded-full flex items-center gap-1" id="kpiNotificationsBadge">
+                                !
+                            </span>
+                        </div>
+                        <p class="text-slate-500 font-medium text-sm">Notificaciones</p>
+                        <h3 class="text-3xl font-bold text-slate-900 mt-1" id="kpiNotifications">
+                            0
+                        </h3>
+                    </div>
+                </div>
+
+                <!-- Main Content Grid -->
+                <div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
+                    
+                    <!-- Left Column (Tables) -->
+                    <div class="xl:col-span-2 space-y-8">
+                        
+                        <!-- Opportunity Banner -->
+                        <div id="opportunitiesSection" class="hidden bg-gradient-to-r from-lawyer-secondary to-lawyer-primary rounded-xl p-6 text-white shadow-md relative overflow-hidden border border-lawyer-primary">
+                            <div class="absolute right-0 top-0 h-full w-1/3 bg-white/5 skew-x-12 transform translate-x-10"></div>
+                            <div class="relative z-10">
+                                <div class="flex justify-between items-start mb-4">
+                                    <div>
+                                        <h3 class="text-xl font-bold mb-1">Oportunidades Disponibles</h3>
+                                        <p class="text-sm text-gray-300">Hay nuevos casos que coinciden con su especialidad.</p>
+                                    </div>
+                                    <span class="p-2 bg-white/10 rounded-lg">
+                                        <span class="material-symbols-outlined">lightbulb</span>
+                                    </span>
+                                </div>
+                                
+                                <div class="bg-white/10 rounded-lg backdrop-blur-sm overflow-hidden border border-white/10">
+                                    <table class="w-full text-left text-sm">
+                                        <tbody id="opportunitiesTable" class="divide-y divide-white/10">
+                                            <!-- Dynamic Content -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Active Cases Table -->
+                        <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                            <div class="px-6 py-5 border-b border-slate-100 flex justify-between items-center">
+                                <h3 class="font-bold text-slate-900 text-lg">Mis Casos Activos</h3>
+                                <a href="cases.html" class="text-sm text-lawyer-accent font-bold hover:text-orange-700 transition-colors">Ver todos</a>
+                            </div>
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-left text-sm">
+                                    <thead class="bg-slate-50 text-slate-500 font-semibold border-b border-slate-100">
+                                        <tr>
+                                            <th class="px-6 py-4">Expediente</th>
+                                            <th class="px-6 py-4">Cliente</th>
+                                            <th class="px-6 py-4">Etapa</th>
+                                            <th class="px-6 py-4">Estado</th>
+                                            <th class="px-6 py-4 text-right">Acción</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="myCasesTable" class="divide-y divide-slate-100">
+                                        <!-- Loading State -->
+                                        <tr>
+                                            <td colspan="5" class="px-6 py-8 text-center text-slate-400">
+                                                <span class="material-symbols-outlined text-3xl animate-spin mb-2">refresh</span>
+                                                <p>Cargando expedientes...</p>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Right Column (Widgets) -->
+                    <div class="space-y-8">
+                        
+                        <!-- Quick Actions -->
+                        <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-6">
+                            <h3 class="font-bold text-slate-900 text-lg mb-4">Acciones Rápidas</h3>
+                            <div class="grid grid-cols-2 gap-4">
+                                <button onclick="window.location.href='new-case.html'" class="flex flex-col items-center justify-center gap-3 p-4 bg-slate-50 hover:bg-slate-100 rounded-xl border border-slate-100 transition-all hover:-translate-y-1 group h-32">
+                                    <div class="p-2 bg-white rounded-full shadow-sm text-lawyer-secondary group-hover:text-lawyer-accent transition-colors">
+                                        <span class="material-symbols-outlined">add_circle</span>
+                                    </div>
+                                    <span class="text-xs font-bold text-slate-700 text-center">Nuevo<br>Caso</span>
+                                </button>
+                                <button onclick="window.location.href='documents.html'" class="flex flex-col items-center justify-center gap-3 p-4 bg-slate-50 hover:bg-slate-100 rounded-xl border border-slate-100 transition-all hover:-translate-y-1 group h-32">
+                                    <div class="p-2 bg-white rounded-full shadow-sm text-lawyer-secondary group-hover:text-lawyer-accent transition-colors">
+                                        <span class="material-symbols-outlined">upload_file</span>
+                                    </div>
+                                    <span class="text-xs font-bold text-slate-700 text-center">Subir<br>Escrito</span>
+                                </button>
+                                <button onclick="window.location.href='tasks.html'" class="flex flex-col items-center justify-center gap-3 p-4 bg-slate-50 hover:bg-slate-100 rounded-xl border border-slate-100 transition-all hover:-translate-y-1 group h-32">
+                                    <div class="p-2 bg-white rounded-full shadow-sm text-lawyer-secondary group-hover:text-lawyer-accent transition-colors">
+                                        <span class="material-symbols-outlined">schedule</span>
+                                    </div>
+                                    <span class="text-xs font-bold text-slate-700 text-center">Agendar<br>Evento</span>
+                                </button>
+                                <button class="flex flex-col items-center justify-center gap-3 p-4 bg-slate-50 hover:bg-slate-100 rounded-xl border border-slate-100 transition-all hover:-translate-y-1 group h-32">
+                                    <div class="p-2 bg-white rounded-full shadow-sm text-lawyer-secondary group-hover:text-lawyer-accent transition-colors">
+                                        <span class="material-symbols-outlined">gavel</span>
+                                    </div>
+                                    <span class="text-xs font-bold text-slate-700 text-center">Mis<br>Audiencias</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Agenda / Next Events -->
+                        <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-6">
+                            <div class="flex justify-between items-center mb-6">
+                                <h3 class="font-bold text-slate-900 text-lg">Agenda Próxima</h3>
+                                <button onclick="window.location.href='tasks.html'" class="text-xs font-bold text-lawyer-accent hover:text-orange-700 uppercase">Ver Todo</button>
+                            </div>
+                            <div id="agendaList" class="space-y-4">
+                                <p class="text-center text-slate-400 italic py-4">Cargando eventos...</p>
+                            </div>
+                        </div>
+
+                        <!-- Recent Documents -->
+                        <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-6">
+                            <div class="flex justify-between items-center mb-6">
+                                <h3 class="font-bold text-slate-900 text-lg">Documentos</h3>
+                                <button onclick="window.location.href='documents.html'" class="text-xs font-bold text-lawyer-accent hover:text-orange-700 uppercase">Ver Todo</button>
+                            </div>
+                            <div class="divide-y divide-slate-100" id="recentDocsList">
+                                <p class="text-center text-slate-400 italic py-4">Cargando documentos...</p>
+                            </div>
+                        </div>
+
+                        <!-- Notifications List (Hidden/Optional or moved here) -->
+                        <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-6">
+                            <h3 class="font-bold text-slate-900 text-lg mb-6">Actividad Reciente</h3>
+                            <div id="notificationsList" class="space-y-4">
+                                <p class="text-center text-slate-400 italic py-4">Cargando actividad...</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<script src="../assets/js/auth.js"></script>
+<script src="../assets/js/notifications.js"></script>
+<script>
+    let authToken = localStorage.getItem('token');
+
+    function getAuthHeaders() {
+        return {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${authToken}`
+        };
+    }
+
+    async function fetchAPI(endpoint, options = {}) {
+        const response = await fetch(`${API_URL}${endpoint}`, {
+            ...options,
+            headers: {
+                ...getAuthHeaders(),
+                ...options.headers
+            }
+        });
+        if (response.status === 401) {
+            logout();
+            return null;
+        }
+        return response.json();
+    }
+
+    async function initDashboard() {
+        if (!authToken) window.location.href = '../public/login.html';
+        
+        // Load User Info
+        try {
+            const data = await fetchAPI('/auth/me');
+            if (data && data.user) {
+                currentUser = data.user;
+                const userName = currentUser.name || currentUser.fullName || 'Abogado';
+                document.getElementById('userName').textContent = userName;
+                document.getElementById('welcomeMsg').textContent = `Bienvenido, Lic. ${userName.split(' ')[0]}`;
+                document.getElementById('userInitials').textContent = userName.substring(0,2).toUpperCase();
+                
+                // Check for profile picture
+                const savedProfile = localStorage.getItem('lawyer_profile_' + currentUser.id);
+                if (savedProfile) {
+                    try {
+                        const pData = JSON.parse(savedProfile);
+                        if (pData.profileImage) {
+                            const initialsDiv = document.getElementById('userInitials');
+                            initialsDiv.innerHTML = `<img src="${pData.profileImage}" class="w-full h-full object-cover rounded-full">`;
+                            initialsDiv.classList.remove('bg-lawyer-primary', 'text-white');
+                            initialsDiv.classList.add('overflow-hidden');
+                        }
+                    } catch (e) { console.error('Error loading profile pic:', e); }
+                }
+                
+                // Update Date
+                const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+                document.getElementById('currentDate').textContent = new Date().toLocaleDateString('es-ES', options);
+                
+                // Load user-dependent data
+                loadAgenda();
+            }
+        } catch (e) { console.error(e); }
+
+        // Load Opportunities
+        loadOpportunities();
+        
+        // Load My Cases
+        loadMyCases();
+
+        // Load Documents
+        loadDocuments();
+
+        // Load Notifications
+        loadNotifications();
+    }
+
+    async function loadAgenda() {
+        if (!currentUser) return;
+        try {
+            // Fetch upcoming tasks for this user
+            const data = await fetchAPI(`/tasks?assignedToUserId=${currentUser.id}&upcoming=true`);
+            const list = document.getElementById('agendaList');
+            
+            if (data && data.tasks && data.tasks.length > 0) {
+                // Populate Agenda List
+                list.innerHTML = data.tasks.slice(0, 3).map(t => {
+                    const date = t.dueAt ? new Date(t.dueAt) : new Date();
+                    return `
+                    <div class="flex items-start gap-3 pb-2 border-b border-gray-100 last:border-0">
+                        <div class="flex flex-col items-center min-w-[3rem] bg-gray-50 rounded p-1 text-center">
+                            <span class="text-xs font-bold text-red-500 block">${date.getDate()}</span>
+                            <span class="text-[10px] uppercase text-gray-500 block">${date.toLocaleDateString('es-ES', {month:'short'})}</span>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-bold text-slate-800 leading-tight">${t.title || 'Sin título'}</span>
+                            <span class="text-xs text-slate-500 mt-1">${t.case ? `Caso: ${t.case.title}` : 'General'}</span>
+                        </div>
+                    </div>
+                `}).join('');
+
+                // Populate Next Event Widget (KPI Card)
+                const nextTask = data.tasks[0];
+                const nextTaskDate = nextTask.dueAt ? new Date(nextTask.dueAt) : new Date();
+                const timeStr = nextTaskDate.toLocaleTimeString('es-ES', {hour: '2-digit', minute:'2-digit'});
+                
+                document.getElementById('nextEventTime').textContent = timeStr;
+                document.getElementById('nextEventTitle').textContent = nextTask.title || 'Evento próximo';
+
+            } else {
+                list.innerHTML = `<p class="text-xs text-gray-500 text-center py-2">No hay vencimientos próximos.</p>`;
+                document.getElementById('nextEventTime').textContent = '--:--';
+                document.getElementById('nextEventTitle').innerHTML = '<span class="text-slate-400 font-normal">Sin eventos próximos</span>';
+            }
+        } catch(e) { console.error(e); }
+    }
+
+    async function loadNotifications() {
+        try {
+            const data = await fetchAPI('/cases/activity/recent');
+            const list = document.getElementById('notificationsList');
+            
+            if (data && data.activities && data.activities.length > 0) {
+                // Update KPI count
+                document.getElementById('kpiNotifications').textContent = data.activities.length;
+                document.getElementById('kpiNotificationsBadge').textContent = `! ${data.activities.length}`;
+
+                list.innerHTML = data.activities.slice(0, 5).map(a => `
+                    <div class="flex gap-3 items-start pb-3 border-b border-gray-100 last:border-0">
+                        <div class="h-2 w-2 mt-2 rounded-full bg-lawyer-accent shrink-0"></div>
+                        <div>
+                            <p class="text-sm font-bold text-slate-800">${a.description || 'Actualización del caso'}</p>
+                            <p class="text-xs text-slate-500">
+                                ${a.case?.caseNumberInternal || ''} • ${a.eventDate ? new Date(a.eventDate).toLocaleDateString('es-ES') : ''}
+                            </p>
+                        </div>
+                    </div>
+                `).join('');
+            } else {
+                list.innerHTML = `<p class="text-xs text-gray-500 text-center py-2">No hay actividad reciente.</p>`;
+                document.getElementById('kpiNotifications').textContent = '0';
+                document.getElementById('kpiNotificationsBadge').textContent = '0';
+            }
+        } catch(e) { console.error(e); }
+    }
+
+    async function loadOpportunities() {
+        try {
+            const data = await fetchAPI('/cases/opportunities');
+            const section = document.getElementById('opportunitiesSection');
+            const tbody = document.getElementById('opportunitiesTable');
+            
+            if (data && data.cases && data.cases.length > 0) {
+                section.classList.remove('hidden');
+                tbody.innerHTML = data.cases.slice(0, 3).map(c => `
+                    <tr class="group hover:bg-white/10 transition-colors">
+                        <td class="px-4 py-3">
+                            <span class="font-bold text-white block">#${c.caseNumberInternal || 'N/A'}</span>
+                            <span class="text-xs text-gray-300">${c.practiceArea?.name || 'General'}</span>
+                        </td>
+                        <td class="px-4 py-3 text-gray-200 text-sm">
+                            ${c.client?.fullNameOrBusinessName || 'Cliente'}
+                        </td>
+                        <td class="px-4 py-3 text-right">
+                            <button onclick="takeCase('${c.id}')" class="bg-lawyer-accent hover:bg-orange-600 text-white text-xs font-bold px-3 py-1.5 rounded transition-colors shadow-sm">
+                                Tomar Caso
+                            </button>
+                        </td>
+                    </tr>
+                `).join('');
+            }
+        } catch (err) { console.error(err); }
+    }
+
+    async function loadMyCases() {
+        try {
+            // Fetch cases filtered by role (backend handles this based on token)
+            const data = await fetchAPI('/cases?status=active');
+            const tbody = document.getElementById('myCasesTable');
+            
+            if (data && data.cases && data.cases.length > 0) {
+                // Update KPI Count
+                document.getElementById('kpiCases').textContent = data.cases.length;
+
+                tbody.innerHTML = data.cases.slice(0, 10).map(c => `
+                    <tr class="hover:bg-slate-50 transition-colors border-b border-slate-50 last:border-0">
+                        <td class="px-6 py-4">
+                            <div class="flex flex-col">
+                                <span class="font-bold text-slate-800">#${c.caseNumberInternal || 'S/N'}</span>
+                                <span class="text-xs text-slate-500 truncate w-32">${c.title || 'Sin título'}</span>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 text-sm text-slate-700 font-medium">
+                            ${c.client?.fullNameOrBusinessName || 'N/A'}
+                        </td>
+                        <td class="px-6 py-4">
+                            <span class="px-2 py-1 bg-blue-50 text-blue-700 rounded text-xs font-bold border border-blue-100">
+                                Instrucción
+                            </span>
+                        </td>
+                        <td class="px-6 py-4">
+                             <span class="flex items-center gap-1.5">
+                                <span class="h-2 w-2 rounded-full bg-green-500"></span>
+                                <span class="text-xs font-medium text-slate-600">Activo</span>
+                             </span>
+                        </td>
+                        <td class="px-6 py-4 text-right">
+                            <button onclick="window.location.href='case-detail.html?id=${c.id}'" class="text-lawyer-secondary hover:text-lawyer-accent material-symbols-outlined">
+                                arrow_forward
+                            </button>
+                        </td>
+                    </tr>
+                `).join('');
+            } else {
+                tbody.innerHTML = `<tr><td colspan="5" class="px-6 py-8 text-center text-slate-500">No tiene casos activos asignados.</td></tr>`;
+                document.getElementById('kpiCases').textContent = '0';
+            }
+        } catch (err) { 
+            console.error(err);
+        }
+    }
+
+    async function loadDocuments() {
+        try {
+            const data = await fetchAPI('/documents?limit=5'); 
+            const list = document.getElementById('recentDocsList');
+            if (data && data.documents && data.documents.length > 0) {
+                list.innerHTML = data.documents.slice(0, 5).map(d => {
+                    const docName = d.fileName || d.title || 'Documento sin nombre';
+                    return `
+                    <div class="py-3 flex items-center justify-between hover:bg-slate-50 transition-colors px-2 rounded-lg">
+                        <div class="flex items-center gap-3 overflow-hidden">
+                            <div class="h-8 w-8 rounded bg-slate-100 text-slate-500 flex items-center justify-center shrink-0">
+                                <span class="material-symbols-outlined text-[18px]">description</span>
+                            </div>
+                            <div class="flex flex-col min-w-0">
+                                <span class="text-sm font-bold text-slate-800 truncate">${docName}</span>
+                                <span class="text-xs text-slate-500 truncate">${d.links && d.links.length > 0 ? 'Vinculado a Caso' : 'Personal'} • ${(parseInt(d.sizeBytes || 0)/1024).toFixed(1)} KB</span>
+                            </div>
+                        </div>
+                        <button onclick="downloadDoc('${d.id}', '${docName}')" class="text-slate-400 hover:text-lawyer-accent material-symbols-outlined text-lg shrink-0">download</button>
+                    </div>
+                `}).join('');
+            } else {
+                list.innerHTML = `<div class="py-4 text-center text-sm text-slate-500">No hay documentos recientes.</div>`;
+            }
+        } catch(e) { console.error(e); }
+    }
+
+    async function downloadDoc(id, name) {
+        try {
+            const token = localStorage.getItem('token');
+            const res = await fetch(`${API_URL}/documents/${id}/download`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            if (res.ok) {
+                const blob = await res.blob();
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = name;
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+            }
+        } catch(e) { console.error(e); }
+    }
+
+    async function takeCase(caseId) {
+        if (!confirm('¿Está seguro de tomar este caso? Se le asignará automáticamente.')) return;
+        
+        try {
+            const res = await fetchAPI(`/cases/${caseId}/assign-me`, {
+                method: 'POST'
+            });
+            
+            if (res && !res.error) {
+                // Reload lists
+                loadOpportunities();
+                loadMyCases();
+                alert('Caso asignado correctamente.');
+            } else {
+                alert('Error al asignar caso: ' + (res?.error || 'Desconocido'));
+            }
+        } catch (err) {
+            console.error(err);
+            alert('Error al procesar la solicitud.');
+        }
+    }
+
+    // Start
+    initDashboard();
+</script>
+</body>
+</html>

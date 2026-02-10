@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html class="light" lang="es">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>BrightLawyers - Gestión de Tareas</title>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+    <!-- Material Symbols -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "brand-dark": "#0B1120",      // Sidebar bg (Dark Blue/Black)
+                        "brand-primary": "#1e3a8a",   // Blue 900 (Primary Action)
+                        "brand-accent": "#3b82f6",    // Blue 500 (Highlights)
+                        "brand-secondary": "#334155", // Slate 700
+                        "brand-bg": "#F8FAFC",        // Light background
+                        "brand-surface": "#FFFFFF",   // White surface
+                        "brand-mint": "#eff6ff",      // Blue 50 (Light Blue for active/hover)
+                    },
+                    fontFamily: {
+                        "sans": ["'Plus Jakarta Sans'", "sans-serif"]
+                    },
+                    boxShadow: {
+                        "card": "0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1)",
+                        "card-hover": "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1)",
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1.5rem;
+            color: #94a3b8; /* slate-400 */
+            font-weight: 500;
+            font-size: 0.875rem;
+            transition: all 0.2s;
+            border-left: 3px solid transparent;
+        }
+        .sidebar-link:hover {
+            color: white;
+            background: rgba(255,255,255,0.05);
+        }
+        .sidebar-link.active {
+            background-color: rgba(59, 130, 246, 0.1); /* Blue tint */
+            color: #ffffff;
+            border-left-color: #3b82f6; /* brand-accent */
+        }
+        
+        .kanban-column {
+            min-height: calc(100vh - 280px);
+        }
+        
+        .skeleton {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: .5; }
+        }
+    </style>
+</head>
+<body class="bg-brand-bg text-slate-800 h-screen overflow-hidden flex">
+
+    <!-- Sidebar (Dark) -->
+    <aside class="w-64 bg-brand-dark text-white flex flex-col z-20 shadow-xl flex-shrink-0">
+        <!-- Logo Area -->
+        <div class="h-20 flex items-center px-6 border-b border-gray-800 flex-shrink-0">
+            <div class="flex items-center gap-3">
+                <div class="h-8 w-8 rounded bg-gradient-to-br from-blue-600 to-blue-800 flex items-center justify-center shadow-lg shadow-blue-500/30 text-white">
+                    <span class="material-symbols-outlined text-[20px]">balance</span>
+                </div>
+                <div>
+                    <h1 class="font-bold text-sm leading-tight tracking-wide">BrightLawyers</h1>
+                    <p class="text-[10px] text-gray-400 font-medium tracking-wider uppercase">ADMINISTRACIÓN</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="flex-1 overflow-y-auto py-6">
+            <a class="sidebar-link" href="admin.html">
+                <span class="material-symbols-outlined text-[20px]">dashboard</span>
+                Dashboard
+            </a>
+            <a class="sidebar-link" href="cases.html">
+                <span class="material-symbols-outlined text-[20px]">gavel</span>
+                Casos
+            </a>
+            <a class="sidebar-link active" href="tasks.html">
+                <span class="material-symbols-outlined text-[20px]">task_alt</span>
+                Tareas
+            </a>
+            <a class="sidebar-link" href="clients.html">
+                <span class="material-symbols-outlined text-[20px]">groups</span>
+                Clientes
+            </a>
+            <a class="sidebar-link" href="documents.html">
+                <span class="material-symbols-outlined text-[20px]">folder</span>
+                Documentos
+            </a>
+            <a class="sidebar-link" href="contracts.html">
+                <span class="material-symbols-outlined text-[20px]">description</span>
+                Contratos
+            </a>
+            <a class="sidebar-link" href="billing.html">
+                <span class="material-symbols-outlined text-[20px]">payments</span>
+                Facturación
+            </a>
+            <a class="sidebar-link" href="messages.html">
+                <span class="material-symbols-outlined text-[20px]">chat</span>
+                Mensajes
+            </a>
+
+            <div class="mt-6 mb-2 px-6 text-[10px] font-bold text-gray-500 uppercase tracking-wider">Gestión</div>
+            
+            <a class="sidebar-link" href="users.html">
+                <span class="material-symbols-outlined text-[20px]">manage_accounts</span>
+                Equipo Legal
+            </a>
+
+
+            <div class="mt-6 mb-2 px-6 text-[10px] font-bold text-gray-500 uppercase tracking-wider">Sistema</div>
+
+            <a class="sidebar-link" href="configuration.html">
+                <span class="material-symbols-outlined text-[20px]">settings</span>
+                Configuración
+            </a>
+            <button onclick="logout()" class="w-full sidebar-link text-left hover:text-red-400 hover:bg-white/5">
+                <span class="material-symbols-outlined text-[20px]">logout</span>
+                Cerrar Sesión
+            </button>
+        </nav>
+
+        <!-- User Profile (Bottom) -->
+        <div class="p-4 border-t border-gray-800 bg-black/20">
+            <div class="flex items-center gap-3">
+                <div class="h-9 w-9 rounded-full bg-blue-900 text-blue-100 flex items-center justify-center text-xs font-bold border border-blue-700" id="sidebarAvatar">--</div>
+                <div class="overflow-hidden">
+                    <p class="text-sm font-bold text-gray-200 truncate" id="sidebarName">Cargando...</p>
+                    <p class="text-xs text-gray-500 truncate" id="sidebarRole">Administrador</p>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 flex flex-col h-full overflow-hidden bg-brand-bg relative">
+        
+        <!-- Top Header -->
+        <header class="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-8 flex-shrink-0 z-10">
+            <h2 class="text-lg font-bold text-slate-800">Gestión de Tareas</h2>
+            
+            <div class="flex items-center gap-6">
+                <!-- Search -->
+                <div class="relative hidden md:block w-96">
+                    <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-[20px]">search</span>
+                    <input id="searchInput" type="text" placeholder="Buscar tareas..." 
+                           class="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-brand-accent/20 focus:border-brand-accent transition-all outline-none">
+                </div>
+
+                <div class="flex items-center gap-3">
+                    <button onclick="loadTasks()" class="p-2 text-slate-500 hover:bg-slate-50 rounded-full transition-colors" title="Actualizar">
+                        <span class="material-symbols-outlined text-[22px]">refresh</span>
+                    </button>
+                    <button onclick="openModal()" class="flex items-center gap-2 px-4 py-2 bg-brand-primary text-white rounded-lg font-medium hover:bg-blue-800 transition-colors shadow-sm shadow-blue-900/10">
+                        <span class="material-symbols-outlined text-[20px]">add</span>
+                        Nueva Tarea
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Content -->
+        <div class="flex-1 overflow-y-auto p-8">
+            <div class="max-w-7xl mx-auto space-y-8">
+                
+                <!-- Page Title -->
+                <div>
+                    <h1 class="text-2xl font-bold text-slate-900">Tablero de Tareas</h1>
+                    <p class="text-slate-500 mt-1">Organiza tus pendientes y plazos legales.</p>
+                </div>
+
+                <!-- Kanban Board -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    
+                    <!-- Pending Column -->
+                    <div class="flex flex-col gap-4">
+                        <div class="flex items-center justify-between px-1">
+                            <div class="flex items-center gap-2">
+                                <div class="w-2 h-2 rounded-full bg-amber-500"></div>
+                                <h3 class="font-bold text-sm uppercase tracking-wider text-slate-500">Pendiente</h3>
+                                <span id="pendingCount" class="text-xs font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-full">0</span>
+                            </div>
+                        </div>
+                        <div id="pendingColumn" class="kanban-column flex flex-col gap-3 p-2 rounded-xl bg-slate-100/50 border border-slate-200/50">
+                            <!-- Cards load here -->
+                            <div class="h-24 bg-white rounded-xl shadow-sm skeleton"></div>
+                            <div class="h-24 bg-white rounded-xl shadow-sm skeleton"></div>
+                        </div>
+                    </div>
+
+                    <!-- In Progress Column -->
+                    <div class="flex flex-col gap-4">
+                        <div class="flex items-center justify-between px-1">
+                            <div class="flex items-center gap-2">
+                                <div class="w-2 h-2 rounded-full bg-blue-600"></div>
+                                <h3 class="font-bold text-sm uppercase tracking-wider text-slate-500">En Proceso</h3>
+                                <span id="progressCount" class="text-xs font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-full">0</span>
+                            </div>
+                        </div>
+                        <div id="progressColumn" class="kanban-column flex flex-col gap-3 p-2 rounded-xl bg-slate-100/50 border border-slate-200/50">
+                            <!-- Cards load here -->
+                        </div>
+                    </div>
+
+                    <!-- Completed Column -->
+                    <div class="flex flex-col gap-4">
+                        <div class="flex items-center justify-between px-1">
+                            <div class="flex items-center gap-2">
+                                <div class="w-2 h-2 rounded-full bg-emerald-500"></div>
+                                <h3 class="font-bold text-sm uppercase tracking-wider text-slate-500">Completado</h3>
+                                <span id="completedCount" class="text-xs font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-full">0</span>
+                            </div>
+                        </div>
+                        <div id="completedColumn" class="kanban-column flex flex-col gap-3 p-2 rounded-xl bg-slate-100/50 border border-slate-200/50">
+                            <!-- Cards load here -->
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal -->
+    <div id="newTaskModal" class="hidden fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+        <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <div class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm transition-opacity" aria-hidden="true" onclick="closeModal()"></div>
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+            <div class="inline-block align-bottom bg-white rounded-xl text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg w-full">
+                <div class="bg-white px-6 pt-6 pb-4">
+                    <h3 class="text-lg leading-6 font-bold text-slate-900 mb-1" id="modal-title">Nueva Tarea</h3>
+                    <p class="text-sm text-slate-500 mb-6">Completa la información para crear una nueva tarea.</p>
+                    
+                    <form id="newTaskForm" onsubmit="event.preventDefault(); submitTask();">
+                        <input type="hidden" id="taskId">
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Título</label>
+                                <input type="text" id="taskTitle" required class="w-full rounded-lg border-slate-200 bg-slate-50 text-sm focus:ring-2 focus:ring-brand-accent/20 focus:border-brand-accent transition-all" placeholder="Ej: Revisar contrato de arrendamiento">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Descripción</label>
+                                <textarea id="taskDesc" rows="3" class="w-full rounded-lg border-slate-200 bg-slate-50 text-sm focus:ring-2 focus:ring-brand-accent/20 focus:border-brand-accent transition-all" placeholder="Detalles adicionales..."></textarea>
+                            </div>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Fecha Límite</label>
+                                    <input type="date" id="taskDate" required class="w-full rounded-lg border-slate-200 bg-slate-50 text-sm focus:ring-2 focus:ring-brand-accent/20 focus:border-brand-accent transition-all">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Prioridad</label>
+                                    <select id="taskPriority" class="w-full rounded-lg border-slate-200 bg-slate-50 text-sm focus:ring-2 focus:ring-brand-accent/20 focus:border-brand-accent transition-all">
+                                        <option value="low">Baja</option>
+                                        <option value="med" selected>Media</option>
+                                        <option value="high">Alta</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-8 flex justify-end gap-3">
+                            <button type="button" onclick="closeModal()" class="px-4 py-2 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50 text-sm font-bold transition-colors">Cancelar</button>
+                            <button type="submit" id="submitBtn" class="px-4 py-2 rounded-lg bg-brand-primary text-white hover:bg-blue-800 text-sm font-bold shadow-lg shadow-blue-900/20 transition-all">Crear Tarea</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script src="../assets/js/auth.js"></script>
+<script>
+    const authToken = localStorage.getItem('token');
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
+    let allTasks = [];
+
+    // Initialize Page
+    async function init() {
+        if (!authToken) {
+            window.location.href = '../public/login.html';
+            return;
+        }
+
+        // Display User Info
+        const avatarEl = document.getElementById('sidebarAvatar');
+        const nameEl = document.getElementById('sidebarName');
+        const roleEl = document.getElementById('sidebarRole');
+        
+        if (nameEl) nameEl.textContent = user.fullName || user.name || 'Usuario';
+        if (roleEl) roleEl.textContent = (user.userRoles?.[0]?.role?.name || 'Administrador').toUpperCase();
+        if (avatarEl) avatarEl.textContent = (user.fullName || user.name || 'U').split(' ').map(n => n[0]).join('').substring(0, 2);
+
+        // Load data
+        await loadTasks();
+
+        // Listen for search
+        document.getElementById('searchInput').addEventListener('input', debounce(loadTasks, 500));
+    }
+
+    async function loadTasks() {
+        const search = document.getElementById('searchInput').value;
+        try {
+            const url = new URL(`${window.API_URL}/tasks`);
+            if (search) url.searchParams.append('search', search);
+
+            const response = await fetch(url, {
+                headers: { 'Authorization': `Bearer ${authToken}` }
+            });
+
+            if (!response.ok) throw new Error('Error al cargar tareas');
+
+            const data = await response.json();
+            allTasks = data.tasks || [];
+            renderKanban(allTasks);
+        } catch (error) {
+            console.error(error);
+            // Show error in columns if empty
+            if (allTasks.length === 0) {
+                 // logic to show error state?
+            }
+        }
+    }
+
+    function renderKanban(tasks) {
+        const columns = {
+            'pending': { el: document.getElementById('pendingColumn'), count: 0 },
+            'in_progress': { el: document.getElementById('progressColumn'), count: 0 },
+            'completed': { el: document.getElementById('completedColumn'), count: 0 }
+        };
+
+        // Clear columns
+        Object.values(columns).forEach(col => col.el.innerHTML = '');
+
+        tasks.forEach(task => {
+            // Map backend status to frontend columns
+            let status = task.status;
+            // Map 'todo' to 'pending', 'doing' to 'in_progress', 'done' to 'completed'
+            // If backend uses different names, map them here
+            if (status === 'todo') status = 'pending';
+            else if (status === 'doing') status = 'in_progress';
+            else if (status === 'done') status = 'completed';
+            else if (!status) status = 'pending'; // Default
+
+            if (columns[status]) {
+                columns[status].el.innerHTML += createTaskCard(task);
+                columns[status].count++;
+            }
+        });
+
+        // Update counts
+        document.getElementById('pendingCount').textContent = columns.pending.count;
+        document.getElementById('progressCount').textContent = columns.in_progress.count;
+        document.getElementById('completedCount').textContent = columns.completed.count;
+    }
+
+    function createTaskCard(task) {
+        const priorityStyles = {
+            'high': 'text-red-600 bg-red-50 border-red-100',
+            'medium': 'text-amber-600 bg-amber-50 border-amber-100',
+            'low': 'text-emerald-600 bg-emerald-50 border-emerald-100'
+        };
+
+        const deadline = task.dueAt ? new Date(task.dueAt).toLocaleDateString() : 'Sin plazo';
+        const isOverdue = task.dueAt && new Date(task.dueAt) < new Date() && task.status !== 'done';
+        
+        const priorityLabel = {
+            'high': 'ALTA',
+            'medium': 'MEDIA',
+            'low': 'BAJA'
+        };
+
+        return `
+            <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-card hover:shadow-card-hover transition-all cursor-pointer group relative" draggable="true">
+                <div class="flex items-start justify-between gap-2 mb-2">
+                    <span class="inline-flex items-center px-2 py-1 rounded text-[10px] font-bold uppercase border ${priorityStyles[task.priority] || priorityStyles.medium}">
+                        ${priorityLabel[task.priority] || 'MEDIA'}
+                    </span>
+                    <div class="opacity-0 group-hover:opacity-100 transition-opacity flex gap-1">
+                        <button onclick="openEditModal('${task.id}')" class="p-1 text-slate-400 hover:text-brand-primary rounded-full hover:bg-slate-100">
+                            <span class="material-symbols-outlined text-[16px]">edit</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <h4 class="font-bold text-sm text-slate-800 mb-1 leading-tight">${task.title}</h4>
+                <p class="text-xs text-slate-500 line-clamp-2 mb-3">${task.description || ''}</p>
+                
+                <div class="flex items-center justify-between pt-3 border-t border-slate-100">
+                    <div class="flex items-center gap-1.5 text-xs ${isOverdue ? 'text-red-500 font-bold' : 'text-slate-400'}">
+                        <span class="material-symbols-outlined text-[14px]">calendar_today</span>
+                        ${deadline}
+                    </div>
+                    
+                    <div class="flex items-center gap-2">
+                        ${task.status !== 'done' ? `
+                            <button onclick="updateStatus('${task.id}', 'done')" class="w-6 h-6 rounded-full bg-slate-100 text-slate-400 hover:bg-emerald-500 hover:text-white flex items-center justify-center transition-colors" title="Marcar completada">
+                                <span class="material-symbols-outlined text-[14px]">check</span>
+                            </button>
+                        ` : `
+                            <button onclick="deleteTask('${task.id}')" class="w-6 h-6 rounded-full bg-slate-100 text-slate-400 hover:bg-red-500 hover:text-white flex items-center justify-center transition-colors" title="Eliminar">
+                                <span class="material-symbols-outlined text-[14px]">delete</span>
+                            </button>
+                        `}
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    // Modal Logic
+    function openModal() {
+        document.getElementById('newTaskForm').reset();
+        document.getElementById('taskId').value = '';
+        document.getElementById('modal-title').textContent = 'Nueva Tarea';
+        document.getElementById('submitBtn').textContent = 'Crear Tarea';
+        document.getElementById('taskDate').valueAsDate = new Date();
+        document.getElementById('newTaskModal').classList.remove('hidden');
+    }
+
+    function openEditModal(id) {
+        const task = allTasks.find(t => t.id === id);
+        if (!task) return;
+
+        document.getElementById('taskId').value = task.id;
+        document.getElementById('taskTitle').value = task.title;
+        document.getElementById('taskDesc').value = task.description || '';
+        document.getElementById('taskPriority').value = task.priority || 'medium';
+        if (task.dueAt) {
+            document.getElementById('taskDate').value = new Date(task.dueAt).toISOString().split('T')[0];
+        }
+
+        document.getElementById('modal-title').textContent = 'Editar Tarea';
+        document.getElementById('submitBtn').textContent = 'Guardar Cambios';
+        document.getElementById('newTaskModal').classList.remove('hidden');
+    }
+
+    function closeModal() {
+        document.getElementById('newTaskModal').classList.add('hidden');
+    }
+
+    async function submitTask() {
+        const title = document.getElementById('taskTitle').value;
+        const description = document.getElementById('taskDesc').value;
+        const dueAt = document.getElementById('taskDate').value;
+        const priority = document.getElementById('taskPriority').value;
+        const taskId = document.getElementById('taskId').value;
+
+        try {
+            let url = `${window.API_URL}/tasks`;
+            let method = 'POST';
+            let body = {
+                title,
+                description,
+                dueAt,
+                priority,
+                taskType: 'deadline', 
+                caseId: null, 
+                assignedToUserId: user.userId
+            };
+
+            if (taskId) {
+                url = `${window.API_URL}/tasks/${taskId}`;
+                method = 'PATCH';
+                // Only send fields to update if needed, but simple overwrite is fine usually
+                // Remove creation-only fields if necessary
+                delete body.taskType;
+                delete body.caseId;
+                delete body.assignedToUserId;
+            }
+
+            const response = await fetch(url, {
+                method: method,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${authToken}`
+                },
+                body: JSON.stringify(body)
+            });
+
+            if (!response.ok) throw new Error('Error al guardar tarea');
+            
+            closeModal();
+            loadTasks();
+        } catch (error) {
+            console.error(error);
+            alert('Error al guardar la tarea');
+        }
+    }
+
+    async function updateStatus(id, newStatus) {
+        try {
+            await fetch(`${window.API_URL}/tasks/${id}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${authToken}`
+                },
+                body: JSON.stringify({ status: newStatus })
+            });
+            loadTasks();
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    async function deleteTask(id) {
+        if(!confirm('¿Estás seguro de eliminar esta tarea?')) return;
+        try {
+            await fetch(`${window.API_URL}/tasks/${id}`, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${authToken}`
+                }
+            });
+            loadTasks();
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    function debounce(func, wait) {
+        let timeout;
+        return function executedFunction(...args) {
+            const later = () => {
+                clearTimeout(timeout);
+                func(...args);
+            };
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+        };
+    }
+
+    // Start
+    init();
+
+</script>
+</body>
+</html>

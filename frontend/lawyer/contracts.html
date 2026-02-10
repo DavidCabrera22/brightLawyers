@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html class="light" lang="es">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Contratos y Convenios - BrightLawyers</title>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+    <!-- Material Symbols -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "lawyer-primary": "#2c3e50",   // Dark Blue
+                        "lawyer-secondary": "#34495e", // Desaturated Blue
+                        "lawyer-accent": "#e67e22",    // Orange
+                        "lawyer-bg": "#ecf0f1",        // Light Gray
+                        "lawyer-card": "#ffffff",
+                        "lawyer-text": "#2c3e50",
+                        "lawyer-muted": "#7f8c8d",
+                        // Admin style matches
+                        "slate-50": "#f8fafc",
+                        "slate-100": "#f1f5f9",
+                        "slate-200": "#e2e8f0",
+                        "slate-300": "#cbd5e1",
+                        "slate-400": "#94a3b8",
+                        "slate-500": "#64748b",
+                        "slate-600": "#475569",
+                        "slate-700": "#334155",
+                        "slate-800": "#1e293b",
+                        "slate-900": "#0f172a",
+                    },
+                    fontFamily: {
+                        "sans": ["'Plus Jakarta Sans'", "sans-serif"]
+                    },
+                    boxShadow: {
+                        "card": "0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1)",
+                        "card-hover": "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1)",
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #ecf0f1; }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1.5rem;
+            color: #bdc3c7; /* Light gray for contrast on dark bg */
+            font-weight: 500;
+            font-size: 0.875rem;
+            transition: all 0.2s;
+            border-left: 3px solid transparent;
+        }
+        .sidebar-link:hover {
+            color: white;
+            background: rgba(255,255,255,0.05);
+        }
+        .sidebar-link.active {
+            background-color: rgba(230, 126, 34, 0.1); /* Orange tint */
+            color: #ffffff;
+            border-left-color: #e67e22; /* lawyer-accent */
+        }
+        
+        .skeleton {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: .5; }
+        }
+    </style>
+</head>
+<body class="bg-lawyer-bg text-slate-800 h-screen overflow-hidden flex">
+
+    <!-- Sidebar (Lawyer Theme) -->
+    <aside class="w-64 bg-lawyer-secondary text-white flex flex-col z-20 shadow-xl flex-shrink-0">
+        <!-- Logo Area -->
+        <div class="h-20 flex items-center px-6 border-b border-white/10 flex-shrink-0">
+            <div class="flex items-center gap-3">
+                <div class="h-8 w-8 rounded bg-lawyer-accent text-white flex items-center justify-center shadow-lg">
+                    <span class="material-symbols-outlined text-[20px]">gavel</span>
+                </div>
+                <div>
+                    <h1 class="font-bold text-sm leading-tight tracking-wide text-white">BrightLawyers</h1>
+                    <p class="text-[10px] text-gray-400 font-medium tracking-wider uppercase">Panel de Abogado</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="flex-1 overflow-y-auto py-6">
+            <a class="sidebar-link" href="dashboard-lawyer.html">
+                <span class="material-symbols-outlined text-[20px]">dashboard</span>
+                Resumen
+            </a>
+            <a class="sidebar-link" href="cases-lawyer.html">
+                <span class="material-symbols-outlined text-[20px]">folder_open</span>
+                Mis Casos
+            </a>
+            <a class="sidebar-link" href="documents.html">
+                <span class="material-symbols-outlined text-[20px]">description</span>
+                Documentos
+            </a>
+            <a class="sidebar-link active" href="contracts.html">
+                <span class="material-symbols-outlined text-[20px]">gavel</span>
+                Contratos
+            </a>
+            <a class="sidebar-link" href="tasks.html">
+                <span class="material-symbols-outlined text-[20px]">event_note</span>
+                Agenda Legal
+            </a>
+            <a class="sidebar-link" href="messages.html">
+                <span class="material-symbols-outlined text-[20px]">mail</span>
+                Comunicaciones
+            </a>
+            <a class="sidebar-link" href="profile-lawyer.html">
+                <span class="material-symbols-outlined text-[20px]">person</span>
+                Perfil
+            </a>
+
+            <div class="mt-auto mb-2 pt-6 px-6 border-t border-white/5">
+                <button onclick="logout()" class="w-full sidebar-link text-left hover:text-red-400 hover:bg-white/5 px-0 pl-0 border-l-0">
+                    <span class="material-symbols-outlined text-[20px]">logout</span>
+                    Cerrar Sesión
+                </button>
+            </div>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 flex flex-col h-full overflow-hidden bg-lawyer-bg relative">
+        
+        <!-- Top Header -->
+        <header class="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-8 flex-shrink-0 z-10">
+            <h2 class="text-lg font-bold text-lawyer-primary">Contratos y Convenios</h2>
+            
+            <div class="flex items-center gap-6">
+                <!-- Search -->
+                <div class="relative hidden md:block w-80">
+                    <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-[20px]">search</span>
+                    <input type="text" 
+                           id="searchInput" 
+                           placeholder="Buscar contrato..." 
+                           class="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-lawyer-accent/20 focus:border-lawyer-accent transition-all outline-none">
+                </div>
+
+                <div class="flex items-center gap-3">
+                    <button class="p-2 text-slate-500 hover:bg-slate-50 rounded-full relative">
+                        <span class="material-symbols-outlined text-[22px]">notifications</span>
+                        <span class="absolute top-2 right-2 h-2 w-2 bg-red-500 rounded-full border border-white"></span>
+                    </button>
+                    
+                    <div class="h-8 w-px bg-slate-200 mx-1"></div>
+                    
+                    <div class="flex items-center gap-2 cursor-pointer p-1 hover:bg-slate-50 rounded-lg transition-colors">
+                        <div class="text-right hidden sm:block">
+                            <p class="text-xs font-bold text-slate-700" id="userName">Cargando...</p>
+                            <p class="text-[10px] text-slate-500">Abogado</p>
+                        </div>
+                        <div class="h-8 w-8 rounded-full bg-lawyer-primary text-white flex items-center justify-center text-xs font-bold overflow-hidden" id="userInitials">
+                            --
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Scrollable Content -->
+        <div class="flex-1 overflow-y-auto p-6 md:p-8">
+            <div class="max-w-7xl mx-auto space-y-6">
+                
+                <!-- Filters & Controls Card -->
+                <div class="bg-white p-5 rounded-xl border border-slate-100 shadow-card flex flex-col md:flex-row justify-between items-center gap-4">
+                    <div class="flex items-center gap-3 w-full md:w-auto">
+                        <div class="relative w-full md:w-64">
+                            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 material-symbols-outlined text-[18px]">filter_list</span>
+                            <select id="statusFilter" onchange="loadContracts()" class="w-full h-10 pl-10 pr-8 rounded-lg border border-slate-200 bg-slate-50 text-sm font-medium text-slate-600 focus:outline-none focus:border-lawyer-accent focus:ring-1 focus:ring-lawyer-accent appearance-none cursor-pointer hover:bg-white transition-colors">
+                                <option value="">Todos los estados</option>
+                                <option value="draft">Borrador</option>
+                                <option value="sent">Enviado</option>
+                                <option value="signed">Firmado</option>
+                                <option value="cancelled">Cancelado</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <button onclick="alert('Funcionalidad de creación de contrato restringida. Contacte a administración.')" class="w-full md:w-auto px-5 py-2.5 bg-lawyer-primary hover:bg-lawyer-secondary text-white text-sm font-semibold rounded-lg shadow-sm hover:shadow transition-all flex items-center justify-center gap-2">
+                        <span class="material-symbols-outlined text-[18px]">add</span>
+                        Nuevo Contrato
+                    </button>
+                </div>
+
+                <!-- Contracts Table Card -->
+                <div class="bg-white rounded-xl border border-slate-100 shadow-card overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead class="bg-slate-50 border-b border-slate-200">
+                                <tr>
+                                    <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Título del Acuerdo</th>
+                                    <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Cliente / Parte</th>
+                                    <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Estado</th>
+                                    <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Honorarios</th>
+                                    <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider text-right">Firma</th>
+                                    <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider text-right">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="contractsTableBody" class="divide-y divide-slate-100 text-sm">
+                                <tr>
+                                    <td colspan="6" class="px-6 py-12 text-center">
+                                        <div class="flex flex-col items-center justify-center gap-3">
+                                            <div class="w-8 h-8 border-4 border-lawyer-accent border-t-transparent rounded-full animate-spin"></div>
+                                            <span class="text-slate-400 font-medium">Cargando contratos...</span>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- Pagination -->
+                    <div class="px-6 py-4 border-t border-slate-100 bg-slate-50/50 flex items-center justify-between">
+                        <span class="text-xs text-slate-500 font-medium" id="resultsCount">Mostrando 0 resultados</span>
+                        <div class="flex gap-1">
+                            <button class="w-8 h-8 flex items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-400 hover:text-lawyer-accent disabled:opacity-50" disabled>
+                                <span class="material-symbols-outlined text-[16px]">chevron_left</span>
+                            </button>
+                            <button class="w-8 h-8 flex items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-400 hover:text-lawyer-accent disabled:opacity-50" disabled>
+                                <span class="material-symbols-outlined text-[16px]">chevron_right</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- View Contract Modal -->
+    <div id="viewContractModal" class="fixed inset-0 bg-black/50 z-50 hidden items-center justify-center backdrop-blur-sm">
+        <div class="bg-white rounded-xl shadow-2xl max-w-2xl w-full mx-4 p-6 transform transition-all scale-100">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-lg font-bold text-lawyer-primary" id="viewContractTitle">Detalles del Contrato</h3>
+                <button onclick="closeViewModal()" class="text-slate-400 hover:text-red-500 transition-colors">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+            
+            <div class="space-y-6" id="viewContractContent">
+                <!-- Content populated by JS -->
+            </div>
+
+            <div class="mt-8 pt-6 border-t border-slate-100 flex items-center justify-between">
+                 <div class="flex items-center gap-3">
+                    <label class="text-sm font-bold text-slate-700">Cambiar Estado:</label>
+                    <select id="viewContractStatus" onchange="updateContractStatus(this.dataset.id, this.value)" class="rounded-lg border-slate-300 text-sm focus:ring-lawyer-accent focus:border-lawyer-accent py-1.5 bg-slate-50">
+                        <option value="draft">Borrador</option>
+                        <option value="sent">Enviado</option>
+                        <option value="signed">Firmado</option>
+                        <option value="cancelled">Cancelado</option>
+                    </select>
+                 </div>
+                 <button onclick="closeViewModal()" class="px-4 py-2 text-sm font-medium text-slate-600 hover:text-slate-800 hover:bg-slate-100 rounded-lg transition-colors">
+                    Cerrar
+                 </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../assets/js/auth.js"></script>
+    <script>
+        const authToken = localStorage.getItem('token');
+        const user = JSON.parse(localStorage.getItem('user') || '{}');
+
+        async function init() {
+            if (!authToken) { window.location.href = '../public/login.html'; return; }
+            
+            // Set User Info
+            const userNameEl = document.getElementById('userName');
+            if(userNameEl) userNameEl.textContent = user.name || 'Usuario';
+
+            const initialsDiv = document.getElementById('userInitials');
+            if(initialsDiv) {
+                initialsDiv.textContent = (user.name || 'AB').split(' ').map(n => n[0]).join('').substring(0, 2);
+            }
+
+            // Check for profile picture
+            const savedProfile = localStorage.getItem('lawyer_profile_' + user.id);
+            if (savedProfile && initialsDiv) {
+                try {
+                    const pData = JSON.parse(savedProfile);
+                    if (pData.profileImage) {
+                        initialsDiv.innerHTML = `<img src="${pData.profileImage}" class="w-full h-full object-cover rounded-full">`;
+                        initialsDiv.classList.remove('bg-lawyer-primary', 'text-white');
+                        initialsDiv.classList.add('overflow-hidden');
+                    }
+                } catch (e) { console.error('Error loading profile pic:', e); }
+            }
+
+            await loadContracts();
+            document.getElementById('searchInput').addEventListener('input', debounce(loadContracts, 500));
+        }
+
+        async function loadContracts() {
+            const tbody = document.getElementById('contractsTableBody');
+            const search = document.getElementById('searchInput').value;
+            const statusFilter = document.getElementById('statusFilter').value;
+            const countSpan = document.getElementById('resultsCount');
+
+            try {
+                let url = `${API_URL}/contracts`;
+                const params = new URLSearchParams();
+                if (search) params.append('search', search);
+                if (statusFilter) params.append('status', statusFilter); // Assuming API supports status filtering
+                
+                if (params.toString()) url += `?${params.toString()}`;
+
+                const response = await fetch(url, {
+                    headers: { 'Authorization': `Bearer ${authToken}` }
+                });
+
+                if (!response.ok) throw new Error('Failed to load contracts');
+                const data = await response.json();
+                
+                // Client side filtering if API doesn't support status
+                let contracts = data.contracts || [];
+                if (statusFilter && !url.includes('status=')) { // Fallback
+                     contracts = contracts.filter(c => c.status === statusFilter);
+                }
+
+                if(countSpan) countSpan.textContent = `Mostrando ${contracts.length} resultados`;
+
+                if (contracts.length === 0) {
+                    tbody.innerHTML = `
+                        <tr>
+                            <td colspan="6" class="px-6 py-12 text-center text-slate-400 italic">
+                                <span class="material-symbols-outlined text-4xl mb-2 opacity-50">gavel</span>
+                                <p>No se encontraron contratos.</p>
+                            </td>
+                        </tr>`;
+                    return;
+                }
+
+                tbody.innerHTML = contracts.map(c => `
+                    <tr class="hover:bg-slate-50 transition-colors group border-b border-slate-50 last:border-0">
+                        <td class="px-6 py-4">
+                            <div class="flex flex-col">
+                                <span class="font-bold text-slate-700 text-sm group-hover:text-lawyer-primary transition-colors">${c.title}</span>
+                                <span class="text-xs text-slate-400 font-mono">${c.contractNumber || 'S/N'}</span>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4">
+                            <div class="flex items-center gap-2">
+                                <span class="material-symbols-outlined text-slate-400 text-[18px]">person</span>
+                                <span class="text-slate-600 text-sm">${c.client?.fullNameOrBusinessName || 'Sin Cliente'}</span>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4">
+                            <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold border ${getStatusBadgeClasses(c.status)}">
+                                ${translateStatus(c.status)}
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 text-sm text-slate-600 font-medium">
+                            ${formatFees(c)}
+                        </td>
+                        <td class="px-6 py-4 text-right">
+                             ${c.status === 'signed' 
+                                ? `<span class="text-green-600 flex items-center justify-end gap-1 text-xs font-bold bg-green-50 px-2 py-1 rounded-lg border border-green-100 w-fit ml-auto"><span class="material-symbols-outlined text-[16px]">verified</span> Firmado</span>`
+                                : `<span class="text-slate-400 text-xs italic">Pendiente</span>`
+                             }
+                        </td>
+                        <td class="px-6 py-4 text-right">
+                            <button onclick="viewContract('${c.id}')" class="text-lawyer-secondary hover:text-lawyer-accent font-medium text-xs border border-slate-300 rounded-lg px-3 py-1.5 hover:border-lawyer-accent transition-all inline-flex items-center gap-1">
+                                Gestionar <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+                            </button>
+                        </td>
+                    </tr>
+                `).join('');
+
+            } catch (error) {
+                console.error(error);
+                tbody.innerHTML = `<tr><td colspan="6" class="px-6 py-8 text-center text-red-500">Error al cargar contratos</td></tr>`;
+            }
+        }
+
+        function getStatusBadgeClasses(status) {
+            switch(status) {
+                case 'draft': return 'bg-slate-100 text-slate-600 border-slate-200';
+                case 'sent': return 'bg-blue-50 text-blue-600 border-blue-100';
+                case 'signed': return 'bg-green-50 text-green-600 border-green-100';
+                case 'cancelled': return 'bg-red-50 text-red-600 border-red-100';
+                default: return 'bg-slate-100 text-slate-600 border-slate-200';
+            }
+        }
+
+        function translateStatus(status) {
+            const map = { 'draft': 'Borrador', 'sent': 'Enviado', 'signed': 'Firmado', 'cancelled': 'Cancelado' };
+            return map[status] || status;
+        }
+
+        function formatFees(c) {
+            if (c.feeType === 'PERCENTAGE') return `Cuota Litis: ${c.feePercentage}%`;
+            if (c.feeType === 'FIXED') return `$${new Intl.NumberFormat().format(c.feeFixed || 0)}`;
+            if (c.feeType === 'MIXED') return `$${new Intl.NumberFormat().format(c.feeFixed || 0)} + ${c.feePercentage}%`;
+            return '<span class="text-slate-400">N/A</span>';
+        }
+
+        // Modal & Action Functions
+        function closeViewModal() {
+            const modal = document.getElementById('viewContractModal');
+            if(modal) {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }
+        }
+
+        async function viewContract(id) {
+            try {
+                const res = await fetch(`${API_URL}/contracts/${id}`, { headers: { 'Authorization': `Bearer ${authToken}` } });
+                const data = await res.json();
+                const c = data.contract;
+                
+                document.getElementById('viewContractTitle').textContent = c.title;
+                document.getElementById('viewContractStatus').value = c.status;
+                document.getElementById('viewContractStatus').dataset.id = c.id;
+                
+                const content = document.getElementById('viewContractContent');
+                content.innerHTML = `
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-slate-50 p-4 rounded-lg border border-slate-100">
+                            <p class="text-xs text-slate-400 uppercase font-bold mb-1">Cliente</p>
+                            <p class="font-medium text-slate-700 flex items-center gap-2">
+                                <span class="material-symbols-outlined text-[18px]">person</span>
+                                ${c.client?.fullNameOrBusinessName}
+                            </p>
+                        </div>
+                        <div class="bg-slate-50 p-4 rounded-lg border border-slate-100">
+                            <p class="text-xs text-slate-400 uppercase font-bold mb-1">N° Contrato</p>
+                            <p class="font-mono text-slate-700">${c.contractNumber}</p>
+                        </div>
+                        <div class="bg-slate-50 p-4 rounded-lg border border-slate-100">
+                            <p class="text-xs text-slate-400 uppercase font-bold mb-1">Honorarios</p>
+                            <p class="font-medium text-lawyer-accent text-lg">${formatFees(c)}</p>
+                        </div>
+                        <div class="bg-slate-50 p-4 rounded-lg border border-slate-100">
+                            <p class="text-xs text-slate-400 uppercase font-bold mb-1">Fecha de Creación</p>
+                            <p class="font-medium text-slate-700">${new Date(c.createdAt).toLocaleDateString()}</p>
+                        </div>
+                    </div>
+                    
+                    ${c.status === 'signed' ? `
+                        <div class="bg-green-50 border border-green-200 rounded-lg p-4 flex items-start gap-3">
+                            <span class="material-symbols-outlined text-green-600 mt-0.5">verified_user</span>
+                            <div>
+                                <p class="text-green-800 text-sm font-bold">Contrato Firmado Digitalmente</p>
+                                <p class="text-green-700 text-xs mt-1">
+                                    Este documento fue finalizado y firmado el ${new Date(c.signedAt || new Date()).toLocaleString()}
+                                </p>
+                            </div>
+                        </div>
+                    ` : ''}
+                `;
+                
+                const modal = document.getElementById('viewContractModal');
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+            } catch(e) { console.error(e); }
+        }
+
+        async function updateContractStatus(id, status) {
+            if (!confirm('¿Cambiar estado del contrato?')) return;
+            try {
+                const res = await fetch(`${API_URL}/contracts/${id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${authToken}` },
+                    body: JSON.stringify({ status })
+                });
+                if (res.ok) {
+                    viewContract(id); // Reload modal
+                    loadContracts(); // Reload list
+                }
+            } catch(e) { console.error(e); }
+        }
+        
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+
+        init();
+    </script>
+</body>
+</html>

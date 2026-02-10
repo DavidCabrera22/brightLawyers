@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html class="light" lang="es">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>BrightLawyers - Mensajes</title>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+    
+    <!-- Material Symbols -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "brand-dark": "#0B1120",      // Sidebar bg (Dark Blue/Black)
+                        "brand-primary": "#1e3a8a",   // Blue 900 (Primary Action)
+                        "brand-accent": "#3b82f6",    // Blue 500 (Highlights)
+                        "brand-secondary": "#334155", // Slate 700
+                        "brand-bg": "#F8FAFC",        // Light background
+                        "brand-surface": "#FFFFFF",   // White surface
+                        "brand-mint": "#eff6ff",      // Blue 50 (Light Blue for active/hover)
+                    },
+                    fontFamily: {
+                        "sans": ["'Plus Jakarta Sans'", "sans-serif"]
+                    },
+                    boxShadow: {
+                        "card": "0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1)",
+                        "card-hover": "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1)",
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1.5rem;
+            color: #94a3b8; /* slate-400 */
+            font-weight: 500;
+            font-size: 0.875rem;
+            transition: all 0.2s;
+            border-left: 3px solid transparent;
+        }
+        .sidebar-link:hover {
+            color: white;
+            background: rgba(255,255,255,0.05);
+        }
+        .sidebar-link.active {
+            background-color: rgba(59, 130, 246, 0.1); /* Blue tint */
+            color: #ffffff;
+            border-left-color: #3b82f6; /* brand-accent */
+        }
+
+        /* Message Bubbles */
+        .msg-bubble-me {
+            background-color: #1e3a8a; /* brand-primary */
+            color: white;
+            border-radius: 12px 12px 0 12px;
+        }
+        .msg-bubble-other {
+            background-color: #f1f5f9; /* slate-100 */
+            color: #334155; /* slate-700 */
+            border-radius: 12px 12px 12px 0;
+        }
+    </style>
+</head>
+<body class="bg-brand-bg text-slate-800 h-screen overflow-hidden flex">
+
+    <!-- Sidebar (Dark) -->
+    <aside class="w-64 bg-brand-dark text-white flex flex-col z-20 shadow-xl flex-shrink-0">
+        <!-- Logo Area -->
+        <div class="h-20 flex items-center px-6 border-b border-gray-800 flex-shrink-0">
+            <div class="flex items-center gap-3">
+                <div class="h-8 w-8 rounded bg-gradient-to-br from-blue-600 to-blue-800 flex items-center justify-center shadow-lg shadow-blue-500/30 text-white">
+                    <span class="material-symbols-outlined text-[20px]">balance</span>
+                </div>
+                <div>
+                    <h1 class="font-bold text-sm leading-tight tracking-wide">BrightLawyers</h1>
+                    <p class="text-[10px] text-gray-400 font-medium tracking-wider uppercase">ADMINISTRACIÓN</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="flex-1 overflow-y-auto py-6">
+            <a class="sidebar-link" href="admin.html">
+                <span class="material-symbols-outlined text-[20px]">dashboard</span>
+                Dashboard
+            </a>
+            <a class="sidebar-link" href="cases.html">
+                <span class="material-symbols-outlined text-[20px]">gavel</span>
+                Casos
+            </a>
+            <a class="sidebar-link" href="tasks.html">
+                <span class="material-symbols-outlined text-[20px]">task_alt</span>
+                Tareas
+            </a>
+            <a class="sidebar-link" href="clients.html">
+                <span class="material-symbols-outlined text-[20px]">groups</span>
+                Clientes
+            </a>
+            <a class="sidebar-link" href="documents.html">
+                <span class="material-symbols-outlined text-[20px]">folder</span>
+                Documentos
+            </a>
+            <a class="sidebar-link" href="contracts.html">
+                <span class="material-symbols-outlined text-[20px]">description</span>
+                Contratos
+            </a>
+            <a class="sidebar-link" href="billing.html">
+                <span class="material-symbols-outlined text-[20px]">payments</span>
+                Facturación
+            </a>
+            <a class="sidebar-link active" href="messages.html">
+                <span class="material-symbols-outlined text-[20px]">chat</span>
+                Mensajes
+            </a>
+
+            <div class="mt-6 mb-2 px-6 text-[10px] font-bold text-gray-500 uppercase tracking-wider">Gestión</div>
+            
+            <a class="sidebar-link" href="users.html">
+                <span class="material-symbols-outlined text-[20px]">manage_accounts</span>
+                Equipo Legal
+            </a>
+
+
+            <div class="mt-6 mb-2 px-6 text-[10px] font-bold text-gray-500 uppercase tracking-wider">Sistema</div>
+
+            <a class="sidebar-link" href="configuration.html">
+                <span class="material-symbols-outlined text-[20px]">settings</span>
+                Configuración
+            </a>
+            <button onclick="logout()" class="w-full sidebar-link text-left hover:text-red-400 hover:bg-white/5">
+                <span class="material-symbols-outlined text-[20px]">logout</span>
+                Cerrar Sesión
+            </button>
+        </nav>
+
+        <!-- User Profile (Bottom) -->
+        <div class="p-4 border-t border-gray-800 bg-black/20">
+            <div class="flex items-center gap-3">
+                <div class="h-9 w-9 rounded-full bg-blue-900 text-blue-100 flex items-center justify-center text-xs font-bold border border-blue-700" id="sidebarAvatar">--</div>
+                <div class="overflow-hidden">
+                    <p class="text-sm font-bold text-gray-200 truncate" id="sidebarName">Cargando...</p>
+                    <p class="text-xs text-gray-500 truncate" id="sidebarRole">...</p>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 flex flex-col h-full overflow-hidden bg-brand-bg relative">
+        
+        <!-- Top Header -->
+        <header class="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-8 flex-shrink-0 z-10">
+            <h2 class="text-lg font-bold text-slate-800">Centro de Mensajes</h2>
+            
+            <div class="flex items-center gap-6">
+                <!-- Search -->
+                <div class="relative hidden md:block w-96">
+                    <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-[20px]">search</span>
+                    <input id="globalSearch" type="text" placeholder="Buscar mensajes o clientes..." 
+                           class="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-brand-accent/20 focus:border-brand-accent transition-all outline-none">
+                </div>
+
+                <div class="flex items-center gap-3">
+                    <button class="p-2 text-slate-500 hover:bg-slate-50 rounded-full relative">
+                        <span class="material-symbols-outlined text-[22px]">notifications</span>
+                        <span class="absolute top-2 right-2 h-2 w-2 bg-red-500 rounded-full border border-white"></span>
+                    </button>
+                    <div class="h-8 w-px bg-slate-200 mx-1"></div>
+                    <div class="flex items-center gap-2 cursor-pointer p-1 hover:bg-slate-50 rounded-lg transition-colors">
+                        <div class="h-8 w-8 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center text-xs font-bold">AD</div>
+                        <span class="text-sm font-medium text-slate-700 hidden sm:block">Admin</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Messages Layout -->
+        <div class="flex-1 flex overflow-hidden">
+            
+            <!-- Conversations List (Left) -->
+            <div class="w-full md:w-80 lg:w-96 bg-white border-r border-slate-200 flex flex-col z-0">
+                <div class="p-4 border-b border-slate-100">
+                    <div class="relative">
+                        <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 material-symbols-outlined text-[20px]">filter_list</span>
+                        <input id="searchConversations" class="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-brand-accent/20 focus:border-brand-accent outline-none" placeholder="Filtrar conversaciones..." type="text"/>
+                    </div>
+                </div>
+                <div id="conversationsList" class="flex-1 overflow-y-auto">
+                    <!-- Loading State -->
+                    <div class="p-8 text-center">
+                        <div class="inline-block w-6 h-6 border-2 border-brand-primary border-t-transparent rounded-full animate-spin mb-2"></div>
+                        <p class="text-xs text-slate-400">Cargando chats...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chat Area (Right) -->
+            <div id="chatArea" class="hidden md:flex flex-1 flex-col bg-brand-bg relative">
+                
+                <!-- Chat Header -->
+                <div class="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-6 flex-shrink-0">
+                    <div class="flex items-center gap-3">
+                        <div class="h-10 w-10 rounded-full bg-brand-mint text-brand-primary flex items-center justify-center font-bold text-sm border border-brand-primary/10" id="chatAvatar">
+                            --
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-slate-800 text-sm" id="chatClientName">Selecciona una conversación</h3>
+                            <p class="text-xs text-slate-500" id="chatCaseTitle">--</p>
+                        </div>
+                    </div>
+                    <button class="text-slate-400 hover:text-brand-primary transition-colors">
+                        <span class="material-symbols-outlined">more_vert</span>
+                    </button>
+                </div>
+
+                <!-- Messages Container -->
+                <div id="messagesContainer" class="flex-1 overflow-y-auto p-6 space-y-4">
+                    <!-- Empty State -->
+                    <div class="flex h-full items-center justify-center text-slate-400 flex-col">
+                        <div class="h-16 w-16 bg-slate-100 rounded-full flex items-center justify-center mb-4">
+                            <span class="material-symbols-outlined text-3xl">chat_bubble_outline</span>
+                        </div>
+                        <p class="text-sm font-medium">Selecciona un chat para comenzar</p>
+                    </div>
+                </div>
+
+                <!-- Input Area -->
+                <div class="p-4 bg-white border-t border-slate-200">
+                    <form id="messageForm" class="flex items-end gap-2 max-w-4xl mx-auto">
+                        <button type="button" class="p-2 text-slate-400 hover:text-brand-primary hover:bg-slate-50 rounded-full transition-colors">
+                            <span class="material-symbols-outlined text-[20px]">attach_file</span>
+                        </button>
+                        <div class="flex-1 relative">
+                            <textarea id="messageInput" rows="1" class="w-full rounded-xl border-slate-200 bg-slate-50 p-3 text-sm focus:ring-2 focus:ring-brand-accent/20 focus:border-brand-accent resize-none outline-none" placeholder="Escribe un mensaje..."></textarea>
+                        </div>
+                        <button type="submit" class="h-11 w-11 rounded-xl bg-brand-primary text-white flex items-center justify-center hover:bg-blue-800 transition-colors shadow-md shadow-blue-900/10">
+                            <span class="material-symbols-outlined text-[20px]">send</span>
+                        </button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+
+    </main>
+
+    <script src="../assets/js/auth.js"></script>
+    <script>
+        const authToken = localStorage.getItem('token');
+        const user = JSON.parse(localStorage.getItem('user') || '{}');
+        let currentCaseId = null;
+        let activeConversations = [];
+
+        // --- Mock Data (Fallback) ---
+        const mockConversations = [
+            {
+                id: "case-101",
+                title: "Divorcio Pérez vs. Pérez",
+                client: { fullNameOrBusinessName: "Juan Pérez", id: "client-1" },
+                messages: [
+                    { messageText: "Gracias por la actualización, abogado.", createdAt: new Date().toISOString(), senderId: "client-1" }
+                ],
+                updatedAt: new Date().toISOString()
+            },
+            {
+                id: "case-102",
+                title: "Contrato Comercial TechCorp",
+                client: { fullNameOrBusinessName: "Ana Gómez (TechCorp)", id: "client-2" },
+                messages: [
+                    { messageText: "¿Podemos revisar la cláusula 5?", createdAt: new Date(Date.now() - 86400000).toISOString(), senderId: "client-2" }
+                ],
+                updatedAt: new Date(Date.now() - 86400000).toISOString()
+            },
+            {
+                id: "case-103",
+                title: "Demanda Laboral",
+                client: { fullNameOrBusinessName: "Carlos Ruiz", id: "client-3" },
+                messages: [
+                    { messageText: "Le envié los documentos que pidió.", createdAt: new Date(Date.now() - 172800000).toISOString(), senderId: "client-3" }
+                ],
+                updatedAt: new Date(Date.now() - 172800000).toISOString()
+            }
+        ];
+
+        const mockMessages = {
+            "case-101": [
+                { id: 1, messageText: "Buenas tardes, ¿cómo va mi proceso?", senderId: "client-1", createdAt: new Date(Date.now() - 10000000).toISOString() },
+                { id: 2, messageText: "Hola Juan. Ya presentamos la demanda inicial. Estamos esperando la notificación del juzgado.", senderId: "me", createdAt: new Date(Date.now() - 9000000).toISOString() },
+                { id: 3, messageText: "Entiendo, muchas gracias.", senderId: "client-1", createdAt: new Date(Date.now() - 8000000).toISOString() },
+                { id: 4, messageText: "Le avisaré apenas tengamos novedades.", senderId: "me", createdAt: new Date(Date.now() - 7000000).toISOString() },
+                { id: 5, messageText: "Gracias por la actualización, abogado.", senderId: "client-1", createdAt: new Date().toISOString() }
+            ]
+        };
+
+        // --- Init ---
+        document.addEventListener('DOMContentLoaded', async () => {
+            if (!authToken) { window.location.href = '../public/login.html'; return; }
+            
+            // Sidebar Profile
+            if (document.getElementById('sidebarName')) document.getElementById('sidebarName').textContent = user.fullName || 'Admin';
+            if (document.getElementById('sidebarRole')) document.getElementById('sidebarRole').textContent = 'Administrador';
+            if (document.getElementById('sidebarAvatar')) {
+                const initials = (user.fullName || 'A').substring(0, 2).toUpperCase();
+                document.getElementById('sidebarAvatar').textContent = initials;
+            }
+
+            await loadConversations();
+
+            // Handle URL params
+            const urlParams = new URLSearchParams(window.location.search);
+            const caseId = urlParams.get('caseId');
+            if (caseId) {
+                const conv = activeConversations.find(c => c.id === caseId);
+                if (conv) {
+                    const clientName = (conv.client && conv.client.fullNameOrBusinessName) || 'Cliente Desconocido';
+                    selectConversation(conv.id, clientName, conv.title);
+                }
+            }
+
+            // Message Form
+            document.getElementById('messageForm').addEventListener('submit', handleSendMessage);
+        });
+
+        async function loadConversations() {
+            const listContainer = document.getElementById('conversationsList');
+            
+            try {
+                // Try API first
+                const url = new URL(`${window.API_URL}/messages/conversations`);
+                const response = await fetch(url, {
+                    headers: { 'Authorization': `Bearer ${authToken}` }
+                });
+
+                if (response.ok) {
+                    activeConversations = await response.json();
+                } else {
+                    console.warn("API Error, using mock data");
+                    activeConversations = mockConversations;
+                }
+            } catch (error) {
+                console.error("Fetch error, using mock data", error);
+                activeConversations = mockConversations;
+            }
+
+            renderConversations(activeConversations);
+        }
+
+        function renderConversations(conversations) {
+            const listContainer = document.getElementById('conversationsList');
+            if (conversations.length === 0) {
+                listContainer.innerHTML = `
+                    <div class="p-8 text-center text-slate-400">
+                        <p class="text-sm">No hay conversaciones activas.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            listContainer.innerHTML = conversations.map(c => {
+                const lastMsg = c.messages && c.messages.length > 0 ? c.messages[0] : null;
+                const time = lastMsg ? new Date(lastMsg.createdAt).toLocaleDateString() : '';
+                const preview = lastMsg ? (lastMsg.messageText.length > 35 ? lastMsg.messageText.substring(0, 35) + '...' : lastMsg.messageText) : 'Sin mensajes';
+                const client = c.client || {};
+                const clientName = client.fullNameOrBusinessName || 'Cliente Desconocido';
+                const isActive = currentCaseId === c.id;
+
+                return `
+                    <div onclick="selectConversation('${c.id}', '${clientName}', '${c.title}')" 
+                         class="cursor-pointer p-4 border-b border-slate-100 hover:bg-slate-50 transition-colors ${isActive ? 'bg-blue-50/50 border-l-4 border-l-brand-primary' : 'border-l-4 border-l-transparent'}">
+                        <div class="flex justify-between items-start mb-1">
+                            <h4 class="text-sm font-semibold text-slate-800 truncate pr-2 ${isActive ? 'text-brand-primary' : ''}">${clientName}</h4>
+                            <span class="text-[10px] text-slate-400 whitespace-nowrap">${time}</span>
+                        </div>
+                        <p class="text-xs font-medium text-slate-500 truncate mb-1">${c.title}</p>
+                        <p class="text-xs text-slate-400 truncate">${preview}</p>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        async function selectConversation(caseId, clientName, caseTitle) {
+            currentCaseId = caseId;
+            
+            // Re-render list to show active state
+            renderConversations(activeConversations);
+
+            // Show Chat Area (Mobile)
+            const chatArea = document.getElementById('chatArea');
+            chatArea.classList.remove('hidden');
+            chatArea.classList.add('flex');
+
+            // Update Header
+            document.getElementById('chatClientName').textContent = clientName;
+            document.getElementById('chatCaseTitle').textContent = caseTitle;
+            
+            const initials = clientName.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+            document.getElementById('chatAvatar').textContent = initials;
+
+            // Load Messages
+            await loadMessages(caseId);
+        }
+
+        async function loadMessages(caseId) {
+            const container = document.getElementById('messagesContainer');
+            container.innerHTML = `
+                <div class="flex h-full items-center justify-center">
+                    <div class="w-8 h-8 border-4 border-brand-primary border-t-transparent rounded-full animate-spin"></div>
+                </div>
+            `;
+
+            let messages = [];
+            try {
+                // Try API
+                /* 
+                const response = await fetch(`${window.API_URL}/messages/${caseId}`, { headers... });
+                messages = await response.json();
+                */
+               
+               // Use Mock Data for now as backend might not be ready
+               await new Promise(r => setTimeout(r, 600)); // Simulate delay
+               messages = mockMessages[caseId] || [];
+
+            } catch (error) {
+                console.error(error);
+                messages = [];
+            }
+
+            renderMessages(messages);
+        }
+
+        function renderMessages(messages) {
+            const container = document.getElementById('messagesContainer');
+            
+            if (messages.length === 0) {
+                container.innerHTML = `
+                    <div class="flex h-full items-center justify-center text-slate-400 flex-col">
+                        <p class="text-sm">No hay mensajes aún.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = messages.map(msg => {
+                const isMe = msg.senderId === 'me' || msg.senderId === user.id; // Adjust logic based on real auth
+                const time = new Date(msg.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                
+                return `
+                    <div class="flex ${isMe ? 'justify-end' : 'justify-start'}">
+                        <div class="max-w-[75%] ${isMe ? 'msg-bubble-me' : 'msg-bubble-other'} p-3 shadow-sm relative group">
+                            <p class="text-sm leading-relaxed">${msg.messageText}</p>
+                            <span class="text-[10px] ${isMe ? 'text-blue-200' : 'text-slate-400'} block text-right mt-1">${time}</span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            // Scroll to bottom
+            container.scrollTop = container.scrollHeight;
+        }
+
+        async function handleSendMessage(e) {
+            e.preventDefault();
+            if (!currentCaseId) return;
+
+            const input = document.getElementById('messageInput');
+            const text = input.value.trim();
+            if (!text) return;
+
+            // Optimistic UI update
+            const tempMsg = {
+                id: Date.now(),
+                messageText: text,
+                senderId: 'me',
+                createdAt: new Date().toISOString()
+            };
+
+            // Add to mock data if using mocks
+            if (mockMessages[currentCaseId]) {
+                mockMessages[currentCaseId].push(tempMsg);
+            } else {
+                mockMessages[currentCaseId] = [tempMsg];
+            }
+
+            input.value = '';
+            renderMessages(mockMessages[currentCaseId]); // Re-render to show new message
+
+            // Send to API (Commented out until backend is ready)
+            /*
+            try {
+                await fetch(`${window.API_URL}/messages`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': ... },
+                    body: JSON.stringify({ caseId: currentCaseId, message: text })
+                });
+            } catch (error) { ... }
+            */
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html class="light" lang="es">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>BrightLawyers - Panel de Administración</title>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+    <!-- Material Symbols -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "brand-dark": "#0B1120",      // Sidebar bg (Dark Blue/Black)
+                        "brand-primary": "#1e3a8a",   // Blue 900 (Primary Action)
+                        "brand-accent": "#3b82f6",    // Blue 500 (Highlights)
+                        "brand-secondary": "#334155", // Slate 700
+                        "brand-bg": "#F8FAFC",        // Light background
+                        "brand-surface": "#FFFFFF",   // White surface
+                        "brand-mint": "#eff6ff",      // Blue 50 (Light Blue for active/hover)
+                    },
+                    fontFamily: {
+                        "sans": ["'Plus Jakarta Sans'", "sans-serif"]
+                    },
+                    boxShadow: {
+                        "card": "0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1)",
+                        "card-hover": "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1)",
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1.5rem;
+            color: #94a3b8; /* slate-400 */
+            font-weight: 500;
+            font-size: 0.875rem;
+            transition: all 0.2s;
+            border-left: 3px solid transparent;
+        }
+        .sidebar-link:hover {
+            color: white;
+            background: rgba(255,255,255,0.05);
+        }
+        .sidebar-link.active {
+            background-color: rgba(59, 130, 246, 0.1); /* Blue tint */
+            color: #ffffff;
+            border-left-color: #3b82f6; /* brand-accent */
+        }
+        
+        .skeleton {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: .5; }
+        }
+    </style>
+</head>
+<body class="bg-brand-bg text-slate-800 h-screen overflow-hidden flex">
+
+    <!-- Sidebar (Dark) -->
+    <aside class="w-64 bg-brand-dark text-white flex flex-col z-20 shadow-xl flex-shrink-0">
+        <!-- Logo Area -->
+        <div class="h-20 flex items-center px-6 border-b border-gray-800 flex-shrink-0">
+            <div class="flex items-center gap-3">
+                <div class="h-8 w-8 rounded bg-gradient-to-br from-blue-600 to-blue-800 flex items-center justify-center shadow-lg shadow-blue-500/30 text-white">
+                    <span class="material-symbols-outlined text-[20px]">balance</span>
+                </div>
+                <div>
+                    <h1 class="font-bold text-sm leading-tight tracking-wide">BrightLawyers</h1>
+                    <p class="text-[10px] text-gray-400 font-medium tracking-wider uppercase">ADMINISTRACIÓN</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="flex-1 overflow-y-auto py-6">
+            <a class="sidebar-link active" href="admin.html">
+                <span class="material-symbols-outlined text-[20px]">dashboard</span>
+                Dashboard
+            </a>
+            <a class="sidebar-link" href="cases.html">
+                <span class="material-symbols-outlined text-[20px]">gavel</span>
+                Casos
+            </a>
+            <a class="sidebar-link" href="tasks.html">
+                <span class="material-symbols-outlined text-[20px]">task_alt</span>
+                Tareas
+            </a>
+            <a class="sidebar-link" href="clients.html">
+                <span class="material-symbols-outlined text-[20px]">groups</span>
+                Clientes
+            </a>
+            <a class="sidebar-link" href="documents.html">
+                <span class="material-symbols-outlined text-[20px]">folder</span>
+                Documentos
+            </a>
+            <a class="sidebar-link" href="contracts.html">
+                <span class="material-symbols-outlined text-[20px]">description</span>
+                Contratos
+            </a>
+            <a class="sidebar-link" href="billing.html">
+                <span class="material-symbols-outlined text-[20px]">payments</span>
+                Facturación
+            </a>
+            <a class="sidebar-link" href="messages.html">
+                <span class="material-symbols-outlined text-[20px]">chat</span>
+                Mensajes
+            </a>
+
+            <div class="mt-6 mb-2 px-6 text-[10px] font-bold text-gray-500 uppercase tracking-wider">Gestión</div>
+            
+            <a class="sidebar-link" href="users.html">
+                <span class="material-symbols-outlined text-[20px]">manage_accounts</span>
+                Equipo Legal
+            </a>
+
+
+            <div class="mt-6 mb-2 px-6 text-[10px] font-bold text-gray-500 uppercase tracking-wider">Sistema</div>
+
+            <a class="sidebar-link" href="configuration.html">
+                <span class="material-symbols-outlined text-[20px]">settings</span>
+                Configuración
+            </a>
+            <button onclick="logout()" class="w-full sidebar-link text-left hover:text-red-400 hover:bg-white/5">
+                <span class="material-symbols-outlined text-[20px]">logout</span>
+                Cerrar Sesión
+            </button>
+        </nav>
+
+        <!-- User Profile (Bottom) -->
+        <div class="p-4 border-t border-gray-800 bg-black/20">
+            <div class="flex items-center gap-3">
+                <div class="h-9 w-9 rounded-full bg-blue-900 text-blue-100 flex items-center justify-center text-xs font-bold border border-blue-700" id="sidebarAvatar">--</div>
+                <div class="overflow-hidden">
+                    <p class="text-sm font-bold text-gray-200 truncate" id="sidebarName">Cargando...</p>
+                    <p class="text-xs text-gray-500 truncate">Administrador</p>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 flex flex-col h-full overflow-hidden bg-brand-bg relative">
+        
+        <!-- Top Header -->
+        <header class="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-8 flex-shrink-0 z-10">
+            <h2 class="text-lg font-bold text-slate-800">Panel de Administración</h2>
+            
+            <div class="flex items-center gap-6">
+                <!-- Search -->
+                <div class="relative hidden md:block w-96">
+                    <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-[20px]">search</span>
+                    <input type="text" placeholder="Buscar casos, abogados o clientes..." 
+                           class="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-brand-accent/20 focus:border-brand-accent transition-all outline-none">
+                </div>
+
+                <div class="flex items-center gap-3">
+                    <button class="p-2 text-slate-500 hover:bg-slate-50 rounded-full relative">
+                        <span class="material-symbols-outlined text-[22px]">notifications</span>
+                        <span class="absolute top-2 right-2 h-2 w-2 bg-red-500 rounded-full border border-white"></span>
+                    </button>
+                    <button class="p-2 text-slate-500 hover:bg-slate-50 rounded-full">
+                        <span class="material-symbols-outlined text-[22px]">help</span>
+                    </button>
+                    
+                    <div class="h-8 w-px bg-slate-200 mx-1"></div>
+                    
+                    <div class="flex items-center gap-2 cursor-pointer p-1 hover:bg-slate-50 rounded-lg transition-colors">
+                        <div class="h-8 w-8 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center text-xs font-bold">AD</div>
+                        <span class="text-sm font-medium text-slate-700 hidden sm:block">Admin</span>
+                        <span class="material-symbols-outlined text-slate-400 text-[18px]">expand_more</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Dashboard Content -->
+        <div class="flex-1 overflow-y-auto p-8">
+            <div class="max-w-7xl mx-auto space-y-8">
+                
+                <!-- Page Title & Actions -->
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                    <div>
+                        <h1 class="text-2xl font-bold text-slate-900">Dashboard General</h1>
+                        <p class="text-slate-500 mt-1">Resumen de actividad y métricas clave del bufete.</p>
+                    </div>
+                    <div class="flex gap-3">
+                        <button class="flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 text-slate-700 rounded-lg font-medium hover:bg-slate-50 transition-colors shadow-sm">
+                            <span class="material-symbols-outlined text-[20px]">download</span>
+                            Exportar
+                        </button>
+                        <button onclick="window.location.href='new-case.html'" class="flex items-center gap-2 px-4 py-2 bg-brand-primary text-white rounded-lg font-medium hover:bg-blue-800 transition-colors shadow-sm shadow-blue-900/10">
+                            <span class="material-symbols-outlined text-[20px]">add</span>
+                            Nuevo Caso
+                        </button>
+                    </div>
+                </div>
+
+                <!-- KPI Cards -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <!-- Card 1 -->
+                    <div class="bg-white p-6 rounded-xl border border-slate-100 shadow-card hover:shadow-card-hover transition-all group">
+                        <div class="flex justify-between items-start mb-4">
+                            <div class="p-3 bg-blue-50 text-blue-600 rounded-lg group-hover:bg-blue-100 transition-colors">
+                                <span class="material-symbols-outlined text-[24px]">folder_open</span>
+                            </div>
+                            <span class="bg-green-50 text-green-700 text-xs font-bold px-2 py-1 rounded-full flex items-center gap-1" id="casesGrowth">
+                                <span class="material-symbols-outlined text-[14px]">trending_up</span> 10%
+                            </span>
+                        </div>
+                        <p class="text-slate-500 font-medium text-sm">Casos Activos</p>
+                        <h3 class="text-3xl font-bold text-slate-900 mt-1" id="activeCasesCount">
+                            <div class="h-8 w-16 bg-slate-100 rounded skeleton"></div>
+                        </h3>
+                    </div>
+
+                    <!-- Card 2 -->
+                    <div class="bg-white p-6 rounded-xl border border-slate-100 shadow-card hover:shadow-card-hover transition-all group">
+                        <div class="flex justify-between items-start mb-4">
+                            <div class="p-3 bg-indigo-50 text-indigo-600 rounded-lg group-hover:bg-indigo-100 transition-colors">
+                                <span class="material-symbols-outlined text-[24px]">description</span>
+                            </div>
+                            <span class="bg-green-50 text-green-700 text-xs font-bold px-2 py-1 rounded-full flex items-center gap-1">
+                                <span class="material-symbols-outlined text-[14px]">trending_up</span> 12%
+                            </span>
+                        </div>
+                        <p class="text-slate-500 font-medium text-sm">Contratos Totales</p>
+                        <h3 class="text-3xl font-bold text-slate-900 mt-1" id="contractsCount">
+                            <div class="h-8 w-16 bg-slate-100 rounded skeleton"></div>
+                        </h3>
+                    </div>
+
+                    <!-- Card 3 -->
+                    <div class="bg-white p-6 rounded-xl border border-slate-100 shadow-card hover:shadow-card-hover transition-all group">
+                        <div class="flex justify-between items-start mb-4">
+                            <div class="p-3 bg-purple-50 text-purple-600 rounded-lg group-hover:bg-purple-100 transition-colors">
+                                <span class="material-symbols-outlined text-[24px]">group</span>
+                            </div>
+                            <span class="bg-slate-100 text-slate-600 text-xs font-bold px-2 py-1 rounded-full flex items-center gap-1">
+                                <span class="material-symbols-outlined text-[14px]">remove</span> 0%
+                            </span>
+                        </div>
+                        <p class="text-slate-500 font-medium text-sm">Usuarios Totales</p>
+                        <h3 class="text-3xl font-bold text-slate-900 mt-1" id="usersCount">
+                            <div class="h-8 w-16 bg-slate-100 rounded skeleton"></div>
+                        </h3>
+                    </div>
+
+                    <!-- Card 4 -->
+                    <div class="bg-white p-6 rounded-xl border border-slate-100 shadow-card hover:shadow-card-hover transition-all group">
+                        <div class="flex justify-between items-start mb-4">
+                            <div class="p-3 bg-red-50 text-red-600 rounded-lg group-hover:bg-red-100 transition-colors">
+                                <span class="material-symbols-outlined text-[24px]">notification_important</span>
+                            </div>
+                            <span class="bg-red-50 text-red-700 text-xs font-bold px-2 py-1 rounded-full flex items-center gap-1" id="alertBadge">
+                                ! 0
+                            </span>
+                        </div>
+                        <p class="text-slate-500 font-medium text-sm">Tareas Urgentes</p>
+                        <h3 class="text-3xl font-bold text-slate-900 mt-1" id="urgentTasksCount">
+                            <div class="h-8 w-16 bg-slate-100 rounded skeleton"></div>
+                        </h3>
+                    </div>
+                </div>
+
+                <!-- Main Grid -->
+                <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
+                    
+                    <!-- Left Column (Tables & Timeline) -->
+                    <div class="xl:col-span-2 space-y-6">
+                        
+                        <!-- Lawyers Table -->
+                        <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                            <div class="px-6 py-5 border-b border-slate-100 flex justify-between items-center">
+                                <h3 class="font-bold text-slate-900 text-lg">Desempeño de Abogados</h3>
+                                <button class="text-sm text-brand-accent font-bold hover:text-blue-700 transition-colors">Ver todo</button>
+                            </div>
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-left text-sm">
+                                    <thead class="bg-slate-50 text-slate-500 font-semibold border-b border-slate-100">
+                                        <tr>
+                                            <th class="px-6 py-4">Abogado</th>
+                                            <th class="px-6 py-4">Casos Activos</th>
+                                            <th class="px-6 py-4">Área</th>
+                                            <th class="px-6 py-4">Estado</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="lawyersTable" class="divide-y divide-slate-100">
+                                        <tr>
+                                            <td colspan="4" class="px-6 py-8 text-center text-slate-400 italic">
+                                                Cargando más abogados...
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Recent Activity -->
+                        <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-6">
+                            <h3 class="font-bold text-slate-900 text-lg mb-6">Actividad Reciente</h3>
+                            <div id="activityTimeline" class="space-y-0 pl-2">
+                                <p class="text-center text-slate-400 italic py-4">Cargando actividad anterior...</p>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Right Column (Actions & Charts) -->
+                    <div class="space-y-6">
+                        
+                        <!-- Quick Actions -->
+                        <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-6">
+                            <h3 class="font-bold text-slate-900 text-lg mb-4">Acciones Rápidas</h3>
+                            <div class="grid grid-cols-2 gap-4">
+                                <button onclick="window.location.href='new-user.html'" class="flex flex-col items-center justify-center gap-3 p-4 bg-slate-50 hover:bg-slate-100 rounded-xl border border-slate-100 transition-all hover:-translate-y-1 group h-32">
+                                    <div class="p-2 bg-white rounded-full shadow-sm text-brand-primary group-hover:text-blue-700">
+                                        <span class="material-symbols-outlined">person_add</span>
+                                    </div>
+                                    <span class="text-xs font-bold text-slate-700 text-center">Agregar<br>Usuario</span>
+                                </button>
+                                <button class="flex flex-col items-center justify-center gap-3 p-4 bg-slate-50 hover:bg-slate-100 rounded-xl border border-slate-100 transition-all hover:-translate-y-1 group h-32">
+                                    <div class="p-2 bg-white rounded-full shadow-sm text-brand-primary group-hover:text-blue-700">
+                                        <span class="material-symbols-outlined">summarize</span>
+                                    </div>
+                                    <span class="text-xs font-bold text-slate-700 text-center">Reporte<br>Financiero</span>
+                                </button>
+                                <button onclick="window.location.href='configuration.html'" class="flex flex-col items-center justify-center gap-3 p-4 bg-slate-50 hover:bg-slate-100 rounded-xl border border-slate-100 transition-all hover:-translate-y-1 group h-32">
+                                    <div class="p-2 bg-white rounded-full shadow-sm text-brand-primary group-hover:text-blue-700">
+                                        <span class="material-symbols-outlined">settings</span>
+                                    </div>
+                                    <span class="text-xs font-bold text-slate-700 text-center">Configuración</span>
+                                </button>
+                                <button class="flex flex-col items-center justify-center gap-3 p-4 bg-slate-50 hover:bg-slate-100 rounded-xl border border-slate-100 transition-all hover:-translate-y-1 group h-32">
+                                    <div class="p-2 bg-white rounded-full shadow-sm text-brand-primary group-hover:text-blue-700">
+                                        <span class="material-symbols-outlined">upload_file</span>
+                                    </div>
+                                    <span class="text-xs font-bold text-slate-700 text-center">Subir Archivo</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Case Stats Placeholder -->
+                        <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-6 h-80 flex flex-col">
+                            <h3 class="font-bold text-slate-900 text-lg mb-4">Estadísticas de Casos</h3>
+                            <div class="flex-1 flex flex-col items-center justify-center text-center">
+                                <div class="w-full flex justify-between items-end h-32 px-4 gap-2 mb-4 opacity-50">
+                                    <div class="w-full bg-slate-100 rounded-t-lg h-[40%]"></div>
+                                    <div class="w-full bg-slate-100 rounded-t-lg h-[70%]"></div>
+                                    <div class="w-full bg-slate-100 rounded-t-lg h-[50%]"></div>
+                                    <div class="w-full bg-slate-100 rounded-t-lg h-[80%]"></div>
+                                    <div class="w-full bg-slate-100 rounded-t-lg h-[60%]"></div>
+                                </div>
+                                <div class="flex justify-between w-full px-4 text-[10px] text-slate-400 font-bold uppercase">
+                                    <span>L</span><span>M</span><span>X</span><span>J</span><span>V</span>
+                                </div>
+                                <p class="text-xs text-slate-400 font-medium mt-4">Cargando estadísticas detalladas...</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <script src="../assets/js/auth.js"></script>
+    <script src="js/admin.js"></script>
+</body>
+</html>
