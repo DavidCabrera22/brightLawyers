@@ -1,0 +1,29 @@
+{
+  "rewrites": [
+    { "source": "/", "destination": "/public/index.html" },
+    { "source": "/index", "destination": "/public/index.html" },
+    { "source": "/index.html", "destination": "/public/index.html" },
+    { "source": "/login", "destination": "/public/login.html" },
+    { "source": "/login.html", "destination": "/public/login.html" },
+    { "source": "/register", "destination": "/public/register.html" },
+    { "source": "/register.html", "destination": "/public/register.html" },
+    { "source": "/about", "destination": "/public/about.html" },
+    { "source": "/about.html", "destination": "/public/about.html" },
+    { "source": "/contact", "destination": "/public/contact.html" },
+    { "source": "/contact.html", "destination": "/public/contact.html" },
+    { "source": "/practice-areas", "destination": "/public/practice-areas.html" },
+    { "source": "/practice-areas.html", "destination": "/public/practice-areas.html" },
+    { "source": "/case", "destination": "/public/case.html" },
+    { "source": "/case.html", "destination": "/public/case.html" },
+    { "source": "/attorneys", "destination": "/public/attorneys.html" },
+    { "source": "/attorneys.html", "destination": "/public/attorneys.html" },
+    { "source": "/blog", "destination": "/public/blog.html" },
+    { "source": "/blog.html", "destination": "/public/blog.html" },
+    { "source": "/blog-single", "destination": "/public/blog-single.html" },
+    { "source": "/blog-single.html", "destination": "/public/blog-single.html" },
+    { "source": "/practice-single", "destination": "/public/practice-single.html" },
+    { "source": "/practice-single.html", "destination": "/public/practice-single.html" },
+    { "source": "/register-lawyer", "destination": "/public/register-lawyer.html" },
+    { "source": "/register-lawyer.html", "destination": "/public/register-lawyer.html" }
+  ]
+}
