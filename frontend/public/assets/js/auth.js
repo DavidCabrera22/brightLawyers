@@ -261,3 +261,7 @@ if (typeof document !== 'undefined') {
     updateNavbar();
   });
 }
+
+// Expose login explicitly
+window.login = login;
+console.log('Auth.js loaded and functions exposed');

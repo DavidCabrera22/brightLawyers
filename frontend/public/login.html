@@ -229,8 +229,17 @@
     </div>
 
     <!-- Script -->
-    <script src="/assets/js/auth.js?v=2" onerror="console.error('Error loading auth.js'); alert('Error crítico: No se pudo cargar el sistema de autenticación. Por favor verifique su conexión o recargue la página.');"></script>
+    <script src="/assets/js/auth.js?v=3" 
+            onload="console.log('auth.js loaded successfully')"
+            onerror="console.error('Error loading auth.js'); alert('Error crítico: No se pudo cargar el sistema de autenticación (auth.js). Verifique la consola.');"></script>
     <script>
+        // Check if window.login is available immediately
+        if (typeof window.login === 'function') {
+            console.log('window.login is available immediately');
+        } else {
+            console.warn('window.login is NOT available immediately. Waiting for load...');
+        }
+
         // Login Logic
         const loginForm = document.getElementById('login-form');
         
@@ -238,8 +247,10 @@
             loginForm.addEventListener('submit', async (e) => {
                 e.preventDefault();
                 
+                console.log('Attempting login...');
                 if (typeof window.login !== 'function') {
-                    alert('Error: El sistema de autenticación no está listo. Por favor recargue la página.');
+                    console.error('window.login is undefined. Available globals:', Object.keys(window).filter(k => k.includes('login') || k.includes('auth')));
+                    alert('Error: El sistema de autenticación no está listo (window.login undefined). Por favor recargue la página.');
                     return;
                 }
 
