@@ -372,6 +372,19 @@
             const data = await response.json();
             let cases = data.cases || [];
             
+            // Map assignments to lawyer property for compatibility
+            cases = cases.map(c => {
+                const primaryAssignment = c.assignments && c.assignments.length > 0 ? c.assignments[0] : null;
+                return {
+                    ...c,
+                    lawyer: primaryAssignment ? {
+                        name: primaryAssignment.user.fullName,
+                        id: primaryAssignment.user.id,
+                        avatar: null // Avatar not currently returned by backend
+                    } : null
+                };
+            });
+            
             // Client-side filtering for urgent if needed
             if (currentFilter === 'urgent') {
                 cases = cases.filter(c => c.priority === 'high' || c.priority === 'urgent');
@@ -645,21 +658,21 @@
         btn.disabled = true;
         
         try {
-            const response = await fetch(`${window.API_URL}/cases/${currentAssignCaseId}`, {
-                method: 'PATCH',
-                headers: { 
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${authToken}` 
-                },
-                body: JSON.stringify({ lawyerId })
-            });
-            
-            if (!response.ok) {
-                const data = await response.json();
-                throw new Error(data.error || 'Error al asignar abogado');
-            }
-            
-            alert('Abogado asignado exitosamente');
+                const response = await fetch(`${window.API_URL}/cases/${currentAssignCaseId}/assign`, {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${authToken}` 
+                    },
+                    body: JSON.stringify({ lawyerId })
+                });
+                
+                if (!response.ok) {
+                    const data = await response.json();
+                    throw new Error(data.error || 'Error al asignar abogado');
+                }
+                
+                alert('Abogado asignado exitosamente');
             closeAssignModal();
             loadCases(); // Reload table
             
