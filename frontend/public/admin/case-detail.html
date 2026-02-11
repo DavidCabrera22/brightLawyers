@@ -393,8 +393,9 @@
 
         const formData = new FormData();
         formData.append('file', fileInput.files[0]);
+        formData.append('caseId', caseId);
         if (titleInput.value) {
-            formData.append('title', titleInput.value);
+            formData.append('name', titleInput.value);
         }
 
         const btn = e.target.querySelector('button[type="submit"]');
@@ -403,7 +404,7 @@
         btn.disabled = true;
 
         try {
-            const res = await fetch(`${window.API_URL}/cases/${caseId}/documents`, {
+            const res = await fetch(`${window.API_URL}/documents/upload`, {
                 method: 'POST',
                 headers: { 'Authorization': `Bearer ${authToken}` },
                 body: formData
