@@ -1,5 +1,5 @@
 // Configuration
-const API_URL = 'https://brightlawyers.onrender.com/api';
+const API_URL = '/api'; // Use relative path for auto-detection (works on Local & Cloud)
 window.API_URL = API_URL;
 
 // Token management

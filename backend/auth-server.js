@@ -25,9 +25,15 @@ const userRoutes = require('./src/api/routes/user.routes'); // User Routes
 const practiceAreaRoutes = require('./src/api/routes/practiceArea.routes'); // Practice Area Routes
 const messageRoutes = require('./src/api/routes/message.routes'); // Message Routes
 const billingRoutes = require('./src/api/routes/billing.routes'); // Billing Routes
+const whatsappRoutes = require('./src/api/routes/whatsapp.routes'); // WhatsApp Routes
 
 // Initialize Cron Jobs
 require('./src/cron/reminder.cron');
+
+// Initialize WhatsApp Service
+const whatsappService = require('./src/services/whatsapp.service');
+// Only initialize if configured or requested (auto-start for now as requested)
+whatsappService.initialize();
 
 const multer = require('multer');
 
@@ -491,6 +497,7 @@ app.use('/api/users', userRoutes); // Mount User Routes
 app.use('/api/practice-areas', practiceAreaRoutes); // Mount Practice Area Routes
 app.use('/api/messages', messageRoutes); // Mount Message Routes
 app.use('/api/billing', billingRoutes); // Mount Billing Routes
+app.use('/api/whatsapp', whatsappRoutes); // Mount WhatsApp Routes
 app.use(express.static(path.join(__dirname, '../frontend'))); 
 // Start Server archivos estáticos desde la carpeta frontend
 

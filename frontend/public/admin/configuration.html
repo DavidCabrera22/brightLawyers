@@ -231,6 +231,63 @@
                     </form>
                 </div>
 
+                <!-- WhatsApp Configuration -->
+                <div class="bg-white rounded-xl border border-slate-100 shadow-card hover:shadow-card-hover transition-all p-6">
+                    <div class="flex justify-between items-center mb-6">
+                        <div>
+                            <h2 class="text-lg font-bold text-slate-900">Configuración de WhatsApp</h2>
+                            <p class="text-sm text-slate-500">Estado de conexión del Chatbot y Notificaciones.</p>
+                        </div>
+                        <button onclick="refreshWhatsAppStatus()" class="px-4 py-2 bg-slate-100 text-slate-600 rounded-lg text-sm font-medium hover:bg-slate-200 transition-colors">
+                            <span class="material-symbols-outlined align-middle text-[18px] mr-1">refresh</span>
+                            Actualizar
+                        </button>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                        <!-- Status Panel -->
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between p-4 bg-slate-50 rounded-lg border border-slate-200">
+                                <span class="text-sm font-medium text-slate-700">Estado del Servicio</span>
+                                <span id="whatsappStatusBadge" class="px-3 py-1 rounded-full text-xs font-bold bg-gray-100 text-gray-500">
+                                    Desconectado
+                                </span>
+                            </div>
+                            
+                            <div class="flex items-center justify-between p-4 bg-slate-50 rounded-lg border border-slate-200">
+                                <span class="text-sm font-medium text-slate-700">Bot Automático</span>
+                                <span id="whatsappBotStatus" class="px-3 py-1 rounded-full text-xs font-bold bg-green-100 text-green-700">
+                                    Activo
+                                </span>
+                            </div>
+
+                            <div class="p-4 bg-blue-50 text-blue-800 rounded-lg text-sm border border-blue-100">
+                                <div class="flex gap-2">
+                                    <span class="material-symbols-outlined text-[20px]">info</span>
+                                    <div>
+                                        <p class="font-bold mb-1">Instrucciones:</p>
+                                        <ul class="list-disc list-inside space-y-1 text-xs">
+                                            <li>Abre WhatsApp en tu teléfono</li>
+                                            <li>Ve a Menú > Dispositivos vinculados</li>
+                                            <li>Escanea el código QR</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- QR Code Panel -->
+                        <div class="flex flex-col items-center justify-center p-6 bg-slate-50 rounded-xl border border-slate-200 min-h-[300px]">
+                            <div id="whatsappQrContainer" class="text-center">
+                                <div class="animate-pulse flex flex-col items-center">
+                                    <div class="h-48 w-48 bg-slate-200 rounded-lg mb-4 bg-gray-100"></div>
+                                    <p class="text-slate-400 text-sm">Cargando código QR...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Practice Areas -->
                 <div class="bg-white rounded-xl border border-slate-100 shadow-card hover:shadow-card-hover transition-all overflow-hidden">
                     <div class="p-6 border-b border-slate-100 flex justify-between items-center">
@@ -366,6 +423,70 @@
         const authToken = localStorage.getItem('token');
         const user = JSON.parse(localStorage.getItem('user') || '{}');
 
+        async function refreshWhatsAppStatus() {
+            try {
+                const response = await fetch(`${API_URL}/whatsapp/status`, {
+                    headers: { 'Authorization': `Bearer ${authToken}` }
+                });
+                
+                if (!response.ok) throw new Error('Failed to fetch status');
+                
+                const data = await response.json();
+                
+                // Update Status Badge
+                const statusBadge = document.getElementById('whatsappStatusBadge');
+                if (data.status === 'ready') {
+                    statusBadge.textContent = 'Conectado';
+                    statusBadge.className = 'px-3 py-1 rounded-full text-xs font-bold bg-green-100 text-green-700';
+                } else if (data.status === 'initializing') {
+                    statusBadge.textContent = 'Iniciando...';
+                    statusBadge.className = 'px-3 py-1 rounded-full text-xs font-bold bg-yellow-100 text-yellow-700';
+                } else if (data.status === 'qr_ready') {
+                    statusBadge.textContent = 'Esperando Escaneo';
+                    statusBadge.className = 'px-3 py-1 rounded-full text-xs font-bold bg-blue-100 text-blue-700';
+                } else {
+                    statusBadge.textContent = 'Desconectado';
+                    statusBadge.className = 'px-3 py-1 rounded-full text-xs font-bold bg-gray-100 text-gray-500';
+                }
+                
+                // Update Bot Status Badge
+                const botBadge = document.getElementById('whatsappBotStatus');
+                if (data.botActive) {
+                    botBadge.textContent = 'Activo';
+                    botBadge.className = 'px-3 py-1 rounded-full text-xs font-bold bg-green-100 text-green-700';
+                } else {
+                    botBadge.textContent = 'Inactivo';
+                    botBadge.className = 'px-3 py-1 rounded-full text-xs font-bold bg-red-100 text-red-700';
+                }
+
+                // Update QR Code
+                const qrContainer = document.getElementById('whatsappQrContainer');
+                if (data.qrCode) {
+                    qrContainer.innerHTML = `
+                        <img src="${data.qrCode}" alt="WhatsApp QR Code" class="h-48 w-48 rounded-lg mb-4 border border-slate-200">
+                        <p class="text-slate-600 text-sm font-medium">Escanea con tu WhatsApp</p>
+                    `;
+                } else if (data.status === 'ready') {
+                    qrContainer.innerHTML = `
+                        <div class="h-48 w-48 bg-green-50 rounded-lg mb-4 flex items-center justify-center border border-green-100">
+                            <span class="material-symbols-outlined text-6xl text-green-500">check_circle</span>
+                        </div>
+                        <p class="text-green-600 text-sm font-medium">¡Conectado exitosamente!</p>
+                    `;
+                } else {
+                     qrContainer.innerHTML = `
+                        <div class="h-48 w-48 bg-slate-100 rounded-lg mb-4 flex items-center justify-center">
+                            <span class="material-symbols-outlined text-4xl text-slate-400">qr_code_2</span>
+                        </div>
+                        <p class="text-slate-400 text-sm">Esperando código QR...</p>
+                    `;
+                }
+
+            } catch (error) {
+                console.error('Error fetching WhatsApp status:', error);
+            }
+        }
+
         async function init() {
             if (!authToken) { window.location.href = '../public/login.html'; return; }
             
@@ -386,6 +507,7 @@
 
             await loadOrganization();
             await loadPracticeAreas();
+            await refreshWhatsAppStatus();
         }
 
         // --- Organization Logic ---

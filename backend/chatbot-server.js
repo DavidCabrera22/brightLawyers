@@ -1,5 +1,15 @@
 const { Client, LocalAuth } = require('whatsapp-web.js');
 const qrcode = require('qrcode-terminal');
+const { PrismaClient } = require('@prisma/client');
+
+// Optimize Prisma connection for chatbot polling
+const prisma = new PrismaClient({
+    datasources: {
+        db: {
+            url: process.env.DATABASE_URL + (process.env.DATABASE_URL.includes('?') ? '&' : '?') + 'connection_limit=1'
+        }
+    }
+});
 const OpenAI = require('openai');
 const path = require('path');
 const fs = require('fs');
@@ -105,8 +115,13 @@ const client = new Client({
         headless: true,
         args: [
             '--no-sandbox',
-            '--disable-setuid-sandbox'
-        ]
+            '--disable-setuid-sandbox',
+            '--disable-dev-shm-usage',
+            '--disable-accelerated-2d-canvas',
+            '--no-first-run',
+            '--disable-gpu'
+        ],
+        timeout: 60000 // Aumentar timeout a 60s
     }
 });
 
@@ -693,6 +708,10 @@ client.on('message', async (message) => {
 });
 
 // Eventos del cliente
+client.on('loading_screen', (percent, message) => {
+    console.log('⏳ Cargando WhatsApp:', percent + '%', message);
+});
+
 client.on('qr', (qr) => {
     console.log('\n' + '='.repeat(60));
     console.log('📱 CÓDIGO QR PARA WHATSAPP - ESCANEA CON TU TELÉFONO');
@@ -718,6 +737,11 @@ client.on('ready', () => {
     } else {
         console.log('⚠️ Google Calendar no disponible - funcionando solo localmente');
     }
+    
+    // Iniciar sistema de notificaciones
+    console.log('🔔 Sistema de notificaciones WhatsApp: ACTIVADO (Polling cada 10s)');
+    setInterval(processPendingNotifications, 10000);
+
     console.log('\n' + '='.repeat(80));
     console.log('🎯 CHATBOT LEGAL PROFESIONAL - LISTO PARA ATENDER CLIENTES');
     console.log('='.repeat(80) + '\n');
@@ -774,3 +798,99 @@ async function startBot() {
 
 // INICIALIZACIÓN CON GOOGLE CALENDAR Y LOGGING AVANZADO
 startBot();
+
+// --- SISTEMA DE NOTIFICACIONES WHATSAPP ---
+let isProcessing = false;
+
+function stripHtml(html) {
+    if (!html) return '';
+    return html.replace(/<[^>]*>?/gm, '');
+}
+
+async function processPendingNotifications() {
+    if (isProcessing) return;
+    isProcessing = true;
+
+    try {
+        const pendingAlerts = await prisma.alert.findMany({
+            where: {
+                channel: 'whatsapp',
+                status: 'pending',
+                scheduledAt: { lte: new Date() }
+            },
+            include: { recipient: true },
+            take: 5
+        });
+
+        if (pendingAlerts.length > 0) {
+            console.log(`🔔 Procesando ${pendingAlerts.length} notificaciones pendientes...`);
+        }
+
+        for (const alert of pendingAlerts) {
+            try {
+                if (!alert.recipient || !alert.recipient.phone) {
+                    await prisma.alert.update({
+                        where: { id: alert.id },
+                        data: { status: 'failed', sentAt: new Date(), payload: { error: 'Usuario sin teléfono' } }
+                    });
+                    continue;
+                }
+
+                const phoneNumber = formatPhoneNumber(alert.recipient.phone);
+                let messageBody = '';
+                const data = alert.payload || {};
+                const cleanMessage = stripHtml(data.originalMessage || '...');
+
+                if (alert.alertType === 'new_message') {
+                    const sender = data.senderName || 'BrightLawyers';
+                    const caseTitle = data.caseTitle || 'Su Caso';
+                    messageBody = `🔔 *Nuevo Mensaje de ${sender}*\n\n` +
+                                 `En el caso: *${caseTitle}*\n\n` +
+                                 `📝 *Mensaje:* "${cleanMessage}"\n\n` +
+                                 `Por favor ingrese a la plataforma para responder.`;
+                } else if (alert.alertType === 'document_request_reminder') {
+                     messageBody = `📄 *Recordatorio de Documentos*\n\n` +
+                                  `Su abogado está esperando documentos para continuar con su caso.\n\n` +
+                                  `📝 *Contexto:* "${cleanMessage}"\n\n` +
+                                  `Por favor ingrese a la plataforma y suba los archivos solicitados.`;
+                } else {
+                    messageBody = `🔔 *Notificación de BrightLawyers*\n\n` +
+                                 `Tiene una nueva actualización en su caso.\n\n` +
+                                 `Por favor ingrese a la plataforma para ver los detalles.`;
+                }
+
+                await client.sendMessage(phoneNumber, messageBody);
+                console.log(`✅ Notificación enviada a ${phoneNumber}`);
+
+                await prisma.alert.update({
+                    where: { id: alert.id },
+                    data: { status: 'sent', sentAt: new Date() }
+                });
+
+            } catch (innerError) {
+                console.error(`❌ Error enviando alerta ${alert.id}:`, innerError);
+                await prisma.alert.update({
+                    where: { id: alert.id },
+                    data: { status: 'failed', sentAt: new Date(), payload: { error: innerError.message } }
+                });
+            }
+        }
+    } catch (error) {
+        // Ignorar errores de conexión momentáneos para no saturar el log
+        if (error.code === 'P2024' || error.message.includes('MaxClientsInSessionMode')) {
+             console.warn('⚠️ Base de datos saturada, esperando siguiente ciclo...');
+        } else if (!error.message.includes('Connection closed')) {
+            console.error('⚠️ Error en proceso de notificaciones:', error.message);
+        }
+    } finally {
+        isProcessing = false;
+    }
+}
+
+function formatPhoneNumber(phone) {
+    let clean = phone.replace(/\D/g, '');
+    if (clean.length === 10 && clean.startsWith('3')) {
+        clean = '57' + clean;
+    }
+    return `${clean}@c.us`;
+}

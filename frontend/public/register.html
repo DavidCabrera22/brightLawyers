@@ -164,6 +164,17 @@
                         </div>
                     </div>
 
+                    <!-- Phone -->
+                    <div>
+                        <label for="phone" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Teléfono (WhatsApp)</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <span class="material-symbols-outlined text-slate-400 text-xl">call</span>
+                            </div>
+                            <input type="tel" id="phone" name="phone" class="block w-full pl-10 pr-3 py-3 border border-slate-300 dark:border-slate-700 rounded-xl leading-5 bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-primary dark:focus:ring-cyan-400 focus:border-transparent transition-all shadow-sm" placeholder="Tu número de celular (Ej: 3001234567)" required>
+                        </div>
+                    </div>
+
                     <!-- Email -->
                     <div>
                         <label for="email" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Correo Electrónico</label>
@@ -256,6 +267,7 @@
             event.preventDefault();
             
             const name = document.getElementById('name').value;
+            const phone = document.getElementById('phone').value;
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
             const confirmPassword = document.getElementById('confirm-password').value;
@@ -275,6 +287,7 @@
                 // El rol por defecto para registro público es 'client' (manejado por el backend)
                 await register({
                     name,
+                    phone,
                     email,
                     password
                 });

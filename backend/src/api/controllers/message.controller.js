@@ -1,5 +1,6 @@
 const messageService = require('../../services/message.service');
 const emailService = require('../../services/email.service');
+const prisma = require('../../loaders/prisma');
 
 const getConversations = async (req, res) => {
     try {
@@ -41,35 +42,48 @@ const createMessage = async (req, res) => {
             messageText
         );
         
-        // Emit to room
+        // Emit to room (active case view)
         if (req.io) {
             req.io.to(`case_${caseId}`).emit('new_message', message);
+        }
+
+        // --- Notification Logic (Socket, Email, WhatsApp) ---
+        try {
+            // Fetch case data once for all notifications
+            const caseData = await messageService.getCaseRecipients(caseId);
             
-            // Emit to global notification channels
-            // We need to notify the recipients so they see the badge/toast even if they are not in the case room
-            // Ideally we emit to user_ID rooms.
-            // We can reuse the recipients logic below or just fetch assignments/client.
-            
-            // Re-fetch recipients for socket (lightweight)
-            try {
-                const caseData = await messageService.getCaseRecipients(caseId);
-                if (caseData) {
-                    const recipientIds = [];
-                    if (req.userRole === 'cliente') {
-                        // Notify Lawyers
+            if (caseData) {
+                const senderName = req.userRole === 'cliente' 
+                    ? (caseData.client ? caseData.client.fullNameOrBusinessName : 'Cliente')
+                    : 'Su Abogado';
+
+                const recipientIds = [];
+                const recipientEmails = [];
+
+                if (req.userRole === 'cliente') {
+                    // Notify Lawyers
+                    if (caseData.assignments) {
                         caseData.assignments.forEach(a => {
-                            if (a.user) recipientIds.push(a.user.id); // Assuming user.id exists in assignments include
-                            // Wait, getCaseRecipients in service only selected email/fullName. 
-                            // Let's check service.
+                            if (a.user) {
+                                recipientIds.push(a.user.id);
+                                if (a.user.email) recipientEmails.push(a.user.email);
+                            }
                         });
-                    } else {
-                        // Notify Client users
-                        if (caseData.client && caseData.client.users) {
-                             caseData.client.users.forEach(u => recipientIds.push(u.userId));
+                    }
+                } else {
+                    // Notify Client
+                    if (caseData.client) {
+                        if (caseData.client.users) {
+                            caseData.client.users.forEach(u => recipientIds.push(u.userId));
+                        }
+                        if (caseData.client.email) {
+                            recipientEmails.push(caseData.client.email);
                         }
                     }
+                }
 
-                    // Emit to each user room
+                // 1. Socket Notification (Toasts/Badges)
+                if (req.io) {
                     recipientIds.forEach(uid => {
                          req.io.to(`user_${uid}`).emit('notification', {
                              type: 'message',
@@ -79,32 +93,9 @@ const createMessage = async (req, res) => {
                          });
                     });
                 }
-            } catch (e) { console.error('Socket notification error', e); }
-        }
 
-        // Email Notification Logic
-        try {
-            const caseData = await messageService.getCaseRecipients(caseId);
-            if (caseData) {
-                const recipients = [];
-                // Determine Sender Name
-                const senderName = req.userRole === 'cliente' 
-                    ? (caseData.client ? caseData.client.fullNameOrBusinessName : 'Cliente')
-                    : 'Su Abogado';
-
-                if (req.userRole === 'cliente') {
-                    // Notify Lawyers
-                    caseData.assignments.forEach(a => {
-                        if (a.user && a.user.email) recipients.push(a.user.email);
-                    });
-                } else {
-                    // Notify Client
-                    if (caseData.client && caseData.client.email) {
-                        recipients.push(caseData.client.email);
-                    }
-                }
-
-                if (recipients.length > 0) {
+                // 2. Email Notification
+                if (recipientEmails.length > 0) {
                     const subject = `Nuevo mensaje en caso: ${caseData.caseNumberInternal || caseData.title}`;
                     const html = `
                         <div style="font-family: Arial, sans-serif; color: #333;">
@@ -121,14 +112,37 @@ const createMessage = async (req, res) => {
                     `;
                     
                     // Send to all recipients
-                    for (const email of recipients) {
-                        emailService.sendEmail(email, subject, html);
+                    for (const email of recipientEmails) {
+                        // Avoid await inside loop for email to not block response too much, 
+                        // but here we are already after message creation, so it's fine.
+                        // Or use Promise.all
+                        emailService.sendEmail(email, subject, html).catch(err => console.error('Email error:', err));
                     }
                 }
+
+                // 3. WhatsApp Notification (via Alert table)
+                for (const uid of recipientIds) {
+                    await prisma.alert.create({
+                        data: {
+                            organizationId: caseData.organizationId,
+                            caseId: parseInt(caseId),
+                            recipientUserId: uid,
+                            alertType: 'new_message',
+                            channel: 'whatsapp',
+                            scheduledAt: new Date(),
+                            status: 'pending',
+                            payload: {
+                                originalMessage: messageText,
+                                senderName: senderName,
+                                caseTitle: caseData.title
+                            }
+                        }
+                    }).catch(err => console.error('WhatsApp alert creation error:', err));
+                }
             }
-        } catch (emailErr) {
-            console.error('Error sending email notifications:', emailErr);
-            // Don't fail the request if email fails
+        } catch (notifError) {
+            console.error('Error sending notifications:', notifError);
+            // Don't fail the request if notifications fail
         }
         
         res.status(201).json(message);

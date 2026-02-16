@@ -1,5 +1,4 @@
-const { PrismaClient } = require('@prisma/client');
-const prisma = new PrismaClient();
+const prisma = require('../loaders/prisma');
 
 const getConversations = async (userId, userRole, organizationId) => {
     let where = { organizationId };
@@ -222,6 +221,85 @@ const createMessage = async (caseId, userId, userRole, messageText) => {
         data: { updatedAt: new Date() }
     });
 
+    // --- Immediate WhatsApp Notification ---
+    try {
+        const caseDataForAlert = await prisma.case.findUnique({
+            where: { id: caseId },
+            include: {
+                client: {
+                    include: {
+                        users: {
+                            take: 1 // Primary client user
+                        }
+                    }
+                },
+                assignments: {
+                    include: {
+                        user: {
+                            select: { id: true, email: true, fullName: true, phone: true }
+                        }
+                    }
+                }
+            }
+        });
+
+        if (caseDataForAlert) {
+            let recipients = [];
+            let senderName = 'BrightLawyers';
+
+            // Identify Sender Name
+            if (userRole === 'cliente') {
+                // If sender is client, get their name from caseData (client name)
+                senderName = caseDataForAlert.client.fullNameOrBusinessName;
+            } else {
+                 // If sender is lawyer, try to find their name from message sender
+                 if (message.sender) {
+                     senderName = message.sender.fullName;
+                 }
+            }
+
+            // Determine Recipients
+            if (userRole !== 'cliente' && userRole !== 'client') {
+                 // Sender is Lawyer -> Notify Client
+                 const clientUserId = caseDataForAlert.client?.users?.[0]?.userId;
+                 if (clientUserId) recipients.push(clientUserId);
+            } else {
+                // Sender is Client -> Notify Assigned Lawyers
+                // Add all assigned users
+                caseDataForAlert.assignments.forEach(a => {
+                    if (a.user && a.user.id) recipients.push(a.user.id);
+                });
+            }
+
+            // Filter out sender (just in case)
+            recipients = recipients.filter(uid => uid !== userId);
+
+            // Create Alerts
+            for (const recipientId of recipients) {
+                 await prisma.alert.create({
+                    data: {
+                        organizationId: caseDataForAlert.organizationId,
+                        caseId,
+                        recipientUserId: recipientId,
+                        alertType: 'new_message',
+                        channel: 'whatsapp',
+                        scheduledAt: new Date(),
+                        status: 'pending',
+                        payload: {
+                            triggerMessageId: message.id,
+                            originalMessage: messageText,
+                            senderName: senderName,
+                            caseTitle: caseDataForAlert.title
+                        }
+                    }
+                });
+                console.log(`🔔 Alert created for user ${recipientId} (Sender: ${senderName})`);
+            }
+        }
+    } catch (alertError) {
+        console.error('Error creating WhatsApp alerts:', alertError);
+    }
+
     // --- AUTOMATED BOT: Document Reminder ---
     // If lawyer asks for documents, schedule a reminder for the client
     if (userRole !== 'cliente') {
@@ -272,7 +350,7 @@ const createMessage = async (caseId, userId, userRole, messageText) => {
                                 caseId,
                                 recipientUserId: clientUserId,
                                 alertType: 'document_request_reminder',
-                                channel: 'email', // Could be 'whatsapp' if integrated
+                                channel: 'email', 
                                 scheduledAt,
                                 status: 'pending',
                                 payload: {
@@ -281,7 +359,24 @@ const createMessage = async (caseId, userId, userRole, messageText) => {
                                 }
                             }
                         });
-                        console.log(`🤖 Bot: Scheduled document reminder for client ${clientUserId} on case ${caseId}`);
+
+                        // Also schedule WhatsApp reminder
+                        await prisma.alert.create({
+                            data: {
+                                organizationId: caseData.organizationId,
+                                caseId,
+                                recipientUserId: clientUserId,
+                                alertType: 'document_request_reminder',
+                                channel: 'whatsapp',
+                                scheduledAt,
+                                status: 'pending',
+                                payload: {
+                                    triggerMessageId: message.id,
+                                    originalMessage: messageText
+                                }
+                            }
+                        });
+                        console.log(`🤖 Bot: Scheduled document reminder (Email & WhatsApp) for client ${clientUserId} on case ${caseId}`);
                     }
                 }
             } catch (error) {
