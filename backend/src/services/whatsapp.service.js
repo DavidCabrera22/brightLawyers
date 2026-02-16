@@ -5,8 +5,6 @@ const prisma = require('../../src/loaders/prisma'); // Use shared singleton inst
 const OpenAI = require('openai');
 const path = require('path');
 const fs = require('fs');
-// Adjust path to point to backend root
-const GoogleCalendarService = require('../../google-calendar');
 
 // Constants
 const APPOINTMENT_STATES = {
@@ -68,8 +66,6 @@ class WhatsAppService {
             apiKey: process.env.OPENAI_API_KEY
         });
         
-        this.calendarService = null;
-        
         // Polling properties
         this.isProcessing = false;
         this.POLL_INTERVAL = 10000; // 10 seconds
@@ -95,17 +91,6 @@ class WhatsAppService {
         console.log('🚀 Initializing WhatsApp Service...');
         this.status = 'initializing';
 
-        // Initialize Google Calendar
-        try {
-            console.log('📅 Initializing Google Calendar...');
-            this.calendarService = new GoogleCalendarService();
-            await this.calendarService.initialize();
-            console.log('✅ Google Calendar initialized');
-        } catch (calendarError) {
-            console.error('⚠️ Google Calendar initialization failed:', calendarError.message);
-            this.calendarService = null;
-        }
-
         try {
             this.client = new Client({
                 authStrategy: new LocalAuth({
@@ -120,6 +105,7 @@ class WhatsAppService {
                         '--disable-accelerated-2d-canvas',
                         '--no-first-run',
                         '--no-zygote',
+                        '--single-process', // Required for some environments
                         '--disable-gpu'
                     ],
                     timeout: 60000
@@ -168,7 +154,6 @@ class WhatsAppService {
             console.log('✅ CHATBOT LEGAL AVANZADO - CONECTADO Y LISTO');
             console.log('='.repeat(60));
             console.log('🧠 Sistema de IA (OpenAI) activado');
-            console.log('📅 Integración con Google Calendar activa');
             console.log('🔔 Sistema de notificaciones monitoreando');
             console.log('='.repeat(60) + '\n');
             
@@ -441,26 +426,6 @@ class WhatsAppService {
     async saveAppointment(appointmentData) {
         console.log('💾 Saving appointment:', appointmentData);
         let calendarEventId = null;
-        
-        if (this.calendarService) {
-            try {
-                const dateTimeObj = new Date(appointmentData.dateTime);
-                const dateStr = dateTimeObj.toISOString().split('T')[0];
-                const timeStr = dateTimeObj.toTimeString().split(' ')[0].substring(0, 5);
-                
-                const calendarEvent = await this.calendarService.createEvent({
-                    clientName: appointmentData.name,
-                    clientPhone: appointmentData.phone,
-                    date: dateStr,
-                    time: timeStr,
-                    legalArea: appointmentData.area,
-                    description: appointmentData.description
-                });
-                calendarEventId = calendarEvent.id;
-            } catch (err) {
-                console.error('⚠️ Calendar error:', err.message);
-            }
-        }
         
         // Save to local file as backup (or DB if we had an Appointment model)
         const appointmentsFile = path.join(__dirname, '../../appointments.json');
