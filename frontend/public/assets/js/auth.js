@@ -1,5 +1,11 @@
 // Configuration
-const API_URL = '/api'; // Use relative path for auto-detection (works on Local & Cloud)
+const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+// URL del backend en Render (producción) y Localhost (desarrollo)
+// NOTA: Si tu URL de Render es diferente, cámbiala aquí
+const API_URL = isLocalhost 
+    ? 'http://localhost:10000/api' 
+    : 'https://brightlawyers.onrender.com/api'; 
+
 window.API_URL = API_URL;
 
 // Token management
