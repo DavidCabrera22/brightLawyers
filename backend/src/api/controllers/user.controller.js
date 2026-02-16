@@ -61,9 +61,9 @@ const uploadAvatar = async (req, res) => {
 
 const createLawyer = async (req, res) => {
     try {
-        const { organizationId, role } = req;
+        const { organizationId, userRole } = req;
         // Verify admin role
-        if (role !== 'admin') {
+        if (userRole !== 'admin') {
             return res.status(403).json({ error: 'No autorizado. Se requiere rol de administrador.' });
         }
 
