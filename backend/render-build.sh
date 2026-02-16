@@ -6,4 +6,5 @@ npm install
 npm run db:generate
 
 # Install Chrome for Puppeteer
+# This will use .puppeteerrc.cjs to store it inside the project folder
 npx puppeteer browsers install chrome
