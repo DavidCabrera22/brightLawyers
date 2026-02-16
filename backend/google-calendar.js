@@ -17,8 +17,32 @@ class GoogleCalendarService {
         try {
             console.log('📅 Inicializando Google Calendar...');
             
-            // Cargar credenciales
-            const credentials = require(CREDENTIALS_PATH);
+            let credentials;
+            
+            // Intentar cargar credenciales desde variable de entorno primero (para Render)
+            if (process.env.GOOGLE_CREDENTIALS_JSON) {
+                try {
+                    console.log('🔑 Usando credenciales desde GOOGLE_CREDENTIALS_JSON');
+                    credentials = JSON.parse(process.env.GOOGLE_CREDENTIALS_JSON);
+                } catch (e) {
+                    console.error('❌ Error al parsear GOOGLE_CREDENTIALS_JSON:', e.message);
+                }
+            }
+
+            // Si no hay variable de entorno o falló el parseo, intentar archivo local
+            if (!credentials) {
+                try {
+                    console.log('📂 Buscando archivo credentials.json local...');
+                    credentials = require(CREDENTIALS_PATH);
+                    console.log('✅ Archivo credentials.json cargado exitosamente');
+                } catch (e) {
+                    console.warn('⚠️ No se encontró credentials.json local o es inválido');
+                }
+            }
+
+            if (!credentials) {
+                throw new Error('No se encontraron credenciales de Google Calendar (ni ENV ni archivo)');
+            }
             
             // Configurar autenticación
             this.auth = new google.auth.GoogleAuth({
