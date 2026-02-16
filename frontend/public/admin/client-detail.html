@@ -129,7 +129,7 @@
     <!-- Main Content -->
     <main class="flex h-full flex-1 flex-col overflow-hidden relative">
         <!-- Top Header -->
-        <header class="flex h-16 items-center justify-between border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-card-dark px-6 lg:px-8 z-10">
+        <header class="flex h-16 items-center justify-between border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-card-dark px-6 lg:px-4 md:px-8 z-10">
             <div class="flex items-center gap-4">
                 <button onclick="window.location.href='clients.html'" class="text-text-secondary-light hover:text-primary flex items-center gap-2">
                     <span class="material-symbols-outlined">arrow_back</span>
@@ -539,5 +539,16 @@
 
     init();
 </script>
+<div id="sidebar-overlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black/50 z-20 hidden md:hidden backdrop-blur-sm transition-opacity"></div>
+
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebar-overlay');
+            sidebar.classList.toggle('-translate-x-full');
+            overlay.classList.toggle('hidden');
+        }
+    </script>
+
 </body>
 </html>

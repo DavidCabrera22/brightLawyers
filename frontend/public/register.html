@@ -152,7 +152,7 @@
                     <p class="text-slate-600 dark:text-slate-400">Completa tus datos para comenzar</p>
                 </div>
 
-                <form id="register-form" class="space-y-5" onsubmit="event.preventDefault();">
+                <form id="register-form" class="space-y-5" onsubmit="handleRegister(event)">
                     <!-- Name -->
                     <div>
                         <label for="name" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Nombre Completo</label>
@@ -252,6 +252,41 @@
     <!-- Script -->
     <script src="assets/js/auth.js?v=2"></script>
     <script>
+        async function handleRegister(event) {
+            event.preventDefault();
+            
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirm-password').value;
+            const terms = document.getElementById('terms').checked;
+
+            if (!terms) {
+                alert('Debes aceptar los Términos y Condiciones');
+                return;
+            }
+
+            if (password !== confirmPassword) {
+                alert('Las contraseñas no coinciden');
+                return;
+            }
+
+            try {
+                // El rol por defecto para registro público es 'client' (manejado por el backend)
+                await register({
+                    name,
+                    email,
+                    password
+                });
+
+                alert('Registro exitoso. Por favor inicia sesión.');
+                window.location.href = 'login.html';
+            } catch (error) {
+                console.error('Registration error:', error);
+                alert(error.message || 'Error en el registro');
+            }
+        }
+
         function togglePassword(fieldId, iconId) {
             const passwordInput = document.getElementById(fieldId);
             const icon = document.getElementById(iconId);

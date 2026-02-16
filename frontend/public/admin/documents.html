@@ -93,7 +93,7 @@
 <body class="bg-brand-bg text-slate-800 h-screen overflow-hidden flex">
 
     <!-- Sidebar (Dark) -->
-    <aside class="w-64 bg-brand-dark text-white flex flex-col z-20 shadow-xl flex-shrink-0">
+    <aside id="sidebar" class="w-64 bg-brand-dark text-white flex flex-col z-30 shadow-xl flex-shrink-0 fixed inset-y-0 left-0 transform -translate-x-full transition-transform duration-300 md:relative md:translate-x-0">
         <!-- Logo Area -->
         <div class="h-20 flex items-center px-6 border-b border-gray-800 flex-shrink-0">
             <div class="flex items-center gap-3">
@@ -178,8 +178,13 @@
     <main class="flex-1 flex flex-col h-full overflow-hidden bg-brand-bg relative">
         
         <!-- Top Header -->
-        <header class="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-8 flex-shrink-0 z-10">
-            <h2 class="text-lg font-bold text-slate-800">Archivo Digital</h2>
+        <header class="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-4 md:px-8 flex-shrink-0 z-10">
+            <div class="flex items-center gap-4">
+                <button onclick="toggleSidebar()" class="md:hidden p-2 text-slate-500 hover:bg-slate-100 rounded-lg transition-colors">
+                    <span class="material-symbols-outlined">menu</span>
+                </button>
+                <h2 class="text-lg font-bold text-slate-800">Archivo Digital</h2>
+            </div>
             
             <div class="flex items-center gap-6">
                 <!-- Search -->
@@ -203,7 +208,7 @@
         </header>
 
         <!-- Content -->
-        <div class="flex-1 overflow-y-auto p-8">
+        <div class="flex-1 overflow-y-auto p-4 md:p-8">
             <div class="max-w-7xl mx-auto flex flex-col gap-8">
                 
                 <!-- Title -->
@@ -529,5 +534,16 @@
     // Start
     init();
 </script>
+<div id="sidebar-overlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black/50 z-20 hidden md:hidden backdrop-blur-sm transition-opacity"></div>
+
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebar-overlay');
+            sidebar.classList.toggle('-translate-x-full');
+            overlay.classList.toggle('hidden');
+        }
+    </script>
+
 </body>
 </html>

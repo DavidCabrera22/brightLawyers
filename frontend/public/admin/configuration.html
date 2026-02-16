@@ -69,7 +69,7 @@
 <body class="bg-brand-bg text-slate-800 h-screen overflow-hidden flex">
 
     <!-- Sidebar (Dark) -->
-    <aside class="w-64 bg-brand-dark text-white flex flex-col z-20 shadow-xl flex-shrink-0">
+    <aside id="sidebar" class="w-64 bg-brand-dark text-white flex flex-col z-30 shadow-xl flex-shrink-0 fixed inset-y-0 left-0 transform -translate-x-full transition-transform duration-300 md:relative md:translate-x-0">
         <!-- Logo Area -->
         <div class="h-20 flex items-center px-6 border-b border-gray-800 flex-shrink-0">
             <div class="flex items-center gap-3">
@@ -154,8 +154,13 @@
     <main class="flex-1 flex flex-col h-full overflow-hidden bg-brand-bg relative">
         
         <!-- Top Header -->
-        <header class="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-8 flex-shrink-0 z-10">
-            <h2 class="text-lg font-bold text-slate-800">Configuración del Sistema</h2>
+        <header class="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-4 md:px-8 flex-shrink-0 z-10">
+            <div class="flex items-center gap-4">
+                <button onclick="toggleSidebar()" class="md:hidden p-2 text-slate-500 hover:bg-slate-100 rounded-lg transition-colors">
+                    <span class="material-symbols-outlined">menu</span>
+                </button>
+                <h2 class="text-lg font-bold text-slate-800">Configuración del Sistema</h2>
+            </div>
             
             <div class="flex items-center gap-6">
                 <!-- Search -->
@@ -186,7 +191,7 @@
         </header>
 
         <!-- Scrollable Content -->
-        <div class="flex-1 overflow-y-auto p-8">
+        <div class="flex-1 overflow-y-auto p-4 md:p-8">
             <div class="max-w-7xl mx-auto space-y-8">
                 
                 <!-- Page Title -->
@@ -517,10 +522,20 @@
             };
 
             try {
+                // Get fresh token and user info
+                const token = localStorage.getItem('token');
+                const user = JSON.parse(localStorage.getItem('user') || '{}');
+
+                if (!token) {
+                    alert('No hay sesión activa. Por favor inicia sesión nuevamente.');
+                    window.location.href = '../public/login.html';
+                    return;
+                }
+
                 const response = await fetch(`${API_URL}/users/lawyers`, {
                     method: 'POST',
                     headers: {
-                        'Authorization': `Bearer ${authToken}`,
+                        'Authorization': `Bearer ${token}`,
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify(data)
@@ -532,11 +547,17 @@
                     alert('Abogado creado exitosamente');
                     document.getElementById('lawyerForm').reset();
                 } else {
-                    alert(`Error: ${result.error || 'No se pudo crear el abogado'}`);
+                    if (response.status === 403) {
+                         const roles = user.userRoles ? user.userRoles.map(r => r.role?.name).join(', ') : 'Sin roles';
+                         console.error('Permission Error:', { status: 403, userRoles: roles, endpoint: `${API_URL}/users/lawyers` });
+                         alert(`Error de permisos (403). \n\nTu usuario tiene roles: [${roles}]. \n\nEl sistema requiere rol de 'admin' exacto. Si tienes 'administrador', por favor contacta soporte o intenta con un usuario 'admin'.`);
+                    } else {
+                         alert(`Error: ${result.error || 'No se pudo crear el abogado'}`);
+                    }
                 }
             } catch (error) {
                 console.error('Error creating lawyer:', error);
-                alert('Error al conectar con el servidor');
+                alert('Error al conectar con el servidor: ' + error.message);
             }
         }
 
@@ -612,5 +633,16 @@
         // Initialize
         init();
     </script>
+<div id="sidebar-overlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black/50 z-20 hidden md:hidden backdrop-blur-sm transition-opacity"></div>
+
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebar-overlay');
+            sidebar.classList.toggle('-translate-x-full');
+            overlay.classList.toggle('hidden');
+        }
+    </script>
+
 </body>
 </html>
