@@ -1,10 +1,10 @@
 // Configuration
 const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-// URL del backend en Render (producción) y Localhost (desarrollo)
-// NOTA: Si tu URL de Render es diferente, cámbiala aquí
+// En producción (Render/Railway), el frontend se sirve desde el mismo origen, así que '/api' funciona.
+// En localhost, asumimos que el backend corre en el puerto 10000 (o ajusta según tu configuración local)
 const API_URL = isLocalhost 
     ? 'http://localhost:10000/api' 
-    : 'https://brightlawyers.onrender.com/api'; 
+    : '/api'; 
 
 window.API_URL = API_URL;
 
