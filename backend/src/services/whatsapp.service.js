@@ -105,7 +105,7 @@ class WhatsAppService {
                         '--disable-accelerated-2d-canvas',
                         '--no-first-run',
                         '--no-zygote',
-                        '--single-process', // Required for some environments
+                        // '--single-process', // Removed for better stability
                         '--disable-gpu'
                     ],
                     timeout: 60000
@@ -113,7 +113,13 @@ class WhatsAppService {
             });
 
             this.setupEventListeners();
-            this.client.initialize();
+            
+            // Initialize properly handling the promise
+            console.log('🚀 Starting WhatsApp Client...');
+            this.client.initialize().catch(err => {
+                console.error('❌ WhatsApp Client Initialization Error:', err);
+                this.status = 'error';
+            });
             
             // Start polling for alerts
             setInterval(() => this.processPendingNotifications(), this.POLL_INTERVAL);
@@ -205,6 +211,92 @@ class WhatsAppService {
             const isFromAdmin = userPhone.includes('admin'); // Adjust if needed
             
             console.log(`📱 Message from ${userPhone}: ${userMessage}`);
+
+            // 1. Check if the user is a REGISTERED CLIENT in our database
+            const phoneNumberClean = userPhone.replace(/\D/g, ''); // 573001234567
+            // Remove country code if needed or match partial
+            // Our DB stores phone like '3001234567' or '+573001234567'
+            // Let's try to match flexible
+            
+            const registeredUser = await this.prisma.user.findFirst({
+                where: {
+                    OR: [
+                        { phone: phoneNumberClean },
+                        { phone: `+${phoneNumberClean}` },
+                        { phone: phoneNumberClean.replace(/^57/, '') } // if DB has 300... and incoming is 57300...
+                    ]
+                },
+                include: {
+                    clientUsers: {
+                        include: {
+                            client: {
+                                include: {
+                                    cases: {
+                                        where: { caseStatus: 'active' },
+                                        take: 1, // Focus on most recent active case
+                                        orderBy: { updatedAt: 'desc' },
+                                        include: {
+                                            assignments: {
+                                                include: { user: true }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            // If it IS a registered client with an active case, forward message to Lawyer/Platform
+            if (registeredUser && registeredUser.clientUsers.length > 0) {
+                const clientUser = registeredUser.clientUsers[0];
+                const activeCase = clientUser.client.cases[0];
+
+                if (activeCase) {
+                    console.log(`✅ Registered Client ${registeredUser.fullName} detected. Case: ${activeCase.caseNumberInternal}`);
+                    
+                    // Create CaseMessage in Database
+                    await this.prisma.caseMessage.create({
+                        data: {
+                            caseId: activeCase.id,
+                            senderUserId: registeredUser.id,
+                            senderRole: 'client',
+                            messageText: `[WhatsApp] ${userMessage}`,
+                            isRead: false
+                        }
+                    });
+
+                    // Notify Lawyer via Alert (so they get email/socket notification)
+                    // We can reuse the alert system but targeting the lawyer
+                    const lawyers = activeCase.assignments.map(a => a.user);
+                    for (const lawyer of lawyers) {
+                        await this.prisma.alert.create({
+                            data: {
+                                organizationId: activeCase.organizationId,
+                                caseId: activeCase.id,
+                                recipientUserId: lawyer.id,
+                                alertType: 'new_message',
+                                channel: 'in_app', // Lawyer is on platform
+                                scheduledAt: new Date(),
+                                status: 'pending',
+                                payload: {
+                                    originalMessage: userMessage,
+                                    senderName: registeredUser.fullName,
+                                    caseTitle: activeCase.title,
+                                    via: 'whatsapp'
+                                }
+                            }
+                        });
+                        // Optional: If lawyer also has WhatsApp configured, we could notify them there too
+                        // But usually lawyers use the web platform.
+                    }
+
+                    // Reply to Client on WhatsApp confirming receipt
+                    await message.reply(`✅ Hemos recibido tu mensaje y lo hemos adjuntado a tu caso *${activeCase.caseNumberInternal}*. Tu abogado ha sido notificado.`);
+                    return; // Stop here, don't trigger AI chatbot flow
+                }
+            }
             
             // Detect human intervention
             if (this.isHumanMessage(userMessage, userPhone, isFromAdmin)) {

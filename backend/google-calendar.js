@@ -41,7 +41,8 @@ class GoogleCalendarService {
             }
 
             if (!credentials) {
-                throw new Error('No se encontraron credenciales de Google Calendar (ni ENV ni archivo)');
+                console.warn('⚠️ No se encontraron credenciales de Google Calendar. El servicio de calendario se desactivará, pero el bot continuará funcionando.');
+                return false;
             }
             
             // Configurar autenticación

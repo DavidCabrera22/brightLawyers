@@ -33,7 +33,10 @@ require('./src/cron/reminder.cron');
 // Initialize WhatsApp Service
 const whatsappService = require('./src/services/whatsapp.service');
 // Only initialize if configured or requested (auto-start for now as requested)
-whatsappService.initialize();
+// Delay initialization to ensure server starts first and to avoid timeout during deployment
+setTimeout(() => {
+  whatsappService.initialize();
+}, 10000); // 10 seconds delay
 
 const multer = require('multer');
 
