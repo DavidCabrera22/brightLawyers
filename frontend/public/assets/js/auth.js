@@ -1,10 +1,10 @@
 // Configuration
 const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-// En producción (Render/Railway), el frontend se sirve desde el mismo origen, así que '/api' funciona.
-// En localhost, asumimos que el backend corre en el puerto 10000 (o ajusta según tu configuración local)
+// En producción (Railway), usamos la URL completa para asegurar conexión
+// En localhost, asumimos que el backend corre en el puerto 10000
 const API_URL = isLocalhost 
     ? 'http://localhost:10000/api' 
-    : '/api'; 
+    : 'https://brightlawyers-production.up.railway.app/api'; 
 
 window.API_URL = API_URL;
 
