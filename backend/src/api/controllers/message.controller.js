@@ -121,24 +121,14 @@ const createMessage = async (req, res) => {
                 }
 
                 // 3. WhatsApp Notification (via Alert table)
+                // MOVED TO message.service.js to avoid duplicates and fix caseId type issue
+                /* 
                 for (const uid of recipientIds) {
                     await prisma.alert.create({
-                        data: {
-                            organizationId: caseData.organizationId,
-                            caseId: parseInt(caseId),
-                            recipientUserId: uid,
-                            alertType: 'new_message',
-                            channel: 'whatsapp',
-                            scheduledAt: new Date(),
-                            status: 'pending',
-                            payload: {
-                                originalMessage: messageText,
-                                senderName: senderName,
-                                caseTitle: caseData.title
-                            }
-                        }
+                       // ...
                     }).catch(err => console.error('WhatsApp alert creation error:', err));
                 }
+                */
             }
         } catch (notifError) {
             console.error('Error sending notifications:', notifError);
