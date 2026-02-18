@@ -604,6 +604,29 @@ class WhatsAppService {
                                      `Por favor ingrese a la plataforma para ver los detalles.`;
                     }
 
+                    // Validate if the number is registered on WhatsApp
+                    try {
+                        const isRegistered = await this.client.isRegisteredUser(phoneNumber);
+                        if (!isRegistered) {
+                            console.warn(`⚠️ Number ${phoneNumber} is not registered on WhatsApp`);
+                            // We mark it as failed but don't throw to avoid crashing the loop
+                            await this.prisma.alert.update({
+                                where: { id: alert.id },
+                                data: { status: 'failed', sentAt: new Date(), payload: { ...data, error: 'Número no registrado en WhatsApp' } }
+                            });
+                            continue;
+                        }
+                    } catch (checkError) {
+                        console.warn(`⚠️ Error checking registration for ${phoneNumber}:`, checkError.message);
+                        // If check fails (e.g. timeout), we might still try to send or fail gracefully
+                        // For now, let's treat it as a failure to avoid crashing sendMessage
+                        await this.prisma.alert.update({
+                            where: { id: alert.id },
+                            data: { status: 'failed', sentAt: new Date(), payload: { ...data, error: `Error verificación: ${checkError.message}` } }
+                        });
+                        continue;
+                    }
+
                     await this.client.sendMessage(phoneNumber, messageBody);
                     await this.prisma.alert.update({
                         where: { id: alert.id },
