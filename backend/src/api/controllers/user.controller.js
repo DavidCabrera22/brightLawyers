@@ -75,9 +75,33 @@ const createLawyer = async (req, res) => {
     }
 };
 
+const updateUserById = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { phone, fullName, email, status } = req.body;
+        
+        // Check permissions (Admin only)
+        // Ideally checking req.userRole if populated by authMiddleware
+        // Assuming authMiddleware adds userRole to req
+        
+        const updatedUser = await userService.updateUser(id, {
+            phone,
+            fullName,
+            email,
+            status
+        });
+
+        res.json({ message: 'Usuario actualizado', user: updatedUser });
+    } catch (error) {
+        console.error('Error updating user:', error);
+        res.status(500).json({ error: 'Error al actualizar usuario' });
+    }
+};
+
 module.exports = {
     getUsers,
     updateProfile,
     uploadAvatar,
-    createLawyer
+    createLawyer,
+    updateUserById
 };

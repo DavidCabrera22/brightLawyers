@@ -86,6 +86,7 @@ const getConversations = async (userId, userRole, organizationId) => {
             status: c.caseStatus,
             documentRequestActive: c.documentRequestActive,
             client: c.client,
+            assignments: c.assignments,
             lastMessage: c.messages[0] || null,
             messageCount: c._count.messages,
             unreadCount

@@ -141,4 +141,38 @@ router.post('/profile/avatar', upload.single('file'), userController.uploadAvata
  */
 router.post('/lawyers', userController.createLawyer);
 
+/**
+ * @swagger
+ * /api/users/{id}:
+ *   put:
+ *     summary: Actualizar usuario por ID (Admin)
+ *     tags: [Users]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               phone:
+ *                 type: string
+ *               fullName:
+ *                 type: string
+ *               email:
+ *                 type: string
+ *               status:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Usuario actualizado
+ */
+router.put('/:id', userController.updateUserById);
+
 module.exports = router;

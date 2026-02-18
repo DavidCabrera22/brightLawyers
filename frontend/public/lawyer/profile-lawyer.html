@@ -397,14 +397,33 @@
         }
 
         function loadProfileData() {
-            // Simulating data loading
-            // In production: fetch(`/api/lawyers/${user.id}/profile`)
+            // Load from API to ensure we have the latest data from DB
+            // Especially phone number which is critical for notifications
+            fetch(`${window.API_URL}/auth/me`, {
+                headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.user) {
+                    const user = data.user;
+                    // Update basic fields from DB
+                    if (document.getElementById('phone')) document.getElementById('phone').value = user.phone || '';
+                    if (document.getElementById('fullName')) document.getElementById('fullName').value = user.fullName || user.name || '';
+                    if (document.getElementById('email')) document.getElementById('email').value = user.email || '';
+                    
+                    // Update LocalStorage user object to keep it in sync
+                    localStorage.setItem('user', JSON.stringify(user));
+                }
+            })
+            .catch(err => console.error('Error refreshing user data:', err));
+
+            // Load extended profile data from LocalStorage (until we have a backend endpoint for LawyerProfile)
             try {
                 const savedProfile = localStorage.getItem('lawyer_profile_' + user.id);
                 if (savedProfile) {
                     const data = JSON.parse(savedProfile);
                     
-                    const fields = ['phone', 'location', 'specialties', 'licenseNumber', 'experience', 'education', 'bio'];
+                    const fields = ['location', 'specialties', 'licenseNumber', 'experience', 'education', 'bio'];
                     fields.forEach(field => {
                         const el = document.getElementById(field);
                         if(el && data[field]) el.value = data[field];
@@ -429,29 +448,44 @@
             }
         }
 
-        function saveProfile() {
-            const data = {
-                phone: document.getElementById('phone').value,
-                location: document.getElementById('location').value,
-                specialties: document.getElementById('specialties').value,
-                licenseNumber: document.getElementById('licenseNumber').value,
-                experience: document.getElementById('experience').value,
-                education: document.getElementById('education').value,
-                bio: document.getElementById('bio').value,
-                profileImage: profileImageData
-            };
-
-            // In production: POST /api/lawyers/${user.id}/profile
-            localStorage.setItem('lawyer_profile_' + user.id, JSON.stringify(data));
-            
-            // Show feedback
+        async function saveProfile() {
             const btn = document.querySelector('button[onclick="saveProfile()"]');
             const originalText = btn.innerHTML;
             
             btn.innerHTML = '<span class="material-symbols-outlined text-[18px] animate-spin">refresh</span> Guardando...';
             btn.disabled = true;
-            
-            setTimeout(() => {
+
+            try {
+                // 1. Update User (Phone, Name) in Backend
+                const phone = document.getElementById('phone').value;
+                const fullName = document.getElementById('fullName').value;
+
+                const response = await fetch(`${window.API_URL}/users/profile`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    },
+                    body: JSON.stringify({ phone, fullName })
+                });
+
+                if (!response.ok) throw new Error('Error al actualizar perfil en el servidor');
+
+                // 2. Save Extended Profile to LocalStorage (Legacy)
+                const data = {
+                    phone,
+                    location: document.getElementById('location').value,
+                    specialties: document.getElementById('specialties').value,
+                    licenseNumber: document.getElementById('licenseNumber').value,
+                    experience: document.getElementById('experience').value,
+                    education: document.getElementById('education').value,
+                    bio: document.getElementById('bio').value,
+                    profileImage: profileImageData
+                };
+
+                localStorage.setItem('lawyer_profile_' + user.id, JSON.stringify(data));
+                
+                // Show success
                 btn.innerHTML = '<span class="material-symbols-outlined text-[18px]">check</span> Guardado';
                 btn.classList.remove('bg-lawyer-accent');
                 btn.classList.add('bg-green-500');
@@ -462,7 +496,20 @@
                     btn.classList.remove('bg-green-500');
                     btn.disabled = false;
                 }, 2000);
-            }, 800);
+
+            } catch (error) {
+                console.error('Error saving profile:', error);
+                btn.innerHTML = '<span class="material-symbols-outlined text-[18px]">error</span> Error';
+                btn.classList.remove('bg-lawyer-accent');
+                btn.classList.add('bg-red-500');
+                
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                    btn.classList.add('bg-lawyer-accent');
+                    btn.classList.remove('bg-red-500');
+                    btn.disabled = false;
+                }, 3000);
+            }
         }
     </script>
 </body>

@@ -404,11 +404,24 @@
             const currCase = allConversations.find(c => c.id === caseId);
             if (currCase) {
                 document.getElementById('chatClientName').textContent = currCase.title;
-                document.getElementById('chatCaseRef').textContent = currCase.caseNumberInternal || 'S/N';
+                
+                // Find Lawyer
+                const lawyer = currCase.assignments && currCase.assignments.length > 0 ? currCase.assignments[0].user : null;
+                const lawyerName = lawyer ? lawyer.fullName : 'Sin Asignar';
+
+                document.getElementById('chatCaseRef').innerHTML = `${currCase.caseNumberInternal || 'S/N'} <span class="mx-2 text-gray-300">|</span> <span class="text-client-primary font-bold">Abg. ${lawyerName}</span>`;
+                
                 document.getElementById('chatStatusBadge').textContent = currCase.status === 'active' ? 'EN PROCESO' : 'CERRADO';
                 document.getElementById('chatStatusBadge').className = currCase.status === 'active' 
                     ? 'text-green-600 bg-green-50 px-2 py-0.5 rounded uppercase tracking-wider text-[10px] font-bold'
                     : 'text-gray-600 bg-gray-100 px-2 py-0.5 rounded uppercase tracking-wider text-[10px] font-bold';
+
+                // Update Avatar to Lawyer
+                const avatarImg = document.querySelector('#chatArea img');
+                if (avatarImg) {
+                    const seed = lawyerName.replace(/\s+/g, '+');
+                    avatarImg.src = `https://ui-avatars.com/api/?name=${seed}&background=0f172a&color=fff`;
+                }
             }
 
             // Join Room

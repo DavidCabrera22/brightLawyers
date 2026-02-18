@@ -606,6 +606,11 @@ class WhatsAppService {
 
                     // Validate if the number is registered on WhatsApp
                     try {
+                        // Add a small delay to ensure client is ready for this operation
+                        if (this.status !== 'ready') {
+                             throw new Error('Client not ready');
+                        }
+
                         const isRegistered = await this.client.isRegisteredUser(phoneNumber);
                         if (!isRegistered) {
                             console.warn(`⚠️ Number ${phoneNumber} is not registered on WhatsApp`);
@@ -618,8 +623,15 @@ class WhatsAppService {
                         }
                     } catch (checkError) {
                         console.warn(`⚠️ Error checking registration for ${phoneNumber}:`, checkError.message);
-                        // If check fails (e.g. timeout), we might still try to send or fail gracefully
-                        // For now, let's treat it as a failure to avoid crashing sendMessage
+                        
+                        // If it's the specific "getChat" error, it means the client internal store isn't ready or version mismatch
+                        if (checkError.message.includes('getChat') || checkError.message.includes('Evaluation failed')) {
+                             console.error('❌ WhatsApp Web Internal Error (Version Mismatch?):', checkError);
+                             // Attempt to send anyway as a fallback if registration check fails due to internal error
+                             // This might work if sendMessage uses a different path, but usually it also needs the store.
+                             // We'll mark as failed to be safe and avoid crashing loop.
+                        }
+                        
                         await this.prisma.alert.update({
                             where: { id: alert.id },
                             data: { status: 'failed', sentAt: new Date(), payload: { ...data, error: `Error verificación: ${checkError.message}` } }
