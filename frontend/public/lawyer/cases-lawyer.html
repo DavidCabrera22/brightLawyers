@@ -251,7 +251,7 @@
     <!-- Scripts -->
     <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
     <script>
-        const API_URL = 'https://brightlawyers.onrender.com/api';
+        const API_URL = 'https://brightlawyers-production.up.railway.app/api';
         let currentUser = null;
         let socket = null;
 
@@ -291,7 +291,7 @@
 
         function initSocket() {
             // Connect to root namespace
-            socket = io('https://brightlawyers.onrender.com', {
+            socket = io('https://brightlawyers-production.up.railway.app', {
                 auth: {
                     token: localStorage.getItem('token')
                 }

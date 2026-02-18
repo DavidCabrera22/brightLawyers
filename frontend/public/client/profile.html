@@ -362,7 +362,7 @@
         function renderProfile(user) {
             const fullName = user.fullName || user.name;
             const initials = fullName.substring(0,2).toUpperCase();
-            const avatarUrl = user.avatarUrl ? `https://brightlawyers.onrender.com${user.avatarUrl}` : null;
+            const avatarUrl = user.avatarUrl ? `https://brightlawyers-production.up.railway.app${user.avatarUrl}` : null;
 
             // Header
             document.getElementById('headerUserName').textContent = fullName;

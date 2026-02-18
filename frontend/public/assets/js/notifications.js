@@ -15,7 +15,7 @@
             // Note: messages.html might have its own socket. 
             // Ideally we share one connection, but for simplicity we can have a separate one or check window.socket
             
-            const socketUrl = (typeof API_URL !== 'undefined') ? API_URL.replace('/api', '') : 'https://brightlawyers.onrender.com';
+            const socketUrl = (typeof API_URL !== 'undefined') ? API_URL.replace('/api', '') : 'https://brightlawyers-production.up.railway.app';
             
             // If window.socket exists and is connected, use it? 
             // Or just create a new manager. Socket.io handles multiplexing usually.

@@ -1,4 +1,4 @@
-const API_URL = 'https://brightlawyers.onrender.com/api';
+const API_URL = 'https://brightlawyers-production.up.railway.app/api';
 const authToken = localStorage.getItem('token');
 
 if (!authToken) {

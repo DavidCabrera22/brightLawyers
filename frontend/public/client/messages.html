@@ -271,7 +271,7 @@
 
         // Connect Socket
         // Note: auth.js provides API_URL
-        const socketUrl = (typeof API_URL !== 'undefined') ? API_URL.replace('/api', '') : 'https://brightlawyers.onrender.com';
+        const socketUrl = (typeof API_URL !== 'undefined') ? API_URL.replace('/api', '') : 'https://brightlawyers-production.up.railway.app';
         
         socket = io(socketUrl, {
             auth: { token },
