@@ -199,39 +199,33 @@
             <div id="chatArea" class="hidden md:flex flex-1 flex-col bg-[#F8FAFC] relative overflow-hidden">
                 
                 <!-- Chat Header -->
-                <div class="h-20 bg-white border-b border-gray-200 flex items-center justify-between px-4 md:px-8 shrink-0 shadow-sm z-10">
-                    <div class="flex items-center gap-3 md:gap-4">
-                        <button onclick="backToConversations()" class="md:hidden p-2 -ml-2 text-gray-500 hover:bg-gray-100 rounded-lg transition-colors">
+                <div class="h-16 md:h-20 bg-white border-b border-gray-200 flex items-center justify-between px-3 md:px-8 shrink-0 shadow-sm z-10">
+                    <div class="flex items-center gap-2 md:gap-4 flex-1 min-w-0">
+                        <button onclick="backToConversations()" class="md:hidden p-2 -ml-2 text-gray-500 hover:bg-gray-100 rounded-lg transition-colors flex-shrink-0">
                             <span class="material-symbols-outlined">arrow_back</span>
                         </button>
-                        <div class="relative">
-                            <div class="h-12 w-12 rounded-full bg-gray-900 text-white flex items-center justify-center overflow-hidden">
+                        <div class="relative flex-shrink-0">
+                            <div class="h-10 w-10 md:h-12 md:w-12 rounded-full bg-gray-900 text-white flex items-center justify-center overflow-hidden">
                                 <img src="https://ui-avatars.com/api/?name=Defensa+Penal&background=0f172a&color=fff" alt="Case" class="w-full h-full object-cover">
                             </div>
-                            <span class="absolute bottom-0 right-0 h-3 w-3 rounded-full bg-green-500 border-2 border-white"></span>
+                            <span class="absolute bottom-0 right-0 h-2.5 w-2.5 md:h-3 md:w-3 rounded-full bg-green-500 border-2 border-white"></span>
                         </div>
-                        <div>
+                        <div class="min-w-0">
                             <div class="flex items-center gap-2">
-                                <h3 class="font-bold text-gray-900 text-lg leading-tight" id="chatClientName">Selecciona un caso</h3>
+                                <h3 class="font-bold text-gray-900 text-sm md:text-lg leading-tight truncate" id="chatClientName">Selecciona un caso</h3>
                             </div>
-                            <div class="flex items-center gap-2 text-xs font-medium mt-0.5">
-                                <span class="text-gray-500" id="chatCaseRef">CASE-XXXX-XXX</span>
-                                <span class="text-gray-300">•</span>
-                                <span class="text-green-600 bg-green-50 px-2 py-0.5 rounded uppercase tracking-wider" id="chatStatusBadge">--</span>
+                            <div class="flex items-center gap-2 text-[10px] md:text-xs font-medium mt-0.5 truncate">
+                                <span class="text-gray-500 truncate" id="chatCaseRef">CASE-XXXX-XXX</span>
+                                <span class="text-gray-300 hidden sm:inline">•</span>
+                                <span class="text-green-600 bg-green-50 px-1.5 py-0.5 rounded uppercase tracking-wider hidden sm:inline" id="chatStatusBadge">--</span>
                             </div>
                         </div>
                     </div>
 
-                    <div class="flex items-center gap-3">
-                        <button class="px-4 py-2 bg-white border border-gray-200 rounded-lg text-sm font-bold text-gray-700 hover:bg-gray-50 flex items-center gap-2 shadow-sm transition-all" onclick="viewCaseDetail()">
+                    <div class="flex items-center gap-1 md:gap-3 flex-shrink-0">
+                        <button class="px-2 py-1.5 md:px-4 md:py-2 bg-white border border-gray-200 rounded-lg text-xs md:text-sm font-bold text-gray-700 hover:bg-gray-50 flex items-center gap-2 shadow-sm transition-all" onclick="viewCaseDetail()">
                             <span class="material-symbols-outlined text-lg">visibility</span>
-                            Ver Detalle
-                        </button>
-                        <button class="h-10 w-10 rounded-lg hover:bg-gray-100 flex items-center justify-center text-gray-500 transition-colors">
-                            <span class="material-symbols-outlined">call</span>
-                        </button>
-                        <button class="h-10 w-10 rounded-lg hover:bg-gray-100 flex items-center justify-center text-gray-500 transition-colors">
-                            <span class="material-symbols-outlined">more_vert</span>
+                            <span class="hidden md:inline">Ver Detalle</span>
                         </button>
                     </div>
                 </div>
@@ -245,21 +239,21 @@
                 </div>
 
                 <!-- Input Area -->
-                <div class="p-6 bg-white border-t border-gray-200 shrink-0">
-                    <div class="max-w-4xl mx-auto">
-                         <form id="messageForm" class="flex items-end gap-3 bg-gray-50 p-2 rounded-2xl border border-gray-200 focus-within:ring-2 focus-within:ring-blue-100 focus-within:border-blue-300 transition-all shadow-inner">
-                            <button type="button" class="h-10 w-10 rounded-full text-gray-400 hover:text-gray-600 hover:bg-gray-200 flex items-center justify-center transition-colors shrink-0">
+                <div class="p-3 md:p-6 bg-white border-t border-gray-200 shrink-0">
+                    <div class="max-w-4xl mx-auto w-full">
+                         <form id="messageForm" class="flex items-end gap-2 md:gap-3 bg-gray-50 p-1.5 md:p-2 rounded-2xl border border-gray-200 focus-within:ring-2 focus-within:ring-blue-100 focus-within:border-blue-300 transition-all shadow-inner">
+                            <button type="button" class="h-9 w-9 md:h-10 md:w-10 rounded-full text-gray-400 hover:text-gray-600 hover:bg-gray-200 flex items-center justify-center transition-colors shrink-0">
                                 <span class="material-symbols-outlined text-xl">attach_file</span>
                             </button>
                             
-                            <textarea id="messageInput" rows="1" class="flex-1 bg-transparent border-none p-2.5 text-sm text-gray-800 placeholder-gray-400 focus:ring-0 resize-none max-h-32" placeholder="Escribe un mensaje a tu abogado..."></textarea>
+                            <textarea id="messageInput" rows="1" class="flex-1 bg-transparent border-none p-2 md:p-2.5 text-sm text-gray-800 placeholder-gray-400 focus:ring-0 resize-none max-h-32 min-h-[40px]" placeholder="Escribe un mensaje..."></textarea>
                             
-                            <button type="button" class="h-10 w-10 rounded-full text-gray-400 hover:text-gray-600 hover:bg-gray-200 flex items-center justify-center transition-colors shrink-0">
+                            <button type="button" class="hidden md:flex h-10 w-10 rounded-full text-gray-400 hover:text-gray-600 hover:bg-gray-200 items-center justify-center transition-colors shrink-0">
                                 <span class="material-symbols-outlined text-xl">sentiment_satisfied</span>
                             </button>
 
-                            <button type="submit" class="h-10 w-10 rounded-xl bg-client-primary text-white flex items-center justify-center hover:bg-blue-900 transition-all shadow-md hover:shadow-lg transform hover:-translate-y-0.5 shrink-0">
-                                <span class="material-symbols-outlined text-xl">send</span>
+                            <button type="submit" class="h-9 w-9 md:h-10 md:w-10 rounded-xl bg-client-primary text-white flex items-center justify-center hover:bg-blue-900 transition-all shadow-md hover:shadow-lg transform hover:-translate-y-0.5 shrink-0">
+                                <span class="material-symbols-outlined text-lg md:text-xl">send</span>
                             </button>
                         </form>
                     </div>
@@ -548,11 +542,11 @@
 
                 // Content
                 const content = document.createElement('div');
-                content.className = `flex flex-col max-w-[75%] ${isMe ? 'items-end' : 'items-start'}`;
+                content.className = `flex flex-col max-w-[85%] md:max-w-[75%] ${isMe ? 'items-end' : 'items-start'}`;
                 
                 // Bubble
                 const bubble = document.createElement('div');
-                bubble.className = isMe ? 'msg-bubble-out p-4 text-sm leading-relaxed' : 'msg-bubble-in p-4 text-sm leading-relaxed';
+                bubble.className = isMe ? 'msg-bubble-out p-3 md:p-4 text-sm leading-relaxed' : 'msg-bubble-in p-3 md:p-4 text-sm leading-relaxed';
                 
                 // Check for document request system message
                 if (!isMe && msg.senderRole === 'system' && msg.messageText.includes('solicitado que suba documentos')) {
@@ -610,10 +604,10 @@
                 }
 
                 const content = document.createElement('div');
-                content.className = `flex flex-col max-w-[75%] ${isMe ? 'items-end' : 'items-start'}`;
+                content.className = `flex flex-col max-w-[85%] md:max-w-[75%] ${isMe ? 'items-end' : 'items-start'}`;
                 
                 const bubble = document.createElement('div');
-                bubble.className = isMe ? 'msg-bubble-out p-4 text-sm leading-relaxed' : 'msg-bubble-in p-4 text-sm leading-relaxed';
+                bubble.className = isMe ? 'msg-bubble-out p-3 md:p-4 text-sm leading-relaxed' : 'msg-bubble-in p-3 md:p-4 text-sm leading-relaxed';
                 
                 if (!isMe && msg.senderRole === 'system' && msg.messageText.includes('solicitado que suba documentos')) {
                      bubble.innerHTML = `${msg.messageText}<br>
