@@ -75,7 +75,7 @@
         @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
-<body class="text-client-text h-screen flex overflow-hidden">
+<body class="text-client-text h-screen h-[100dvh] flex overflow-hidden">
 
     <!-- Sidebar -->
     <aside id="sidebar" class="w-64 bg-client-dark text-white flex flex-col z-30 shadow-xl flex-shrink-0 fixed inset-y-0 left-0 transform -translate-x-full transition-transform duration-300 md:relative md:translate-x-0">
@@ -196,11 +196,14 @@
             </div>
 
             <!-- Chat Area (Right) -->
-            <div id="chatArea" class="hidden md:flex flex-1 flex-col bg-[#F8FAFC] relative">
+            <div id="chatArea" class="hidden md:flex flex-1 flex-col bg-[#F8FAFC] relative overflow-hidden">
                 
                 <!-- Chat Header -->
-                <div class="h-20 bg-white border-b border-gray-200 flex items-center justify-between px-8 shrink-0 shadow-sm z-10">
-                    <div class="flex items-center gap-4">
+                <div class="h-20 bg-white border-b border-gray-200 flex items-center justify-between px-4 md:px-8 shrink-0 shadow-sm z-10">
+                    <div class="flex items-center gap-3 md:gap-4">
+                        <button onclick="backToConversations()" class="md:hidden p-2 -ml-2 text-gray-500 hover:bg-gray-100 rounded-lg transition-colors">
+                            <span class="material-symbols-outlined">arrow_back</span>
+                        </button>
                         <div class="relative">
                             <div class="h-12 w-12 rounded-full bg-gray-900 text-white flex items-center justify-center overflow-hidden">
                                 <img src="https://ui-avatars.com/api/?name=Defensa+Penal&background=0f172a&color=fff" alt="Case" class="w-full h-full object-cover">
@@ -399,6 +402,7 @@
 
         async function loadMessages(caseId) {
             currentCaseId = caseId;
+            showChat(); // Toggle for mobile
             renderConversations(allConversations); // Update active state
             
             // UI Setup
@@ -443,6 +447,26 @@
             } catch (e) {
                 container.innerHTML = '<div class="p-8 text-center text-red-500">Error al cargar mensajes</div>';
             }
+        }
+
+        function showChat() {
+            const list = document.getElementById('conversationsPanel');
+            const chat = document.getElementById('chatArea');
+            if (window.innerWidth < 768) {
+                list.classList.add('hidden');
+                chat.classList.remove('hidden');
+                chat.classList.add('flex');
+            }
+        }
+
+        function backToConversations() {
+            const list = document.getElementById('conversationsPanel');
+            const chat = document.getElementById('chatArea');
+            list.classList.remove('hidden');
+            chat.classList.add('hidden');
+            chat.classList.remove('flex');
+            currentCaseId = null;
+            renderConversations(allConversations);
         }
 
         async function markAsRead(caseId) {
@@ -667,6 +691,16 @@
                 e.preventDefault();
                 document.getElementById('messageForm').dispatchEvent(new Event('submit'));
             }
+        });
+
+        // Search Conversations
+        document.getElementById('searchConversations').addEventListener('input', (e) => {
+            const term = e.target.value.toLowerCase();
+            const filtered = allConversations.filter(c => 
+                c.title.toLowerCase().includes(term) || 
+                (c.caseNumberInternal && c.caseNumberInternal.toLowerCase().includes(term))
+            );
+            renderConversations(filtered);
         });
 
         function viewCaseDetail() {

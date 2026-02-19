@@ -7,6 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script src="js/responsive.js"></script>
     <script>
         tailwind.config = {
             darkMode: "class",
@@ -58,14 +59,14 @@
 <body class="text-client-text h-screen flex overflow-hidden">
 
     <!-- Sidebar -->
-    <aside class="w-20 lg:w-64 bg-client-dark flex flex-col flex-shrink-0 z-20 transition-all duration-300">
+    <aside id="sidebar" class="w-64 bg-client-dark flex flex-col z-30 shadow-xl flex-shrink-0 fixed inset-y-0 left-0 transform -translate-x-full transition-transform duration-300 md:relative md:translate-x-0">
         <!-- Logo Area -->
-        <div class="h-20 flex items-center justify-center lg:justify-start px-0 lg:px-6 border-b border-gray-800">
+        <div class="h-20 flex items-center px-6 border-b border-gray-800">
             <div class="flex items-center gap-3">
-                <div class="h-8 w-8 rounded bg-client-primary flex items-center justify-center text-white shrink-0">
+                <div class="h-8 w-8 rounded bg-client-primary flex items-center justify-center text-white">
                     <span class="material-symbols-outlined text-lg">balance</span>
                 </div>
-                <div class="hidden lg:block">
+                <div>
                     <h1 class="text-white font-bold leading-none tracking-wide">MI PROCESO</h1>
                     <p class="text-xs text-gray-400 mt-1">Portal de Cliente</p>
                 </div>
@@ -74,46 +75,52 @@
 
         <!-- Navigation -->
         <nav class="flex-1 overflow-y-auto py-6 space-y-1">
-            <a class="sidebar-link justify-center lg:justify-start" href="dashboard.html">
+            <a class="sidebar-link" href="dashboard.html">
                 <span class="material-symbols-outlined">grid_view</span>
-                <span class="hidden lg:block">Inicio</span>
+                Inicio
             </a>
-            <a class="sidebar-link justify-center lg:justify-start" href="cases.html">
+            <a class="sidebar-link" href="cases.html">
                 <span class="material-symbols-outlined">folder</span>
-                <span class="hidden lg:block">Mis Casos</span>
+                Mis Casos
             </a>
-            <a class="sidebar-link justify-center lg:justify-start" href="contracts.html">
+            <a class="sidebar-link" href="contracts.html">
                 <span class="material-symbols-outlined">description</span>
-                <span class="hidden lg:block">Contratos</span>
+                Contratos
             </a>
-            <a class="sidebar-link active justify-center lg:justify-start" href="documents.html">
+            <a class="sidebar-link active" href="documents.html">
                 <span class="material-symbols-outlined">attach_file</span>
-                <span class="hidden lg:block">Documentos</span>
+                Documentos
             </a>
-            <a class="sidebar-link justify-center lg:justify-start" href="messages.html">
+            <a class="sidebar-link" href="messages.html">
                 <span class="material-symbols-outlined">chat</span>
-                <span class="hidden lg:block">Mensajes</span>
+                Mensajes
             </a>
-            <a class="sidebar-link justify-center lg:justify-start" href="profile.html">
+            <a class="sidebar-link" href="profile.html">
                 <span class="material-symbols-outlined">person</span>
-                <span class="hidden lg:block">Mi Perfil</span>
+                Mi Perfil
             </a>
         </nav>
 
         <!-- Bottom Actions -->
         <div class="p-4 border-t border-gray-800">
-            <button onclick="logout()" class="flex items-center justify-center lg:justify-start gap-3 px-0 lg:px-4 py-2 text-red-400 hover:text-red-300 transition-colors w-full text-sm font-medium">
+            <button onclick="logout()" class="flex items-center gap-3 px-4 py-2 text-red-400 hover:text-red-300 transition-colors w-full text-sm font-medium">
                 <span class="material-symbols-outlined">logout</span>
-                <span class="hidden lg:block">Cerrar Sesión</span>
+                Cerrar Sesión
             </button>
         </div>
     </aside>
+    <div id="sidebar-overlay" class="fixed inset-0 bg-black/50 z-20 hidden md:hidden"></div>
     
     <!-- Main Content -->
     <main class="flex-1 flex flex-col h-full overflow-hidden bg-client-bg relative">
         <!-- Top Bar -->
         <header class="h-20 bg-white border-b border-gray-100 flex items-center justify-between px-8 shrink-0 z-10">
-            <h2 class="text-xl font-bold text-gray-900 uppercase tracking-tight">MIS DOCUMENTOS</h2>
+            <div class="flex items-center gap-3">
+                <button onclick="toggleSidebar()" class="md:hidden p-2 -ml-2 text-gray-500 hover:bg-gray-100 rounded-lg transition-colors">
+                    <span class="material-symbols-outlined">menu</span>
+                </button>
+                <h2 class="text-xl font-bold text-gray-900 uppercase tracking-tight">MIS DOCUMENTOS</h2>
+            </div>
             
             <div class="flex items-center gap-6">
                 <div class="flex items-center gap-3">
