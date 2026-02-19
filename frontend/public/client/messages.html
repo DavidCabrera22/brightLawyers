@@ -450,6 +450,9 @@
                 list.classList.add('hidden');
                 chat.classList.remove('hidden');
                 chat.classList.add('flex');
+                // Hide main header to give full space to chat
+                const mainHeader = document.querySelector('main > header');
+                if (mainHeader) mainHeader.classList.add('hidden');
             }
         }
 
@@ -459,6 +462,8 @@
             list.classList.remove('hidden');
             chat.classList.add('hidden');
             chat.classList.remove('flex');
+            const mainHeader = document.querySelector('main > header');
+            if (mainHeader) mainHeader.classList.remove('hidden');
             currentCaseId = null;
             renderConversations(allConversations);
         }

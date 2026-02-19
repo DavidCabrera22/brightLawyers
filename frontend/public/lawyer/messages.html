@@ -203,31 +203,31 @@
             </div>
 
             <!-- Chat Area (Right) -->
-            <div id="chatArea" class="hidden md:flex flex-1 flex-col bg-slate-50 relative overflow-hidden">
+            <div id="chatArea" class="hidden md:flex flex-1 flex-col bg-slate-50 relative overflow-hidden h-full">
                 <!-- Chat Header -->
-                <div class="h-16 border-b border-slate-200 flex items-center justify-between px-6 bg-white flex-shrink-0">
-                    <div class="flex items-center gap-3">
-                        <button onclick="backToConversations()" class="md:hidden p-2 -ml-2 text-slate-500 hover:bg-slate-100 rounded-full transition-colors mr-1">
+                <div class="h-16 border-b border-slate-200 flex items-center justify-between px-4 md:px-6 bg-white flex-shrink-0 z-10">
+                    <div class="flex items-center gap-3 min-w-0">
+                        <button onclick="backToConversations()" class="md:hidden p-2 -ml-2 text-slate-500 hover:bg-slate-100 rounded-full transition-colors flex-shrink-0">
                             <span class="material-symbols-outlined text-[24px]">arrow_back</span>
                         </button>
-                        <div class="h-10 w-10 rounded-full bg-lawyer-secondary text-white flex items-center justify-center font-bold text-sm" id="chatAvatar">
+                        <div class="h-10 w-10 rounded-full bg-lawyer-secondary text-white flex items-center justify-center font-bold text-sm flex-shrink-0" id="chatAvatar">
                             --
                         </div>
-                        <div>
-                            <h3 class="font-bold text-slate-800 text-sm" id="chatClientName">Selecciona una conversación</h3>
-                            <p class="text-xs text-slate-500" id="chatCaseTitle">--</p>
+                        <div class="min-w-0 flex-1">
+                            <h3 class="font-bold text-slate-800 text-sm truncate pr-2" id="chatClientName">Selecciona una conversación</h3>
+                            <p class="text-xs text-slate-500 truncate pr-2" id="chatCaseTitle">--</p>
                         </div>
                     </div>
-                    <div class="flex items-center gap-2">
-                        <button id="btnRequestDocs" onclick="toggleDocumentRequestCurrent()" class="hidden px-3 py-1.5 bg-lawyer-accent text-white text-xs font-bold rounded hover:bg-orange-600 transition-colors flex items-center gap-1">
+                    <div class="flex items-center gap-2 flex-shrink-0">
+                        <button id="btnRequestDocs" onclick="toggleDocumentRequestCurrent()" class="hidden px-3 py-1.5 bg-lawyer-accent text-white text-xs font-bold rounded hover:bg-orange-600 transition-colors flex items-center gap-1 whitespace-nowrap">
                             <span class="material-symbols-outlined text-[16px]">upload_file</span>
-                            Solicitar Docs
+                            <span class="hidden sm:inline">Solicitar Docs</span>
                         </button>
                     </div>
                 </div>
 
                 <!-- Messages -->
-                <div id="messagesContainer" class="flex-1 overflow-y-auto p-6 space-y-4 bg-slate-50">
+                <div id="messagesContainer" class="flex-1 overflow-y-auto p-4 md:p-6 space-y-4 bg-slate-50 min-h-0">
                     <!-- Messages will appear here -->
                     <div class="flex h-full items-center justify-center text-slate-400">
                         <div class="text-center">
@@ -238,15 +238,15 @@
                 </div>
 
                 <!-- Input Area -->
-                <div class="p-4 bg-white border-t border-slate-200">
+                <div class="p-3 md:p-4 bg-white border-t border-slate-200 flex-shrink-0 z-10">
                     <form id="messageForm" class="flex items-end gap-2 max-w-4xl mx-auto">
-                        <button type="button" class="h-11 w-11 flex items-center justify-center text-slate-400 hover:text-lawyer-accent hover:bg-slate-50 rounded-full transition-colors flex-shrink-0">
+                        <button type="button" class="h-10 w-10 md:h-11 md:w-11 flex items-center justify-center text-slate-400 hover:text-lawyer-accent hover:bg-slate-50 rounded-full transition-colors flex-shrink-0">
                             <span class="material-symbols-outlined text-[24px]">attach_file</span>
                         </button>
                         <div class="flex-1 relative">
-                             <textarea id="messageInput" rows="1" class="w-full rounded-xl border-slate-200 bg-slate-50 p-3 text-base md:text-sm focus:ring-2 focus:ring-lawyer-accent/20 focus:border-lawyer-accent resize-none outline-none" placeholder="Escribe un mensaje..."></textarea>
+                             <textarea id="messageInput" rows="1" class="w-full rounded-xl border-slate-200 bg-slate-50 p-2.5 md:p-3 text-base md:text-sm focus:ring-2 focus:ring-lawyer-accent/20 focus:border-lawyer-accent resize-none outline-none max-h-32" placeholder="Escribe un mensaje..."></textarea>
                         </div>
-                        <button type="submit" class="h-11 w-11 rounded-xl bg-lawyer-primary text-white flex items-center justify-center hover:bg-lawyer-secondary transition-colors shadow-md shadow-blue-900/10 flex-shrink-0">
+                        <button type="submit" class="h-10 w-10 md:h-11 md:w-11 rounded-xl bg-lawyer-primary text-white flex items-center justify-center hover:bg-lawyer-secondary transition-colors shadow-md shadow-blue-900/10 flex-shrink-0">
                             <span class="material-symbols-outlined text-[20px]">send</span>
                         </button>
                     </form>
@@ -553,8 +553,11 @@
             chatArea.classList.remove('hidden');
             chatArea.classList.add('flex');
             const conversationsPanel = document.getElementById('conversationsPanel');
-            if (window.innerWidth < 768 && conversationsPanel) {
-                conversationsPanel.classList.add('hidden');
+            if (window.innerWidth < 768) {
+                if (conversationsPanel) conversationsPanel.classList.add('hidden');
+                // Hide main header to give full space to chat
+                const mainHeader = document.querySelector('main > header');
+                if (mainHeader) mainHeader.classList.add('hidden');
             }
             
             // Update Header
@@ -605,25 +608,32 @@
                 chatArea.classList.add('hidden');
                 chatArea.classList.remove('flex');
             }
+            const mainHeader = document.querySelector('main > header');
+            if (mainHeader) mainHeader.classList.remove('hidden');
         }
 
         window.addEventListener('resize', () => {
             const conversationsPanel = document.getElementById('conversationsPanel');
             const chatArea = document.getElementById('chatArea');
+            const mainHeader = document.querySelector('main > header');
+
             if (!conversationsPanel || !chatArea) return;
             if (window.innerWidth >= 768) {
                 conversationsPanel.classList.remove('hidden');
                 chatArea.classList.remove('hidden');
                 chatArea.classList.add('flex');
+                if (mainHeader) mainHeader.classList.remove('hidden');
             } else {
                 if (currentCaseId) {
                     conversationsPanel.classList.add('hidden');
                     chatArea.classList.remove('hidden');
                     chatArea.classList.add('flex');
+                    if (mainHeader) mainHeader.classList.add('hidden');
                 } else {
                     conversationsPanel.classList.remove('hidden');
                     chatArea.classList.add('hidden');
                     chatArea.classList.remove('flex');
+                    if (mainHeader) mainHeader.classList.remove('hidden');
                 }
             }
         });
