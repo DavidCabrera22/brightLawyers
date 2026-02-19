@@ -15,10 +15,18 @@ const getConversations = async (userId, userRole, organizationId) => {
         where.clientId = clientUser.clientId;
     } else {
         // Lawyers/Staff see assigned cases
-        // Or all cases if admin? For now stick to assigned
-        where.assignments = {
-            some: { assignedUserId: userId }
-        };
+        // Admin sees all cases in organization
+        const lowerRole = (userRole || '').toLowerCase();
+        const isAdmin = lowerRole.includes('admin') || 
+                       lowerRole.includes('administrador') || 
+                       lowerRole.includes('gerente') || 
+                       lowerRole.includes('director');
+
+        if (!isAdmin) {
+            where.assignments = {
+                some: { assignedUserId: userId }
+            };
+        }
     }
 
     const cases = await prisma.case.findMany({
@@ -116,15 +124,26 @@ const getUnreadCount = async (userId, userRole, organizationId) => {
         });
         return { count };
     } else {
-        // Lawyer: Count unread messages in assigned cases sent by CLIENTS
+        // Lawyer/Admin: Count unread messages
+        const lowerRole = (userRole || '').toLowerCase();
+        const isAdmin = lowerRole.includes('admin') || 
+                       lowerRole.includes('administrador') || 
+                       lowerRole.includes('gerente') || 
+                       lowerRole.includes('director');
+
+        const whereClause = {
+            senderRole: 'client',
+            isRead: false
+        };
+
+        if (!isAdmin) {
+            whereClause.case = {
+                assignments: { some: { assignedUserId: userId } }
+            };
+        }
+
         const count = await prisma.caseMessage.count({
-            where: {
-                case: {
-                    assignments: { some: { assignedUserId: userId } }
-                },
-                senderRole: 'client',
-                isRead: false
-            }
+            where: whereClause
         });
         return { count };
     }
@@ -162,12 +181,24 @@ const getMessages = async (caseId, userId, userRole, organizationId) => {
             if (caseData) hasAccess = true;
         }
     } else {
-        const assignment = await prisma.caseAssignment.findFirst({
-            where: { caseId, assignedUserId: userId }
-        });
-        if (assignment) hasAccess = true;
+        const lowerRole = (userRole || '').toLowerCase();
+        const isAdmin = lowerRole.includes('admin') || 
+                       lowerRole.includes('administrador') || 
+                       lowerRole.includes('gerente') || 
+                       lowerRole.includes('director');
         
-        // Also allow if admin or creator? For now strict assignment
+        if (isAdmin) {
+            // Admin has access if case belongs to organization
+            const caseExists = await prisma.case.findFirst({
+                where: { id: caseId, organizationId }
+            });
+            if (caseExists) hasAccess = true;
+        } else {
+            const assignment = await prisma.caseAssignment.findFirst({
+                where: { caseId, assignedUserId: userId }
+            });
+            if (assignment) hasAccess = true;
+        }
     }
 
     if (!hasAccess) {
