@@ -175,7 +175,7 @@
                 <div class="relative hidden md:block w-96">
                     <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-[20px]">search</span>
                     <input type="text" placeholder="Buscar casos, abogados o clientes..." 
-                           class="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-brand-accent/20 focus:border-brand-accent transition-all outline-none">
+                           class="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-lg text-base md:text-sm focus:ring-2 focus:ring-brand-accent/20 focus:border-brand-accent transition-all outline-none">
                 </div>
 
                 <div class="flex items-center gap-3">
@@ -209,11 +209,11 @@
                         <p class="text-slate-500 mt-1">Resumen de actividad y métricas clave del bufete.</p>
                     </div>
                     <div class="flex gap-3">
-                        <button class="flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 text-slate-700 rounded-lg font-medium hover:bg-slate-50 transition-colors shadow-sm">
+                        <button class="flex items-center gap-2 px-5 py-3 bg-white border border-slate-200 text-slate-700 rounded-lg font-medium hover:bg-slate-50 transition-colors shadow-sm">
                             <span class="material-symbols-outlined text-[20px]">download</span>
                             Exportar
                         </button>
-                        <button onclick="window.location.href='new-case.html'" class="flex items-center gap-2 px-4 py-2 bg-brand-primary text-white rounded-lg font-medium hover:bg-blue-800 transition-colors shadow-sm shadow-blue-900/10">
+                        <button onclick="window.location.href='new-case.html'" class="flex items-center gap-2 px-5 py-3 bg-brand-primary text-white rounded-lg font-medium hover:bg-blue-800 transition-colors shadow-sm shadow-blue-900/10">
                             <span class="material-symbols-outlined text-[20px]">add</span>
                             Nuevo Caso
                         </button>
@@ -300,7 +300,7 @@
                                 <button class="text-sm text-brand-accent font-bold hover:text-blue-700 transition-colors">Ver todo</button>
                             </div>
                             <div class="overflow-x-auto">
-                                <table class="w-full text-left text-sm">
+                                <div class="overflow-x-auto w-full"><table class="w-full text-left text-sm">
                                     <thead class="bg-slate-50 text-slate-500 font-semibold border-b border-slate-100">
                                         <tr>
                                             <th class="px-6 py-4">Abogado</th>
@@ -316,7 +316,7 @@
                                             </td>
                                         </tr>
                                     </tbody>
-                                </table>
+                                </table></div>
                             </div>
                         </div>
 
@@ -336,7 +336,7 @@
                         <!-- Quick Actions -->
                         <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-6">
                             <h3 class="font-bold text-slate-900 text-lg mb-4">Acciones Rápidas</h3>
-                            <div class="grid grid-cols-2 gap-4">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <button onclick="window.location.href='new-user.html'" class="flex flex-col items-center justify-center gap-3 p-4 bg-slate-50 hover:bg-slate-100 rounded-xl border border-slate-100 transition-all hover:-translate-y-1 group h-32">
                                     <div class="p-2 bg-white rounded-full shadow-sm text-brand-primary group-hover:text-blue-700">
                                         <span class="material-symbols-outlined">person_add</span>
@@ -393,14 +393,8 @@
     <script src="js/admin.js"></script>
 <div id="sidebar-overlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black/50 z-20 hidden md:hidden backdrop-blur-sm transition-opacity"></div>
 
-    <script>
-        function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            const overlay = document.getElementById('sidebar-overlay');
-            sidebar.classList.toggle('-translate-x-full');
-            overlay.classList.toggle('hidden');
-        }
-    </script>
+    
 
+<script src="js/responsive.js"></script>
 </body>
 </html>

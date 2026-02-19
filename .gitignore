@@ -42,3 +42,7 @@ backend/credentials.json
 # WhatsApp Session Data
 backend/.wwebjs_auth
 backend/.wwebjs_cache
+
+# Puppeteer Cache
+backend/.cache
+.cache

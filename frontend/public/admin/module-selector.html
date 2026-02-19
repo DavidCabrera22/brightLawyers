@@ -173,7 +173,7 @@
 
         <!-- Logout Button -->
         <div class="text-center">
-            <button onclick="logout()" class="flex items-center gap-2 mx-auto px-4 py-2 rounded-lg text-gray-600 hover:bg-red-50 hover:text-red-600 transition-colors group">
+            <button onclick="logout()" class="flex items-center gap-2 mx-auto px-5 py-3 rounded-lg text-gray-600 hover:bg-red-50 hover:text-red-600 transition-colors group">
                 <span class="material-symbols-outlined">logout</span>
                 <span class="font-medium">Cerrar Sesión</span>
             </button>
@@ -204,14 +204,8 @@
     </script>
 <div id="sidebar-overlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black/50 z-20 hidden md:hidden backdrop-blur-sm transition-opacity"></div>
 
-    <script>
-        function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            const overlay = document.getElementById('sidebar-overlay');
-            sidebar.classList.toggle('-translate-x-full');
-            overlay.classList.toggle('hidden');
-        }
-    </script>
+    
 
+<script src="js/responsive.js"></script>
 </body>
 </html>

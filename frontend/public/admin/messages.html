@@ -171,8 +171,8 @@
         <!-- Top Header -->
         <header class="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-4 md:px-8 flex-shrink-0 z-10">
             <div class="flex items-center gap-4">
-                <button onclick="toggleSidebar()" class="md:hidden p-2 text-slate-500 hover:bg-slate-100 rounded-lg transition-colors">
-                    <span class="material-symbols-outlined">menu</span>
+                <button onclick="toggleSidebar()" class="md:hidden h-11 w-11 flex items-center justify-center text-slate-500 hover:bg-slate-100 rounded-lg transition-colors">
+                    <span class="material-symbols-outlined text-[24px]">menu</span>
                 </button>
                 <h2 class="text-lg font-bold text-slate-800">Centro de Mensajes</h2>
             </div>
@@ -182,16 +182,16 @@
                 <div class="relative hidden md:block w-96">
                     <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-[20px]">search</span>
                     <input id="globalSearch" type="text" placeholder="Buscar mensajes o clientes..." 
-                           class="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-brand-accent/20 focus:border-brand-accent transition-all outline-none">
+                           class="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-lg text-base md:text-sm focus:ring-2 focus:ring-brand-accent/20 focus:border-brand-accent transition-all outline-none">
                 </div>
 
                 <div class="flex items-center gap-3">
-                    <button class="p-2 text-slate-500 hover:bg-slate-50 rounded-full relative">
-                        <span class="material-symbols-outlined text-[22px]">notifications</span>
-                        <span class="absolute top-2 right-2 h-2 w-2 bg-red-500 rounded-full border border-white"></span>
+                    <button class="h-11 w-11 flex items-center justify-center text-slate-500 hover:bg-slate-50 rounded-full relative transition-colors">
+                        <span class="material-symbols-outlined text-[24px]">notifications</span>
+                        <span class="absolute top-3 right-3 h-2 w-2 bg-red-500 rounded-full border border-white"></span>
                     </button>
                     <div class="h-8 w-px bg-slate-200 mx-1"></div>
-                    <div class="flex items-center gap-2 cursor-pointer p-1 hover:bg-slate-50 rounded-lg transition-colors">
+                    <div class="flex items-center gap-2 cursor-pointer p-2 hover:bg-slate-50 rounded-lg transition-colors">
                         <div class="h-8 w-8 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center text-xs font-bold">AD</div>
                         <span class="text-sm font-medium text-slate-700 hidden sm:block">Admin</span>
                     </div>
@@ -203,11 +203,11 @@
         <div class="flex-1 flex overflow-hidden">
             
             <!-- Conversations List (Left) -->
-            <div class="w-full md:w-80 lg:w-96 bg-white border-r border-slate-200 flex flex-col z-0">
+            <div id="conversationsPanel" class="w-full md:w-80 lg:w-96 bg-white border-r border-slate-200 flex flex-col z-0 h-full">
                 <div class="p-4 border-b border-slate-100">
                     <div class="relative">
                         <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 material-symbols-outlined text-[20px]">filter_list</span>
-                        <input id="searchConversations" class="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-brand-accent/20 focus:border-brand-accent outline-none" placeholder="Filtrar conversaciones..." type="text"/>
+                        <input id="searchConversations" class="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-lg text-base md:text-sm focus:ring-2 focus:ring-brand-accent/20 focus:border-brand-accent outline-none" placeholder="Filtrar conversaciones..." type="text"/>
                     </div>
                 </div>
                 <div id="conversationsList" class="flex-1 overflow-y-auto">
@@ -225,6 +225,9 @@
                 <!-- Chat Header -->
                 <div class="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-6 flex-shrink-0">
                     <div class="flex items-center gap-3">
+                        <button onclick="backToConversations()" class="md:hidden p-2 -ml-2 text-slate-500 hover:bg-slate-100 rounded-full transition-colors mr-1">
+                            <span class="material-symbols-outlined text-[24px]">arrow_back</span>
+                        </button>
                         <div class="h-10 w-10 rounded-full bg-brand-mint text-brand-primary flex items-center justify-center font-bold text-sm border border-brand-primary/10" id="chatAvatar">
                             --
                         </div>
@@ -252,13 +255,13 @@
                 <!-- Input Area -->
                 <div class="p-4 bg-white border-t border-slate-200">
                     <form id="messageForm" class="flex items-end gap-2 max-w-4xl mx-auto">
-                        <button type="button" class="p-2 text-slate-400 hover:text-brand-primary hover:bg-slate-50 rounded-full transition-colors">
-                            <span class="material-symbols-outlined text-[20px]">attach_file</span>
+                        <button type="button" class="h-11 w-11 flex items-center justify-center text-slate-400 hover:text-brand-primary hover:bg-slate-50 rounded-full transition-colors flex-shrink-0">
+                            <span class="material-symbols-outlined text-[24px]">attach_file</span>
                         </button>
                         <div class="flex-1 relative">
-                            <textarea id="messageInput" rows="1" class="w-full rounded-xl border-slate-200 bg-slate-50 p-3 text-sm focus:ring-2 focus:ring-brand-accent/20 focus:border-brand-accent resize-none outline-none" placeholder="Escribe un mensaje..."></textarea>
+                            <textarea id="messageInput" rows="1" class="w-full rounded-xl border-slate-200 bg-slate-50 p-3 text-base md:text-sm focus:ring-2 focus:ring-brand-accent/20 focus:border-brand-accent resize-none outline-none" placeholder="Escribe un mensaje..."></textarea>
                         </div>
-                        <button type="submit" class="h-11 w-11 rounded-xl bg-brand-primary text-white flex items-center justify-center hover:bg-blue-800 transition-colors shadow-md shadow-blue-900/10">
+                        <button type="submit" class="h-11 w-11 rounded-xl bg-brand-primary text-white flex items-center justify-center hover:bg-blue-800 transition-colors shadow-md shadow-blue-900/10 flex-shrink-0">
                             <span class="material-symbols-outlined text-[20px]">send</span>
                         </button>
                     </form>
@@ -275,6 +278,7 @@
         const user = JSON.parse(localStorage.getItem('user') || '{}');
         let currentCaseId = null;
         let activeConversations = [];
+        let currentMessages = [];
 
         // --- Mock Data (Fallback) ---
         const mockConversations = [
@@ -409,10 +413,20 @@
             // Re-render list to show active state
             renderConversations(activeConversations);
 
-            // Show Chat Area (Mobile)
+            // Show Chat Area (Mobile Logic)
             const chatArea = document.getElementById('chatArea');
-            chatArea.classList.remove('hidden');
-            chatArea.classList.add('flex');
+            const conversationsPanel = document.getElementById('conversationsPanel');
+
+            if (window.innerWidth < 768) {
+                conversationsPanel.classList.add('hidden');
+                chatArea.classList.remove('hidden');
+                chatArea.classList.add('flex');
+            } else {
+                // Desktop: Ensure both are visible (though CSS usually handles this, JS enforces it)
+                conversationsPanel.classList.remove('hidden');
+                chatArea.classList.remove('hidden');
+                chatArea.classList.add('flex');
+            }
 
             // Update Header
             document.getElementById('chatClientName').textContent = clientName;
@@ -423,6 +437,17 @@
 
             // Load Messages
             await loadMessages(caseId);
+        }
+
+        function backToConversations() {
+            currentCaseId = null;
+            renderConversations(activeConversations);
+
+            // Show List, Hide Chat
+            document.getElementById('conversationsPanel').classList.remove('hidden');
+            const chatArea = document.getElementById('chatArea');
+            chatArea.classList.add('hidden');
+            chatArea.classList.remove('flex');
         }
 
         async function loadMessages(caseId) {
@@ -436,20 +461,23 @@
             let messages = [];
             try {
                 // Try API
-                /* 
-                const response = await fetch(`${window.API_URL}/messages/${caseId}`, { headers... });
-                messages = await response.json();
-                */
-               
-               // Use Mock Data for now as backend might not be ready
-               await new Promise(r => setTimeout(r, 600)); // Simulate delay
-               messages = mockMessages[caseId] || [];
+                const response = await fetch(`${window.API_URL}/messages/${caseId}`, { 
+                    headers: { 'Authorization': `Bearer ${authToken}` } 
+                });
+                
+                if (response.ok) {
+                    messages = await response.json();
+                } else {
+                    throw new Error('API Error');
+                }
 
             } catch (error) {
-                console.error(error);
-                messages = [];
+                console.warn("API Error, using mock data", error);
+                // Fallback to mock data
+                messages = mockMessages[caseId] || [];
             }
-
+            
+            currentMessages = messages;
             renderMessages(messages);
         }
 
@@ -466,7 +494,8 @@
             }
 
             container.innerHTML = messages.map(msg => {
-                const isMe = msg.senderId === 'me' || msg.senderId === user.id; // Adjust logic based on real auth
+                const senderId = msg.senderUserId || msg.senderId;
+                const isMe = senderId === 'me' || (user && user.id && senderId === user.id);
                 const time = new Date(msg.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
                 
                 return `
@@ -495,11 +524,15 @@
             const tempMsg = {
                 id: Date.now(),
                 messageText: text,
-                senderId: 'me',
+                senderUserId: user.id || 'me',
+                senderId: 'me', // Fallback for compatibility
                 createdAt: new Date().toISOString()
             };
 
-            // Add to mock data if using mocks
+            // Add to current view
+            currentMessages.push(tempMsg);
+            
+            // Add to mock data if needed (keeps consistency if API fails)
             if (mockMessages[currentCaseId]) {
                 mockMessages[currentCaseId].push(tempMsg);
             } else {
@@ -507,30 +540,51 @@
             }
 
             input.value = '';
-            renderMessages(mockMessages[currentCaseId]); // Re-render to show new message
+            renderMessages(currentMessages); // Re-render to show new message
 
-            // Send to API (Commented out until backend is ready)
-            /*
+            // Send to API
             try {
                 await fetch(`${window.API_URL}/messages`, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json', 'Authorization': ... },
-                    body: JSON.stringify({ caseId: currentCaseId, message: text })
+                    headers: { 
+                        'Content-Type': 'application/json', 
+                        'Authorization': `Bearer ${authToken}` 
+                    },
+                    body: JSON.stringify({ caseId: currentCaseId, messageText: text })
                 });
-            } catch (error) { ... }
-            */
+            } catch (error) {
+                console.error("Error sending message to API", error);
+                // Silent fail on API, but UI shows message. 
+                // In production, we'd want to show an error indicator.
+            }
         }
+
+        // Responsive Handler
+        window.addEventListener('resize', () => {
+            const conversationsPanel = document.getElementById('conversationsPanel');
+            const chatArea = document.getElementById('chatArea');
+            
+            if (window.innerWidth >= 768) {
+                conversationsPanel.classList.remove('hidden');
+                chatArea.classList.remove('hidden');
+                chatArea.classList.add('flex');
+            } else {
+                if (currentCaseId) {
+                    conversationsPanel.classList.add('hidden');
+                    chatArea.classList.remove('hidden');
+                    chatArea.classList.add('flex');
+                } else {
+                    conversationsPanel.classList.remove('hidden');
+                    chatArea.classList.add('hidden');
+                    chatArea.classList.remove('flex');
+                }
+            }
+        });
     </script>
 <div id="sidebar-overlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black/50 z-20 hidden md:hidden backdrop-blur-sm transition-opacity"></div>
 
-    <script>
-        function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            const overlay = document.getElementById('sidebar-overlay');
-            sidebar.classList.toggle('-translate-x-full');
-            overlay.classList.toggle('hidden');
-        }
-    </script>
+    
 
+<script src="js/responsive.js"></script>
 </body>
 </html>

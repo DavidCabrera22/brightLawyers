@@ -175,7 +175,7 @@
                 <div class="relative hidden md:block w-96">
                     <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-[20px]">search</span>
                     <input id="searchInput" type="text" placeholder="Buscar por título o cliente..." 
-                           class="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-brand-accent/20 focus:border-brand-accent transition-all outline-none">
+                           class="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-lg text-base md:text-sm focus:ring-2 focus:ring-brand-accent/20 focus:border-brand-accent transition-all outline-none">
                 </div>
 
                 <div class="flex items-center gap-3">
@@ -202,7 +202,7 @@
                         <h1 class="text-2xl font-bold text-slate-900">Gestión de Contratos</h1>
                         <p class="text-slate-500 mt-1">Control de versiones, estados de firma y vigencia de convenios legales.</p>
                     </div>
-                    <button onclick="openModal()" class="flex items-center gap-2 px-4 py-2 bg-brand-primary text-white rounded-lg font-medium hover:bg-blue-800 transition-colors shadow-sm shadow-blue-900/10">
+                    <button onclick="openModal()" class="flex items-center gap-2 px-5 py-3 bg-brand-primary text-white rounded-lg font-medium hover:bg-blue-800 transition-colors shadow-sm shadow-blue-900/10">
                         <span class="material-symbols-outlined text-[20px]">add_task</span>
                         Nuevo Contrato
                     </button>
@@ -224,7 +224,7 @@
                 <!-- Contracts Table -->
                 <div class="bg-white rounded-xl border border-slate-200 shadow-card overflow-hidden">
                     <div class="overflow-x-auto">
-                        <table class="w-full text-left text-sm">
+                        <div class="overflow-x-auto w-full"><table class="w-full text-left text-sm">
                             <thead class="bg-slate-50 text-slate-500 font-semibold border-b border-slate-100 uppercase text-[11px] tracking-wider">
                                 <tr>
                                     <th class="px-6 py-4">Título del Acuerdo</th>
@@ -246,7 +246,7 @@
                                     </td>
                                 </tr>
                             </tbody>
-                        </table>
+                        </table></div>
                     </div>
                 </div>
 
@@ -265,11 +265,11 @@
                     <div class="space-y-4">
                         <div>
                             <label class="block text-sm font-medium text-slate-700 mb-1">Título del Contrato *</label>
-                            <input type="text" id="contractTitle" class="w-full rounded-lg border-slate-300 text-sm focus:ring-brand-primary focus:border-brand-primary bg-slate-50">
+                            <input type="text" id="contractTitle" class="w-full rounded-lg border-slate-300 text-base md:text-sm focus:ring-brand-primary focus:border-brand-primary bg-slate-50">
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-slate-700 mb-1">Cliente *</label>
-                            <select id="contractClient" class="w-full rounded-lg border-slate-300 text-sm focus:ring-brand-primary focus:border-brand-primary bg-slate-50">
+                            <select id="contractClient" class="w-full rounded-lg border-slate-300 text-base md:text-sm focus:ring-brand-primary focus:border-brand-primary bg-slate-50">
                                 <option value="">Seleccione Cliente</option>
                             </select>
                         </div>
@@ -277,7 +277,7 @@
                         <!-- Fee Structure -->
                         <div>
                             <label class="block text-sm font-medium text-slate-700 mb-1">Tipo de Honorarios *</label>
-                            <select id="contractFeeType" onchange="toggleFeeInputs()" class="w-full rounded-lg border-slate-300 text-sm focus:ring-brand-primary focus:border-brand-primary bg-slate-50">
+                            <select id="contractFeeType" onchange="toggleFeeInputs()" class="w-full rounded-lg border-slate-300 text-base md:text-sm focus:ring-brand-primary focus:border-brand-primary bg-slate-50">
                                 <option value="FIXED">Suma Fija</option>
                                 <option value="PERCENTAGE">Cuota Litis (Porcentaje)</option>
                                 <option value="MIXED">Mixto (Fija + %)</option>
@@ -286,12 +286,12 @@
 
                         <div id="fixedFeeContainer">
                             <label class="block text-sm font-medium text-slate-700 mb-1">Honorarios Fijos (COP)</label>
-                            <input type="number" id="contractFixedFee" placeholder="0" class="w-full rounded-lg border-slate-300 text-sm focus:ring-brand-primary focus:border-brand-primary bg-slate-50">
+                            <input type="number" id="contractFixedFee" placeholder="0" class="w-full rounded-lg border-slate-300 text-base md:text-sm focus:ring-brand-primary focus:border-brand-primary bg-slate-50">
                         </div>
 
                         <div id="percentageFeeContainer" class="hidden">
                             <label class="block text-sm font-medium text-slate-700 mb-1">Porcentaje (Cuota Litis) %</label>
-                            <input type="number" id="contractPercentageFee" placeholder="0" max="50" class="w-full rounded-lg border-slate-300 text-sm focus:ring-brand-primary focus:border-brand-primary bg-slate-50">
+                            <input type="number" id="contractPercentageFee" placeholder="0" max="50" class="w-full rounded-lg border-slate-300 text-base md:text-sm focus:ring-brand-primary focus:border-brand-primary bg-slate-50">
                             <p class="text-xs text-slate-500 mt-1 flex items-center gap-1">
                                 <span class="material-symbols-outlined text-[14px]">info</span>
                                 Máximo recomendado 50%
@@ -301,7 +301,7 @@
                         <!-- File Upload -->
                         <div>
                             <label class="block text-sm font-medium text-slate-700 mb-1">Documento (Word/PDF)</label>
-                            <input type="file" id="contractFile" accept=".pdf,.doc,.docx" class="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-bold file:bg-brand-primary/10 file:text-brand-primary hover:file:bg-brand-primary/20">
+                            <input type="file" id="contractFile" accept=".pdf,.doc,.docx" class="w-full text-base md:text-sm text-slate-500 file:mr-4 file:py-3 file:px-4 file:rounded-lg file:border-0 file:text-base md:text-sm file:font-bold file:bg-brand-primary/10 file:text-brand-primary hover:file:bg-brand-primary/20">
                             <p class="text-xs text-slate-400 mt-1">Opcional. Puede subir el borrador después.</p>
                         </div>
 
@@ -309,8 +309,8 @@
                     </div>
                 </div>
                 <div class="bg-slate-50 px-6 py-4 flex flex-row-reverse gap-3">
-                    <button type="button" onclick="createContract()" class="w-full inline-flex justify-center rounded-lg border border-transparent shadow-sm px-4 py-2 bg-brand-primary text-base font-medium text-white hover:bg-blue-800 focus:outline-none sm:w-auto sm:text-sm">Crear</button>
-                    <button type="button" onclick="closeModal()" class="w-full inline-flex justify-center rounded-lg border border-slate-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-slate-700 hover:bg-slate-50 focus:outline-none sm:w-auto sm:text-sm">Cancelar</button>
+                    <button type="button" onclick="createContract()" class="w-full inline-flex justify-center rounded-lg border border-transparent shadow-sm px-5 py-3 bg-brand-primary text-base font-medium text-white hover:bg-blue-800 focus:outline-none sm:w-auto sm:text-sm">Crear</button>
+                    <button type="button" onclick="closeModal()" class="w-full inline-flex justify-center rounded-lg border border-slate-300 shadow-sm px-5 py-3 bg-white text-base font-medium text-slate-700 hover:bg-slate-50 focus:outline-none sm:w-auto sm:text-sm">Cancelar</button>
                 </div>
             </div>
         </div>
@@ -335,7 +335,7 @@
                     </div>
                 </div>
                 <div class="bg-slate-50 px-6 py-4 flex flex-row-reverse">
-                    <button type="button" onclick="closeViewModal()" class="w-full inline-flex justify-center rounded-lg border border-slate-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-slate-700 hover:bg-slate-50 focus:outline-none sm:w-auto sm:text-sm">Cerrar</button>
+                    <button type="button" onclick="closeViewModal()" class="w-full inline-flex justify-center rounded-lg border border-slate-300 shadow-sm px-5 py-3 bg-white text-base font-medium text-slate-700 hover:bg-slate-50 focus:outline-none sm:w-auto sm:text-sm">Cerrar</button>
                 </div>
             </div>
         </div>
@@ -635,8 +635,8 @@
                 }
 
                 document.getElementById('viewContractContent').innerHTML = `
-                    <div class="grid grid-cols-2 gap-x-8 gap-y-6">
-                        <div class="col-span-2 bg-blue-50/50 p-4 rounded-xl border border-blue-100 flex items-start gap-3">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
+                        <div class="col-span-1 md:col-span-2 bg-blue-50/50 p-4 rounded-xl border border-blue-100 flex items-start gap-3">
                             <span class="material-symbols-outlined text-brand-primary mt-0.5">info</span>
                             <div class="flex-1">
                                 <p class="text-xs font-bold text-brand-primary uppercase tracking-wider mb-1">Referencia</p>
@@ -644,7 +644,7 @@
                             </div>
                         </div>
 
-                        <div class="col-span-2 sm:col-span-1">
+                        <div class="col-span-1 md:col-span-2 sm:col-span-1">
                             <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Cliente</p>
                             <div class="flex items-center gap-2">
                                 <div class="h-8 w-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 font-bold text-xs">
@@ -657,26 +657,26 @@
                             </div>
                         </div>
                         
-                        <div class="col-span-2 sm:col-span-1">
+                        <div class="col-span-1 md:col-span-2 sm:col-span-1">
                             <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Estado Actual</p>
                             <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase ${getStatusStyle(contract.status)}">
                                 ${getStatusLabel(contract.status)}
                             </span>
                         </div>
 
-                        <div class="col-span-2 sm:col-span-1">
+                        <div class="col-span-1 md:col-span-2 sm:col-span-1">
                             <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Detalles Financieros</p>
                             <p class="font-medium text-slate-800 mb-0.5">${contract.feeType === 'FIXED' ? 'Suma Fija' : (contract.feeType === 'PERCENTAGE' ? 'Cuota Litis' : 'Mixto')}</p>
                             ${contract.contractValue ? `<p class="text-sm font-mono text-slate-600">$ ${parseFloat(contract.contractValue).toLocaleString()}</p>` : ''}
                         </div>
 
-                        <div class="col-span-2 sm:col-span-1">
+                        <div class="col-span-1 md:col-span-2 sm:col-span-1">
                             <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Fecha de Creación</p>
                             <p class="font-medium text-slate-800">${new Date(contract.createdAt).toLocaleDateString()}</p>
                             <p class="text-xs text-slate-500">Por: ${(contract.creator?.fullName || 'Sistema')}</p>
                         </div>
                         
-                        <div class="col-span-2 border-t border-slate-100 pt-6 mt-2">
+                        <div class="col-span-1 md:col-span-2 border-t border-slate-100 pt-6 mt-2">
                             <h4 class="text-sm font-bold text-slate-900 mb-4 flex items-center gap-2">
                                 <span class="material-symbols-outlined text-brand-accent">folder_open</span>
                                 Documentos y Versiones del Contrato
@@ -817,14 +817,8 @@
     </script>
 <div id="sidebar-overlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black/50 z-20 hidden md:hidden backdrop-blur-sm transition-opacity"></div>
 
-    <script>
-        function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            const overlay = document.getElementById('sidebar-overlay');
-            sidebar.classList.toggle('-translate-x-full');
-            overlay.classList.toggle('hidden');
-        }
-    </script>
+    
 
+<script src="js/responsive.js"></script>
 </body>
 </html>

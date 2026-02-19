@@ -175,7 +175,7 @@
                 <div class="relative hidden md:block w-96">
                     <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-[20px]">search</span>
                     <input id="searchInput" type="text" placeholder="Buscar por nombre, documento o email..." 
-                           class="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-brand-accent/20 focus:border-brand-accent transition-all outline-none">
+                           class="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-lg text-base md:text-sm focus:ring-2 focus:ring-brand-accent/20 focus:border-brand-accent transition-all outline-none">
                 </div>
 
                 <div class="flex items-center gap-3">
@@ -201,7 +201,7 @@
                          <button onclick="loadClients()" class="flex items-center justify-center p-2 bg-white border border-slate-200 text-slate-700 rounded-lg font-medium hover:bg-slate-50 transition-colors shadow-sm">
                             <span class="material-symbols-outlined">refresh</span>
                         </button>
-                        <button onclick="window.location.href='new-client.html'" class="flex items-center gap-2 px-4 py-2 bg-brand-primary text-white rounded-lg font-medium hover:bg-blue-800 transition-colors shadow-sm shadow-blue-900/10">
+                        <button onclick="window.location.href='new-client.html'" class="flex items-center gap-2 px-5 py-3 bg-brand-primary text-white rounded-lg font-medium hover:bg-blue-800 transition-colors shadow-sm shadow-blue-900/10">
                             <span class="material-symbols-outlined text-[20px]">person_add</span>
                             Nuevo Cliente
                         </button>
@@ -232,7 +232,7 @@
                     </div>
                     <!-- Filter -->
                     <div class="flex items-center">
-                        <select id="typeFilter" class="w-full h-full rounded-xl border-slate-200 bg-white text-sm focus:ring-2 focus:ring-brand-accent/20 focus:border-brand-accent transition-all shadow-sm">
+                        <select id="typeFilter" class="w-full h-full rounded-xl border-slate-200 bg-white text-base md:text-sm focus:ring-2 focus:ring-brand-accent/20 focus:border-brand-accent transition-all shadow-sm">
                             <option value="all">Ver todos los tipos</option>
                             <option value="PERSON">Personas</option>
                             <option value="COMPANY">Empresas</option>
@@ -390,14 +390,8 @@
 </script>
 <div id="sidebar-overlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black/50 z-20 hidden md:hidden backdrop-blur-sm transition-opacity"></div>
 
-    <script>
-        function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            const overlay = document.getElementById('sidebar-overlay');
-            sidebar.classList.toggle('-translate-x-full');
-            overlay.classList.toggle('hidden');
-        }
-    </script>
+    
 
+<script src="js/responsive.js"></script>
 </body>
 </html>

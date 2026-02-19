@@ -167,7 +167,7 @@
                 <div class="relative hidden md:block w-96">
                     <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-[20px]">search</span>
                     <input type="text" placeholder="Buscar configuración..." 
-                           class="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-brand-accent/20 focus:border-brand-accent transition-all outline-none">
+                           class="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-lg text-base md:text-sm focus:ring-2 focus:ring-brand-accent/20 focus:border-brand-accent transition-all outline-none">
                 </div>
 
                 <div class="flex items-center gap-3">
@@ -207,26 +207,26 @@
                             <h2 class="text-lg font-bold text-slate-900">Información de la Organización</h2>
                             <p class="text-sm text-slate-500">Actualiza los datos básicos de tu firma legal.</p>
                         </div>
-                        <button onclick="saveOrganization()" class="px-4 py-2 bg-brand-primary text-white rounded-lg text-sm font-medium hover:bg-blue-800 transition-colors shadow-sm shadow-blue-900/10">
+                        <button onclick="saveOrganization()" class="px-5 py-3 bg-brand-primary text-white rounded-lg text-sm font-medium hover:bg-blue-800 transition-colors shadow-sm shadow-blue-900/10">
                             Guardar Cambios
                         </button>
                     </div>
                     <form id="orgForm" class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
                             <label class="block text-sm font-medium text-slate-700 mb-1">Nombre de la Firma</label>
-                            <input type="text" id="orgName" class="w-full rounded-lg border-slate-200 bg-slate-50 text-slate-900 text-sm focus:ring-brand-accent focus:border-brand-accent transition-all">
+                            <input type="text" id="orgName" class="w-full rounded-lg border-slate-200 bg-slate-50 text-slate-900 text-base md:text-sm focus:ring-brand-accent focus:border-brand-accent transition-all">
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-slate-700 mb-1">NIT / Identificación Fiscal</label>
-                            <input type="text" id="orgNit" class="w-full rounded-lg border-slate-200 bg-slate-50 text-slate-900 text-sm focus:ring-brand-accent focus:border-brand-accent transition-all">
+                            <input type="text" id="orgNit" class="w-full rounded-lg border-slate-200 bg-slate-50 text-slate-900 text-base md:text-sm focus:ring-brand-accent focus:border-brand-accent transition-all">
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-slate-700 mb-1">Ciudad</label>
-                            <input type="text" id="orgCity" class="w-full rounded-lg border-slate-200 bg-slate-50 text-slate-900 text-sm focus:ring-brand-accent focus:border-brand-accent transition-all">
+                            <input type="text" id="orgCity" class="w-full rounded-lg border-slate-200 bg-slate-50 text-slate-900 text-base md:text-sm focus:ring-brand-accent focus:border-brand-accent transition-all">
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-slate-700 mb-1">País</label>
-                            <input type="text" id="orgCountry" class="w-full rounded-lg border-slate-200 bg-slate-50 text-slate-900 text-sm focus:ring-brand-accent focus:border-brand-accent transition-all">
+                            <input type="text" id="orgCountry" class="w-full rounded-lg border-slate-200 bg-slate-50 text-slate-900 text-base md:text-sm focus:ring-brand-accent focus:border-brand-accent transition-all">
                         </div>
                     </form>
                 </div>
@@ -238,7 +238,7 @@
                             <h2 class="text-lg font-bold text-slate-900">Configuración de WhatsApp</h2>
                             <p class="text-sm text-slate-500">Estado de conexión del Chatbot y Notificaciones.</p>
                         </div>
-                        <button onclick="refreshWhatsAppStatus()" class="px-4 py-2 bg-slate-100 text-slate-600 rounded-lg text-sm font-medium hover:bg-slate-200 transition-colors">
+                        <button onclick="refreshWhatsAppStatus()" class="px-5 py-3 bg-slate-100 text-slate-600 rounded-lg text-sm font-medium hover:bg-slate-200 transition-colors">
                             <span class="material-symbols-outlined align-middle text-[18px] mr-1">refresh</span>
                             Actualizar
                         </button>
@@ -295,13 +295,13 @@
                             <h2 class="text-lg font-bold text-slate-900">Áreas de Práctica</h2>
                             <p class="text-sm text-slate-500">Gestiona las especialidades legales ofrecidas.</p>
                         </div>
-                        <button onclick="openAreaModal()" class="flex items-center gap-2 px-4 py-2 bg-brand-primary text-white rounded-lg text-sm font-medium hover:bg-blue-800 transition-colors shadow-sm shadow-blue-900/10">
+                        <button onclick="openAreaModal()" class="flex items-center gap-2 px-5 py-3 bg-brand-primary text-white rounded-lg text-sm font-medium hover:bg-blue-800 transition-colors shadow-sm shadow-blue-900/10">
                             <span class="material-symbols-outlined text-[18px]">add</span>
                             <span>Nueva Área</span>
                         </button>
                     </div>
                     <div class="overflow-x-auto">
-                        <table class="w-full text-left text-sm">
+                        <div class="overflow-x-auto w-full"><table class="w-full text-left text-sm">
                             <thead class="bg-slate-50 text-slate-500 font-semibold border-b border-slate-100 uppercase text-[11px] tracking-wider">
                                 <tr>
                                     <th class="px-6 py-4">Nombre</th>
@@ -312,7 +312,7 @@
                             <tbody id="areasTableBody" class="divide-y divide-slate-100">
                                  <!-- Dynamically loaded -->
                             </tbody>
-                        </table>
+                        </table></div>
                     </div>
                 </div>
 
@@ -323,7 +323,7 @@
                             <h2 class="text-lg font-bold text-slate-900">Registrar Abogado</h2>
                             <p class="text-sm text-slate-500">Crea una cuenta para un nuevo abogado con todos sus detalles.</p>
                         </div>
-                        <button onclick="createLawyer()" class="px-4 py-2 bg-brand-primary text-white rounded-lg text-sm font-medium hover:bg-blue-800 transition-colors shadow-sm shadow-blue-900/10">
+                        <button onclick="createLawyer()" class="px-5 py-3 bg-brand-primary text-white rounded-lg text-sm font-medium hover:bg-blue-800 transition-colors shadow-sm shadow-blue-900/10">
                             Crear Abogado
                         </button>
                     </div>
@@ -334,19 +334,19 @@
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-slate-700 mb-1">Nombre Completo</label>
-                            <input type="text" id="lawyerName" required class="w-full rounded-lg border-slate-200 bg-slate-50 text-slate-900 text-sm focus:ring-brand-accent focus:border-brand-accent transition-all">
+                            <input type="text" id="lawyerName" required class="w-full rounded-lg border-slate-200 bg-slate-50 text-slate-900 text-base md:text-sm focus:ring-brand-accent focus:border-brand-accent transition-all">
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-slate-700 mb-1">Email</label>
-                            <input type="email" id="lawyerEmail" required class="w-full rounded-lg border-slate-200 bg-slate-50 text-slate-900 text-sm focus:ring-brand-accent focus:border-brand-accent transition-all">
+                            <input type="email" id="lawyerEmail" required class="w-full rounded-lg border-slate-200 bg-slate-50 text-slate-900 text-base md:text-sm focus:ring-brand-accent focus:border-brand-accent transition-all">
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-slate-700 mb-1">Contraseña</label>
-                            <input type="password" id="lawyerPassword" required class="w-full rounded-lg border-slate-200 bg-slate-50 text-slate-900 text-sm focus:ring-brand-accent focus:border-brand-accent transition-all">
+                            <input type="password" id="lawyerPassword" required class="w-full rounded-lg border-slate-200 bg-slate-50 text-slate-900 text-base md:text-sm focus:ring-brand-accent focus:border-brand-accent transition-all">
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-slate-700 mb-1">Teléfono</label>
-                            <input type="text" id="lawyerPhone" class="w-full rounded-lg border-slate-200 bg-slate-50 text-slate-900 text-sm focus:ring-brand-accent focus:border-brand-accent transition-all">
+                            <input type="text" id="lawyerPhone" class="w-full rounded-lg border-slate-200 bg-slate-50 text-slate-900 text-base md:text-sm focus:ring-brand-accent focus:border-brand-accent transition-all">
                         </div>
 
                         <!-- Professional Info -->
@@ -355,19 +355,19 @@
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-slate-700 mb-1">No. Tarjeta Profesional</label>
-                            <input type="text" id="lawyerCard" class="w-full rounded-lg border-slate-200 bg-slate-50 text-slate-900 text-sm focus:ring-brand-accent focus:border-brand-accent transition-all">
+                            <input type="text" id="lawyerCard" class="w-full rounded-lg border-slate-200 bg-slate-50 text-slate-900 text-base md:text-sm focus:ring-brand-accent focus:border-brand-accent transition-all">
                         </div>
                          <div>
                             <label class="block text-sm font-medium text-slate-700 mb-1">País de Emisión</label>
-                            <input type="text" id="lawyerCountry" class="w-full rounded-lg border-slate-200 bg-slate-50 text-slate-900 text-sm focus:ring-brand-accent focus:border-brand-accent transition-all">
+                            <input type="text" id="lawyerCountry" class="w-full rounded-lg border-slate-200 bg-slate-50 text-slate-900 text-base md:text-sm focus:ring-brand-accent focus:border-brand-accent transition-all">
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-slate-700 mb-1">Años de Experiencia</label>
-                            <input type="number" id="lawyerExperience" min="0" class="w-full rounded-lg border-slate-200 bg-slate-50 text-slate-900 text-sm focus:ring-brand-accent focus:border-brand-accent transition-all">
+                            <input type="number" id="lawyerExperience" min="0" class="w-full rounded-lg border-slate-200 bg-slate-50 text-slate-900 text-base md:text-sm focus:ring-brand-accent focus:border-brand-accent transition-all">
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-slate-700 mb-1">Tarifa por Hora ($)</label>
-                            <input type="number" id="lawyerRate" min="0" step="0.01" class="w-full rounded-lg border-slate-200 bg-slate-50 text-slate-900 text-sm focus:ring-brand-accent focus:border-brand-accent transition-all">
+                            <input type="number" id="lawyerRate" min="0" step="0.01" class="w-full rounded-lg border-slate-200 bg-slate-50 text-slate-900 text-base md:text-sm focus:ring-brand-accent focus:border-brand-accent transition-all">
                         </div>
                         <div class="col-span-full">
                             <label class="block text-sm font-medium text-slate-700 mb-1">Biografía</label>
@@ -377,7 +377,7 @@
                         <!-- Practice Areas Selection -->
                         <div class="col-span-full">
                             <label class="block text-sm font-medium text-slate-700 mb-2">Áreas de Práctica</label>
-                            <div id="lawyerPracticeAreas" class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                            <div id="lawyerPracticeAreas" class="grid grid-cols-1 md:grid-cols-2 md:grid-cols-4 gap-3">
                                 <!-- Dynamically populated checkboxes -->
                             </div>
                         </div>
@@ -401,7 +401,7 @@
                         <div class="space-y-4">
                             <div>
                                 <label class="block text-sm font-medium text-slate-700 mb-1">Nombre del Área</label>
-                                <input type="text" id="areaName" required class="w-full rounded-lg border-slate-200 bg-slate-50 text-slate-900 text-sm focus:ring-brand-accent focus:border-brand-accent transition-all" placeholder="Ej: Derecho Penal">
+                                <input type="text" id="areaName" required class="w-full rounded-lg border-slate-200 bg-slate-50 text-slate-900 text-base md:text-sm focus:ring-brand-accent focus:border-brand-accent transition-all" placeholder="Ej: Derecho Penal">
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-slate-700 mb-1">Descripción</label>
@@ -409,8 +409,8 @@
                             </div>
                         </div>
                         <div class="mt-6 flex justify-end gap-3">
-                            <button type="button" onclick="closeAreaModal()" class="px-4 py-2 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50 text-sm font-medium transition-colors">Cancelar</button>
-                            <button type="submit" class="px-4 py-2 rounded-lg bg-brand-primary text-white hover:bg-blue-800 text-sm font-medium transition-colors shadow-sm shadow-blue-900/10">Guardar</button>
+                            <button type="button" onclick="closeAreaModal()" class="px-5 py-3 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50 text-sm font-medium transition-colors">Cancelar</button>
+                            <button type="submit" class="px-5 py-3 rounded-lg bg-brand-primary text-white hover:bg-blue-800 text-sm font-medium transition-colors shadow-sm shadow-blue-900/10">Guardar</button>
                         </div>
                     </form>
                 </div>
@@ -757,14 +757,8 @@
     </script>
 <div id="sidebar-overlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black/50 z-20 hidden md:hidden backdrop-blur-sm transition-opacity"></div>
 
-    <script>
-        function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            const overlay = document.getElementById('sidebar-overlay');
-            sidebar.classList.toggle('-translate-x-full');
-            overlay.classList.toggle('hidden');
-        }
-    </script>
+    
 
+<script src="js/responsive.js"></script>
 </body>
 </html>

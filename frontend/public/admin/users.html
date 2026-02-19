@@ -178,7 +178,7 @@
                 <div class="relative hidden md:block w-96">
                     <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-[20px]">search</span>
                     <input id="searchInput" type="text" placeholder="Buscar por nombre, email o rol..." 
-                           class="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-brand-accent/20 focus:border-brand-accent transition-all outline-none">
+                           class="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-lg text-base md:text-sm focus:ring-2 focus:ring-brand-accent/20 focus:border-brand-accent transition-all outline-none">
                 </div>
 
                 <div class="flex items-center gap-3">
@@ -205,7 +205,7 @@
                         <h1 class="text-2xl font-bold text-slate-900">Equipo Legal</h1>
                         <p class="text-slate-500 mt-1">Administra los usuarios, roles y permisos del sistema.</p>
                     </div>
-                    <button onclick="window.location.href='new-user.html'" class="flex items-center gap-2 px-4 py-2 bg-brand-primary text-white rounded-lg font-medium hover:bg-blue-800 transition-colors shadow-sm shadow-blue-900/10">
+                    <button onclick="window.location.href='new-user.html'" class="flex items-center gap-2 px-5 py-3 bg-brand-primary text-white rounded-lg font-medium hover:bg-blue-800 transition-colors shadow-sm shadow-blue-900/10">
                         <span class="material-symbols-outlined text-[20px]">add_moderator</span>
                         Añadir Personal
                     </button>
@@ -214,7 +214,7 @@
                 <!-- Users Table -->
                 <div class="bg-white rounded-xl border border-slate-200 shadow-card overflow-hidden">
                     <div class="overflow-x-auto">
-                        <table class="w-full text-left text-sm">
+                        <div class="overflow-x-auto w-full"><table class="w-full text-left text-sm">
                             <thead class="bg-slate-50 text-slate-500 font-semibold border-b border-slate-100 uppercase text-[11px] tracking-wider">
                                 <tr>
                                     <th class="px-6 py-4">Usuario</th>
@@ -236,7 +236,7 @@
                                     </td>
                                 </tr>
                             </tbody>
-                        </table>
+                        </table></div>
                     </div>
                     <!-- Pagination (Static for now) -->
                     <div class="px-6 py-4 border-t border-slate-100 flex items-center justify-between">
@@ -403,14 +403,8 @@
     </script>
 <div id="sidebar-overlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black/50 z-20 hidden md:hidden backdrop-blur-sm transition-opacity"></div>
 
-    <script>
-        function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            const overlay = document.getElementById('sidebar-overlay');
-            sidebar.classList.toggle('-translate-x-full');
-            overlay.classList.toggle('hidden');
-        }
-    </script>
+    
 
+<script src="js/responsive.js"></script>
 </body>
 </html>

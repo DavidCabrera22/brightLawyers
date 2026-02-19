@@ -179,14 +179,14 @@
                 <div class="relative hidden md:block w-96">
                     <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-[20px]">search</span>
                     <input id="searchInput" type="text" placeholder="Buscar tareas..." 
-                           class="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-brand-accent/20 focus:border-brand-accent transition-all outline-none">
+                           class="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-lg text-base md:text-sm focus:ring-2 focus:ring-brand-accent/20 focus:border-brand-accent transition-all outline-none">
                 </div>
 
                 <div class="flex items-center gap-3">
                     <button onclick="loadTasks()" class="p-2 text-slate-500 hover:bg-slate-50 rounded-full transition-colors" title="Actualizar">
                         <span class="material-symbols-outlined text-[22px]">refresh</span>
                     </button>
-                    <button onclick="openModal()" class="flex items-center gap-2 px-4 py-2 bg-brand-primary text-white rounded-lg font-medium hover:bg-blue-800 transition-colors shadow-sm shadow-blue-900/10">
+                    <button onclick="openModal()" class="flex items-center gap-2 px-5 py-3 bg-brand-primary text-white rounded-lg font-medium hover:bg-blue-800 transition-colors shadow-sm shadow-blue-900/10">
                         <span class="material-symbols-outlined text-[20px]">add</span>
                         Nueva Tarea
                     </button>
@@ -272,20 +272,20 @@
                         <div class="space-y-4">
                             <div>
                                 <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Título</label>
-                                <input type="text" id="taskTitle" required class="w-full rounded-lg border-slate-200 bg-slate-50 text-sm focus:ring-2 focus:ring-brand-accent/20 focus:border-brand-accent transition-all" placeholder="Ej: Revisar contrato de arrendamiento">
+                                <input type="text" id="taskTitle" required class="w-full rounded-lg border-slate-200 bg-slate-50 text-base md:text-sm focus:ring-2 focus:ring-brand-accent/20 focus:border-brand-accent transition-all" placeholder="Ej: Revisar contrato de arrendamiento">
                             </div>
                             <div>
                                 <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Descripción</label>
                                 <textarea id="taskDesc" rows="3" class="w-full rounded-lg border-slate-200 bg-slate-50 text-sm focus:ring-2 focus:ring-brand-accent/20 focus:border-brand-accent transition-all" placeholder="Detalles adicionales..."></textarea>
                             </div>
-                            <div class="grid grid-cols-2 gap-4">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
                                     <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Fecha Límite</label>
-                                    <input type="date" id="taskDate" required class="w-full rounded-lg border-slate-200 bg-slate-50 text-sm focus:ring-2 focus:ring-brand-accent/20 focus:border-brand-accent transition-all">
+                                    <input type="date" id="taskDate" required class="w-full rounded-lg border-slate-200 bg-slate-50 text-base md:text-sm focus:ring-2 focus:ring-brand-accent/20 focus:border-brand-accent transition-all">
                                 </div>
                                 <div>
                                     <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Prioridad</label>
-                                    <select id="taskPriority" class="w-full rounded-lg border-slate-200 bg-slate-50 text-sm focus:ring-2 focus:ring-brand-accent/20 focus:border-brand-accent transition-all">
+                                    <select id="taskPriority" class="w-full rounded-lg border-slate-200 bg-slate-50 text-base md:text-sm focus:ring-2 focus:ring-brand-accent/20 focus:border-brand-accent transition-all">
                                         <option value="low">Baja</option>
                                         <option value="med" selected>Media</option>
                                         <option value="high">Alta</option>
@@ -294,8 +294,8 @@
                             </div>
                         </div>
                         <div class="mt-8 flex justify-end gap-3">
-                            <button type="button" onclick="closeModal()" class="px-4 py-2 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50 text-sm font-bold transition-colors">Cancelar</button>
-                            <button type="submit" id="submitBtn" class="px-4 py-2 rounded-lg bg-brand-primary text-white hover:bg-blue-800 text-sm font-bold shadow-lg shadow-blue-900/20 transition-all">Crear Tarea</button>
+                            <button type="button" onclick="closeModal()" class="px-5 py-3 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50 text-sm font-bold transition-colors">Cancelar</button>
+                            <button type="submit" id="submitBtn" class="px-5 py-3 rounded-lg bg-brand-primary text-white hover:bg-blue-800 text-sm font-bold shadow-lg shadow-blue-900/20 transition-all">Crear Tarea</button>
                         </div>
                     </form>
                 </div>
@@ -571,14 +571,8 @@
 </script>
 <div id="sidebar-overlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black/50 z-20 hidden md:hidden backdrop-blur-sm transition-opacity"></div>
 
-    <script>
-        function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            const overlay = document.getElementById('sidebar-overlay');
-            sidebar.classList.toggle('-translate-x-full');
-            overlay.classList.toggle('hidden');
-        }
-    </script>
+    
 
+<script src="js/responsive.js"></script>
 </body>
 </html>

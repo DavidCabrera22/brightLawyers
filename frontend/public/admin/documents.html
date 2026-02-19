@@ -191,11 +191,11 @@
                 <div class="relative hidden md:block w-96">
                     <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-[20px]">search</span>
                     <input id="searchInput" type="text" placeholder="Buscar por nombre de archivo o extensión..." 
-                           class="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-brand-accent/20 focus:border-brand-accent transition-all outline-none">
+                           class="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-lg text-base md:text-sm focus:ring-2 focus:ring-brand-accent/20 focus:border-brand-accent transition-all outline-none">
                 </div>
 
                 <div class="flex items-center gap-3">
-                    <button class="flex items-center gap-2 px-4 py-2 bg-brand-primary text-white rounded-lg text-sm font-medium hover:bg-blue-800 transition-colors shadow-sm shadow-blue-900/10">
+                    <button class="flex items-center gap-2 px-5 py-3 bg-brand-primary text-white rounded-lg text-sm font-medium hover:bg-blue-800 transition-colors shadow-sm shadow-blue-900/10">
                         <span class="material-symbols-outlined text-[18px]">upload</span>
                         <span>Subir</span>
                     </button>
@@ -272,7 +272,7 @@
                     </div>
 
                     <!-- Files Grid -->
-                    <div class="col-span-3 flex flex-col gap-4">
+                    <div class="col-span-1 md:col-span-3 flex flex-col gap-4">
                         <div class="flex items-center justify-between mb-2">
                             <h3 class="text-sm font-bold text-slate-700">Archivos Recientes</h3>
                             <button onclick="loadDocuments()" class="text-brand-primary text-xs font-bold hover:underline flex items-center gap-1">
@@ -536,14 +536,8 @@
 </script>
 <div id="sidebar-overlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black/50 z-20 hidden md:hidden backdrop-blur-sm transition-opacity"></div>
 
-    <script>
-        function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            const overlay = document.getElementById('sidebar-overlay');
-            sidebar.classList.toggle('-translate-x-full');
-            overlay.classList.toggle('hidden');
-        }
-    </script>
+    
 
+<script src="js/responsive.js"></script>
 </body>
 </html>

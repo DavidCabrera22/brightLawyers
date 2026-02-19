@@ -48,7 +48,7 @@
 <body class="bg-background-light dark:bg-background-dark text-text-primary-light dark:text-text-primary-dark transition-colors duration-200">
 <div class="flex h-screen w-full overflow-hidden">
     <!-- Sidebar Navigation -->
-    <aside class="hidden w-64 flex-col bg-white dark:bg-card-dark border-r border-gray-200 dark:border-gray-800 lg:flex z-20 shadow-sm">
+    <aside id="sidebar" class="w-64 bg-brand-dark text-white flex flex-col z-30 shadow-xl flex-shrink-0 fixed inset-y-0 left-0 transform -translate-x-full transition-transform duration-300 md:relative md:translate-x-0">
         <div class="flex items-center gap-3 px-6 py-6" onclick="window.location.href='index.html'" style="cursor: pointer;">
             <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-primary text-white">
                 <span class="material-symbols-outlined text-2xl">balance</span>
@@ -59,42 +59,42 @@
             </div>
         </div>
         <nav class="flex-1 overflow-y-auto px-4 py-4 space-y-1">
-            <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-text-secondary-light dark:text-text-secondary-dark hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-primary dark:hover:text-white transition-colors group" href="admin.html" id="dashLink">
+            <a class="flex items-center gap-3 px-3 py-3.5 rounded-lg text-text-secondary-light dark:text-text-secondary-dark hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-primary dark:hover:text-white transition-colors group" href="admin.html" id="dashLink">
                 <span class="material-symbols-outlined">dashboard</span>
                 <span class="text-sm font-medium">Dashboard</span>
             </a>
-            <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-text-secondary-light dark:text-text-secondary-dark hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-primary dark:hover:text-white transition-colors group" href="cases.html">
+            <a class="flex items-center gap-3 px-3 py-3.5 rounded-lg text-text-secondary-light dark:text-text-secondary-dark hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-primary dark:hover:text-white transition-colors group" href="cases.html">
                 <span class="material-symbols-outlined">gavel</span>
                 <span class="text-sm font-medium">Casos</span>
             </a>
-            <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-text-secondary-light dark:text-text-secondary-dark hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-primary dark:hover:text-white transition-colors group" href="tasks.html">
+            <a class="flex items-center gap-3 px-3 py-3.5 rounded-lg text-text-secondary-light dark:text-text-secondary-dark hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-primary dark:hover:text-white transition-colors group" href="tasks.html">
                 <span class="material-symbols-outlined">task_alt</span>
                 <span class="text-sm font-medium">Tareas</span>
             </a>
-            <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-primary/10 text-primary dark:bg-primary/20 dark:text-white group" href="clients.html">
+            <a class="flex items-center gap-3 px-3 py-3.5 rounded-lg bg-primary/10 text-primary dark:bg-primary/20 dark:text-white group" href="clients.html">
                 <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">groups</span>
                 <span class="text-sm font-medium">Clientes</span>
             </a>
-            <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-text-secondary-light dark:text-text-secondary-dark hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-primary dark:hover:text-white transition-colors group" href="documents.html">
+            <a class="flex items-center gap-3 px-3 py-3.5 rounded-lg text-text-secondary-light dark:text-text-secondary-dark hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-primary dark:hover:text-white transition-colors group" href="documents.html">
                 <span class="material-symbols-outlined">folder</span>
                 <span class="text-sm font-medium">Documentos</span>
             </a>
-            <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-text-secondary-light dark:text-text-secondary-dark hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-primary dark:hover:text-white transition-colors group" href="contracts.html">
+            <a class="flex items-center gap-3 px-3 py-3.5 rounded-lg text-text-secondary-light dark:text-text-secondary-dark hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-primary dark:hover:text-white transition-colors group" href="contracts.html">
                 <span class="material-symbols-outlined">description</span>
                 <span class="text-sm font-medium">Contratos</span>
             </a>
-            <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-text-secondary-light dark:text-text-secondary-dark hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-primary dark:hover:text-white transition-colors group" href="billing.html">
+            <a class="flex items-center gap-3 px-3 py-3.5 rounded-lg text-text-secondary-light dark:text-text-secondary-dark hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-primary dark:hover:text-white transition-colors group" href="billing.html">
                 <span class="material-symbols-outlined">payments</span>
                 <span class="text-sm font-medium">Facturación</span>
             </a>
-            <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-text-secondary-light dark:text-text-secondary-dark hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-primary dark:hover:text-white transition-colors group" href="messages.html">
+            <a class="flex items-center gap-3 px-3 py-3.5 rounded-lg text-text-secondary-light dark:text-text-secondary-dark hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-primary dark:hover:text-white transition-colors group" href="messages.html">
                 <span class="material-symbols-outlined">chat</span>
                 <span class="text-sm font-medium">Mensajes</span>
             </a>
 
             <div class="pt-4 mt-4 border-t border-gray-100 dark:border-gray-800">
                 <p class="px-3 text-xs font-semibold text-text-secondary-light dark:text-text-secondary-dark uppercase tracking-wider mb-2">Gestión</p>
-                <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-text-secondary-light dark:text-text-secondary-dark hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-primary dark:hover:text-white transition-colors group" href="users.html">
+                <a class="flex items-center gap-3 px-3 py-3.5 rounded-lg text-text-secondary-light dark:text-text-secondary-dark hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-primary dark:hover:text-white transition-colors group" href="users.html">
                     <span class="material-symbols-outlined">manage_accounts</span>
                     <span class="text-sm font-medium">Equipo Legal</span>
                 </a>
@@ -103,11 +103,11 @@
 
             <div class="pt-4 mt-4 border-t border-gray-100 dark:border-gray-800">
                 <p class="px-3 text-xs font-semibold text-text-secondary-light dark:text-text-secondary-dark uppercase tracking-wider mb-2">Sistema</p>
-                <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-text-secondary-light dark:text-text-secondary-dark hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-primary dark:hover:text-white transition-colors group" href="configuration.html">
+                <a class="flex items-center gap-3 px-3 py-3.5 rounded-lg text-text-secondary-light dark:text-text-secondary-dark hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-primary dark:hover:text-white transition-colors group" href="configuration.html">
                     <span class="material-symbols-outlined">settings</span>
                     <span class="text-sm font-medium">Configuración</span>
                 </a>
-                <button onclick="logout()" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-text-secondary-light dark:text-text-secondary-dark hover:bg-red-50 dark:hover:bg-red-900/20 hover:text-red-600 dark:hover:text-red-400 transition-colors group text-left">
+                <button onclick="logout()" class="w-full flex items-center gap-3 px-3 py-3.5 rounded-lg text-text-secondary-light dark:text-text-secondary-dark hover:bg-red-50 dark:hover:bg-red-900/20 hover:text-red-600 dark:hover:text-red-400 transition-colors group text-left">
                     <span class="material-symbols-outlined">logout</span>
                     <span class="text-sm font-medium">Cerrar Sesión</span>
                 </button>
@@ -158,7 +158,7 @@
                 <div id="errorState" class="hidden flex-col items-center justify-center py-20 text-danger">
                     <span class="material-symbols-outlined text-4xl">error</span>
                     <p class="mt-2 font-bold" id="errorMessage">Error al cargar el cliente</p>
-                    <button onclick="window.location.reload()" class="mt-4 px-4 py-2 bg-primary text-white rounded-lg">Reintentar</button>
+                    <button onclick="window.location.reload()" class="mt-4 px-5 py-3 bg-primary text-white rounded-lg">Reintentar</button>
                 </div>
 
                 <!-- Client Details (Hidden initially) -->
@@ -242,21 +242,21 @@
         <form id="uploadForm" class="space-y-4">
             <div>
                 <label class="block text-sm font-medium mb-2">Caso Asociado</label>
-                <select id="docCaseId" class="w-full rounded-lg border-gray-200 dark:border-gray-800 bg-white dark:bg-card-dark text-sm">
+                <select id="docCaseId" class="w-full rounded-lg border-gray-200 dark:border-gray-800 bg-white dark:bg-card-dark text-base md:text-sm">
                     <option value="">Documento general (sin caso)</option>
                 </select>
             </div>
             <div>
                 <label class="block text-sm font-medium mb-2">Archivo <span class="text-danger">*</span></label>
-                <input type="file" id="docFile" required class="w-full text-sm rounded-lg border border-gray-200 dark:border-gray-800 file:mr-4 file:py-2 file:px-4 file:rounded-l-lg file:border-0 file:bg-primary file:text-white file:cursor-pointer"/>
+                <input type="file" id="docFile" required class="w-full text-base md:text-sm rounded-lg border border-gray-200 dark:border-gray-800 file:mr-4 file:py-3 file:px-4 file:rounded-l-lg file:border-0 file:bg-primary file:text-white file:cursor-pointer"/>
             </div>
             <div>
                 <label class="block text-sm font-medium mb-2">Nombre del documento</label>
-                <input type="text" id="docName" placeholder="Opcional - se usará el nombre del archivo" class="w-full rounded-lg border-gray-200 dark:border-gray-800 bg-white dark:bg-card-dark text-sm"/>
+                <input type="text" id="docName" placeholder="Opcional - se usará el nombre del archivo" class="w-full rounded-lg border-gray-200 dark:border-gray-800 bg-white dark:bg-card-dark text-base md:text-sm"/>
             </div>
             <div class="flex justify-end gap-3 pt-4">
-                <button type="button" onclick="closeUploadModal()" class="px-4 py-2 text-sm text-text-secondary-light hover:text-primary">Cancelar</button>
-                <button type="submit" class="px-4 py-2 bg-primary text-white rounded-lg text-sm font-medium hover:bg-primary/90">Subir</button>
+                <button type="button" onclick="closeUploadModal()" class="px-5 py-3 text-sm text-text-secondary-light hover:text-primary">Cancelar</button>
+                <button type="submit" class="px-5 py-3 bg-primary text-white rounded-lg text-sm font-medium hover:bg-primary/90">Subir</button>
             </div>
         </form>
     </div>
@@ -274,23 +274,23 @@
         <form id="editForm" class="space-y-4">
             <div>
                 <label class="block text-sm font-medium mb-2">Nombre Completo <span class="text-danger">*</span></label>
-                <input type="text" id="editName" required class="w-full rounded-lg border-gray-200 dark:border-gray-800 bg-white dark:bg-card-dark text-sm"/>
+                <input type="text" id="editName" required class="w-full rounded-lg border-gray-200 dark:border-gray-800 bg-white dark:bg-card-dark text-base md:text-sm"/>
             </div>
             <div>
                 <label class="block text-sm font-medium mb-2">Email</label>
-                <input type="email" id="editEmail" class="w-full rounded-lg border-gray-200 dark:border-gray-800 bg-white dark:bg-card-dark text-sm"/>
+                <input type="email" id="editEmail" class="w-full rounded-lg border-gray-200 dark:border-gray-800 bg-white dark:bg-card-dark text-base md:text-sm"/>
             </div>
             <div>
                 <label class="block text-sm font-medium mb-2">Teléfono</label>
-                <input type="tel" id="editPhone" class="w-full rounded-lg border-gray-200 dark:border-gray-800 bg-white dark:bg-card-dark text-sm"/>
+                <input type="tel" id="editPhone" class="w-full rounded-lg border-gray-200 dark:border-gray-800 bg-white dark:bg-card-dark text-base md:text-sm"/>
             </div>
             <div>
                 <label class="block text-sm font-medium mb-2">Dirección</label>
-                <input type="text" id="editAddress" class="w-full rounded-lg border-gray-200 dark:border-gray-800 bg-white dark:bg-card-dark text-sm"/>
+                <input type="text" id="editAddress" class="w-full rounded-lg border-gray-200 dark:border-gray-800 bg-white dark:bg-card-dark text-base md:text-sm"/>
             </div>
             <div class="flex justify-end gap-3 pt-4">
-                <button type="button" onclick="closeEditModal()" class="px-4 py-2 text-sm text-text-secondary-light hover:text-primary">Cancelar</button>
-                <button type="submit" class="px-4 py-2 bg-primary text-white rounded-lg text-sm font-medium hover:bg-primary/90">Guardar</button>
+                <button type="button" onclick="closeEditModal()" class="px-5 py-3 text-sm text-text-secondary-light hover:text-primary">Cancelar</button>
+                <button type="submit" class="px-5 py-3 bg-primary text-white rounded-lg text-sm font-medium hover:bg-primary/90">Guardar</button>
             </div>
         </form>
     </div>
@@ -386,7 +386,7 @@
                 <div class="text-center py-10 border-2 border-dashed border-gray-200 dark:border-gray-800 rounded-xl">
                     <span class="material-symbols-outlined text-4xl text-text-secondary-light mb-2">gavel</span>
                     <p class="text-text-secondary-light">Este cliente no tiene casos registrados.</p>
-                    <button onclick="window.location.href='new-case.html?clientId=${clientId}'" class="mt-4 px-4 py-2 bg-primary text-white rounded-lg text-sm font-medium hover:bg-primary/90">
+                    <button onclick="window.location.href='new-case.html?clientId=${clientId}'" class="mt-4 px-5 py-3 bg-primary text-white rounded-lg text-sm font-medium hover:bg-primary/90">
                         Crear Primer Caso
                     </button>
                 </div>
@@ -541,14 +541,8 @@
 </script>
 <div id="sidebar-overlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black/50 z-20 hidden md:hidden backdrop-blur-sm transition-opacity"></div>
 
-    <script>
-        function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            const overlay = document.getElementById('sidebar-overlay');
-            sidebar.classList.toggle('-translate-x-full');
-            overlay.classList.toggle('hidden');
-        }
-    </script>
+    
 
+<script src="js/responsive.js"></script>
 </body>
 </html>

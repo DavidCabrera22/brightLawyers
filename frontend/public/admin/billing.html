@@ -175,7 +175,7 @@
                 <div class="relative hidden md:block w-96">
                     <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-[20px]">search</span>
                     <input id="searchInput" type="text" placeholder="Buscar factura, cliente o referencia..." 
-                           class="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-brand-accent/20 focus:border-brand-accent transition-all outline-none">
+                           class="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-lg text-base md:text-sm focus:ring-2 focus:ring-brand-accent/20 focus:border-brand-accent transition-all outline-none">
                 </div>
 
                 <div class="flex items-center gap-3">
@@ -203,11 +203,11 @@
                         <p class="text-slate-500 mt-1">Control de facturas, pagos y reportes financieros.</p>
                     </div>
                     <div class="flex gap-3">
-                        <button onclick="openPaymentModal()" class="flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 text-slate-700 rounded-lg font-medium hover:bg-slate-50 transition-colors shadow-sm">
+                        <button onclick="openPaymentModal()" class="flex items-center gap-2 px-5 py-3 bg-white border border-slate-200 text-slate-700 rounded-lg font-medium hover:bg-slate-50 transition-colors shadow-sm">
                             <span class="material-symbols-outlined text-[20px]">add_card</span>
                             Registrar Pago
                         </button>
-                        <button onclick="openInvoiceModal()" class="flex items-center gap-2 px-4 py-2 bg-brand-primary text-white rounded-lg font-medium hover:bg-blue-800 transition-colors shadow-sm shadow-blue-900/10">
+                        <button onclick="openInvoiceModal()" class="flex items-center gap-2 px-5 py-3 bg-brand-primary text-white rounded-lg font-medium hover:bg-blue-800 transition-colors shadow-sm shadow-blue-900/10">
                             <span class="material-symbols-outlined text-[20px]">add</span>
                             Nueva Factura
                         </button>
@@ -251,7 +251,7 @@
                 <!-- Invoices Table -->
                 <div class="bg-white rounded-xl border border-slate-200 shadow-card overflow-hidden">
                     <div class="overflow-x-auto">
-                        <table class="w-full text-left text-sm">
+                        <div class="overflow-x-auto w-full"><table class="w-full text-left text-sm">
                             <thead class="bg-slate-50 text-slate-500 font-semibold border-b border-slate-100 uppercase text-[11px] tracking-wider">
                                 <tr>
                                     <th class="px-6 py-4">Factura #</th>
@@ -274,7 +274,7 @@
                                     </td>
                                 </tr>
                             </tbody>
-                        </table>
+                        </table></div>
                     </div>
                 </div>
 
@@ -293,44 +293,44 @@
                     <div class="space-y-4">
                         <div>
                             <label class="block text-sm font-medium text-slate-700 mb-1">Cliente *</label>
-                            <select id="invoiceClientId" class="w-full rounded-lg border-slate-300 text-sm focus:ring-brand-primary focus:border-brand-primary bg-slate-50">
+                            <select id="invoiceClientId" class="w-full rounded-lg border-slate-300 text-base md:text-sm focus:ring-brand-primary focus:border-brand-primary bg-slate-50">
                                 <option value="">Seleccione Cliente</option>
                                 <!-- JS populate -->
                             </select>
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-slate-700 mb-1">Caso (Opcional)</label>
-                            <select id="invoiceCaseId" class="w-full rounded-lg border-slate-300 text-sm focus:ring-brand-primary focus:border-brand-primary bg-slate-50">
+                            <select id="invoiceCaseId" class="w-full rounded-lg border-slate-300 text-base md:text-sm focus:ring-brand-primary focus:border-brand-primary bg-slate-50">
                                 <option value="">Ninguno / General</option>
                                 <!-- JS populate -->
                             </select>
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-slate-700 mb-1">Concepto / Referencia</label>
-                            <input type="text" id="invoiceNumber" placeholder="Honorarios Legales" class="w-full rounded-lg border-slate-300 text-sm focus:ring-brand-primary focus:border-brand-primary bg-slate-50">
+                            <input type="text" id="invoiceNumber" placeholder="Honorarios Legales" class="w-full rounded-lg border-slate-300 text-base md:text-sm focus:ring-brand-primary focus:border-brand-primary bg-slate-50">
                         </div>
-                        <div class="grid grid-cols-2 gap-4">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
                                 <label class="block text-sm font-medium text-slate-700 mb-1">Fecha Emisión *</label>
-                                <input type="date" id="invoiceIssueDate" class="w-full rounded-lg border-slate-300 text-sm focus:ring-brand-primary focus:border-brand-primary bg-slate-50">
+                                <input type="date" id="invoiceIssueDate" class="w-full rounded-lg border-slate-300 text-base md:text-sm focus:ring-brand-primary focus:border-brand-primary bg-slate-50">
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-slate-700 mb-1">Vencimiento</label>
-                                <input type="date" id="invoiceDueDate" class="w-full rounded-lg border-slate-300 text-sm focus:ring-brand-primary focus:border-brand-primary bg-slate-50">
+                                <input type="date" id="invoiceDueDate" class="w-full rounded-lg border-slate-300 text-base md:text-sm focus:ring-brand-primary focus:border-brand-primary bg-slate-50">
                             </div>
                         </div>
                          <div>
                             <label class="block text-sm font-medium text-slate-700 mb-1">Total (COP) *</label>
                             <div class="relative">
                                 <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">$</span>
-                                <input type="number" id="invoiceTotal" placeholder="0.00" class="w-full pl-7 rounded-lg border-slate-300 text-sm focus:ring-brand-primary focus:border-brand-primary bg-slate-50">
+                                <input type="number" id="invoiceTotal" placeholder="0.00" class="w-full pl-7 rounded-lg border-slate-300 text-base md:text-sm focus:ring-brand-primary focus:border-brand-primary bg-slate-50">
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="bg-slate-50 px-6 py-4 flex flex-row-reverse gap-3">
-                    <button type="button" onclick="submitInvoice()" class="w-full inline-flex justify-center rounded-lg border border-transparent shadow-sm px-4 py-2 bg-brand-primary text-base font-medium text-white hover:bg-blue-800 focus:outline-none sm:w-auto sm:text-sm">Crear Factura</button>
-                    <button type="button" onclick="closeInvoiceModal()" class="w-full inline-flex justify-center rounded-lg border border-slate-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-slate-700 hover:bg-slate-50 focus:outline-none sm:w-auto sm:text-sm">Cancelar</button>
+                    <button type="button" onclick="submitInvoice()" class="w-full inline-flex justify-center rounded-lg border border-transparent shadow-sm px-5 py-3 bg-brand-primary text-base font-medium text-white hover:bg-blue-800 focus:outline-none sm:w-auto sm:text-sm">Crear Factura</button>
+                    <button type="button" onclick="closeInvoiceModal()" class="w-full inline-flex justify-center rounded-lg border border-slate-300 shadow-sm px-5 py-3 bg-white text-base font-medium text-slate-700 hover:bg-slate-50 focus:outline-none sm:w-auto sm:text-sm">Cancelar</button>
                 </div>
             </div>
         </div>
@@ -347,7 +347,7 @@
                     <div class="space-y-4">
                         <div>
                             <label class="block text-sm font-medium text-slate-700 mb-1">Factura *</label>
-                            <select id="paymentInvoiceId" class="w-full rounded-lg border-slate-300 text-sm focus:ring-brand-primary focus:border-brand-primary bg-slate-50">
+                            <select id="paymentInvoiceId" class="w-full rounded-lg border-slate-300 text-base md:text-sm focus:ring-brand-primary focus:border-brand-primary bg-slate-50">
                                 <option value="">Seleccione Factura</option>
                                 <!-- JS populate -->
                             </select>
@@ -356,12 +356,12 @@
                             <label class="block text-sm font-medium text-slate-700 mb-1">Monto *</label>
                             <div class="relative">
                                 <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">$</span>
-                                <input type="number" id="paymentAmount" class="w-full pl-7 rounded-lg border-slate-300 text-sm focus:ring-brand-primary focus:border-brand-primary bg-slate-50">
+                                <input type="number" id="paymentAmount" class="w-full pl-7 rounded-lg border-slate-300 text-base md:text-sm focus:ring-brand-primary focus:border-brand-primary bg-slate-50">
                             </div>
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-slate-700 mb-1">Método *</label>
-                            <select id="paymentMethod" class="w-full rounded-lg border-slate-300 text-sm focus:ring-brand-primary focus:border-brand-primary bg-slate-50" onchange="toggleBankDetails()">
+                            <select id="paymentMethod" class="w-full rounded-lg border-slate-300 text-base md:text-sm focus:ring-brand-primary focus:border-brand-primary bg-slate-50" onchange="toggleBankDetails()">
                                 <option value="transfer">Transferencia Bancolombia</option>
                                 <option value="cash">Efectivo</option>
                                 <option value="card">Tarjeta de Crédito/Débito</option>
@@ -376,8 +376,8 @@
                     </div>
                 </div>
                 <div class="bg-slate-50 px-6 py-4 flex flex-row-reverse gap-3">
-                    <button type="button" onclick="submitPayment()" class="w-full inline-flex justify-center rounded-lg border border-transparent shadow-sm px-4 py-2 bg-emerald-600 text-base font-medium text-white hover:bg-emerald-700 focus:outline-none sm:w-auto sm:text-sm">Registrar Pago</button>
-                    <button type="button" onclick="closePaymentModal()" class="w-full inline-flex justify-center rounded-lg border border-slate-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-slate-700 hover:bg-slate-50 focus:outline-none sm:w-auto sm:text-sm">Cancelar</button>
+                    <button type="button" onclick="submitPayment()" class="w-full inline-flex justify-center rounded-lg border border-transparent shadow-sm px-5 py-3 bg-emerald-600 text-base font-medium text-white hover:bg-emerald-700 focus:outline-none sm:w-auto sm:text-sm">Registrar Pago</button>
+                    <button type="button" onclick="closePaymentModal()" class="w-full inline-flex justify-center rounded-lg border border-slate-300 shadow-sm px-5 py-3 bg-white text-base font-medium text-slate-700 hover:bg-slate-50 focus:outline-none sm:w-auto sm:text-sm">Cancelar</button>
                 </div>
             </div>
         </div>
@@ -589,14 +589,8 @@
     </script>
 <div id="sidebar-overlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black/50 z-20 hidden md:hidden backdrop-blur-sm transition-opacity"></div>
 
-    <script>
-        function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            const overlay = document.getElementById('sidebar-overlay');
-            sidebar.classList.toggle('-translate-x-full');
-            overlay.classList.toggle('hidden');
-        }
-    </script>
+    
 
+<script src="js/responsive.js"></script>
 </body>
 </html>
