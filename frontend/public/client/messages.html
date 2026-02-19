@@ -239,7 +239,7 @@
                 </div>
 
                 <!-- Input Area -->
-                <div class="p-3 pb-6 md:p-6 md:pb-6 bg-white border-t border-gray-200 shrink-0 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]">
+                <div class="p-3 pb-[calc(1.5rem+env(safe-area-inset-bottom))] md:p-6 md:pb-6 bg-white border-t border-gray-200 shrink-0 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]">
                     <div class="max-w-4xl mx-auto w-full">
                          <form id="messageForm" class="flex items-end gap-2 md:gap-3 bg-gray-50 p-1.5 md:p-2 rounded-2xl border border-gray-200 focus-within:ring-2 focus-within:ring-blue-100 focus-within:border-blue-300 transition-all shadow-inner">
                             <button type="button" class="h-9 w-9 md:h-10 md:w-10 rounded-full text-gray-400 hover:text-gray-600 hover:bg-gray-200 flex items-center justify-center transition-colors shrink-0">
@@ -707,21 +707,38 @@
         }
     </script>
     <script>
-        // Fix for mobile keyboard layout issues
+        // Enhanced iOS keyboard handling
         const messageInput = document.getElementById('messageInput');
         
-        if (messageInput) {
-            messageInput.addEventListener('focus', () => {
-                setTimeout(() => {
-                    window.scrollTo(0, 0);
-                    document.body.scrollTop = 0;
-                }, 100);
-            });
+        // Detect iOS
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
 
-            messageInput.addEventListener('blur', () => {
-                 window.scrollTo(0, 0);
-                 document.body.scrollTop = 0;
+        if (isIOS && window.visualViewport) {
+            window.visualViewport.addEventListener('resize', () => {
+                // When keyboard opens/closes, visualViewport resizes
+                // We adjust the body height to match, forcing flex layout to adapt
+                document.body.style.height = window.visualViewport.height + 'px';
+                document.body.style.overflow = 'hidden'; // Prevent double scroll
+                
+                // Scroll to bottom of messages
+                const messagesContainer = document.getElementById('messagesContainer');
+                if (messagesContainer) {
+                    setTimeout(() => {
+                        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                    }, 100);
+                }
             });
+            
+            // Also handle focus explicitly to be sure
+            if (messageInput) {
+                messageInput.addEventListener('focus', () => {
+                    setTimeout(() => {
+                        window.scrollTo(0, 0);
+                         // Ensure input is visible
+                        messageInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }, 300);
+                });
+            }
         }
     </script>
 </body>
