@@ -11,6 +11,7 @@
     <!-- Material Symbols -->
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script src="js/responsive.js"></script>
     <script>
         tailwind.config = {
             darkMode: "class",
@@ -79,7 +80,7 @@
 <body class="bg-lawyer-bg text-slate-800 h-screen overflow-hidden flex">
 
     <!-- Sidebar (Lawyer Theme) -->
-    <aside class="w-64 bg-lawyer-secondary text-white flex flex-col z-20 shadow-xl flex-shrink-0">
+    <aside id="sidebar" class="w-64 bg-lawyer-secondary text-white flex flex-col z-30 shadow-xl flex-shrink-0 fixed inset-y-0 left-0 transform -translate-x-full transition-transform duration-300 md:relative md:translate-x-0">
         <!-- Logo Area -->
         <div class="h-20 flex items-center px-6 border-b border-white/10 flex-shrink-0">
             <div class="flex items-center gap-3">
@@ -137,8 +138,13 @@
     <main class="flex-1 flex flex-col h-full overflow-hidden bg-lawyer-bg relative">
         
         <!-- Top Header -->
-        <header class="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-8 flex-shrink-0 z-10">
-            <h2 class="text-lg font-bold text-lawyer-primary">Agenda Legal</h2>
+        <header class="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-4 md:px-8 flex-shrink-0 z-10">
+            <div class="flex items-center gap-4">
+                <button onclick="toggleSidebar()" class="md:hidden p-2 text-slate-500 hover:bg-slate-100 rounded-lg transition-colors">
+                    <span class="material-symbols-outlined">menu</span>
+                </button>
+                <h2 class="text-lg font-bold text-lawyer-primary">Agenda Legal</h2>
+            </div>
             
             <div class="flex items-center gap-6">
                 <!-- Search -->
@@ -625,5 +631,6 @@
             }
         });
     </script>
+    <div id="sidebar-overlay" class="fixed inset-0 bg-black/50 z-20 hidden md:hidden"></div>
 </body>
 </html>
