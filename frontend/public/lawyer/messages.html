@@ -154,7 +154,7 @@
                     <input type="text" 
                            id="searchGlobal" 
                            placeholder="Buscar..." 
-                           class="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-lawyer-accent/20 focus:border-lawyer-accent transition-all outline-none">
+                           class="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-base md:text-sm focus:ring-2 focus:ring-lawyer-accent/20 focus:border-lawyer-accent transition-all outline-none">
                 </div>
 
                 <div class="flex items-center gap-3">
@@ -190,7 +190,7 @@
                     </button>
                     <div class="relative">
                         <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 material-symbols-outlined text-[18px]">search</span>
-                        <input id="searchConversations" class="h-10 w-full rounded-lg border-slate-200 bg-slate-50 pl-10 pr-4 text-sm focus:ring-lawyer-accent focus:border-lawyer-accent text-slate-700 placeholder-slate-400" placeholder="Buscar conversaciones..." type="text"/>
+                        <input id="searchConversations" class="h-10 w-full rounded-lg border-slate-200 bg-slate-50 pl-10 pr-4 text-base md:text-sm focus:ring-lawyer-accent focus:border-lawyer-accent text-slate-700 placeholder-slate-400" placeholder="Buscar conversaciones..." type="text"/>
                     </div>
                 </div>
                 <div id="conversationsList" class="flex-1 overflow-y-auto">
@@ -219,9 +219,9 @@
                         </div>
                     </div>
                     <div class="flex items-center gap-2 flex-shrink-0">
-                        <button id="btnRequestDocs" onclick="toggleDocumentRequestCurrent()" class="hidden px-3 py-1.5 bg-lawyer-accent text-white text-xs font-bold rounded hover:bg-orange-600 transition-colors flex items-center gap-1 whitespace-nowrap">
+                        <button id="btnRequestDocs" onclick="toggleDocumentRequestCurrent()" class="px-3 py-1.5 bg-lawyer-accent text-white text-xs font-bold rounded hover:bg-orange-600 transition-colors flex items-center gap-1 whitespace-nowrap">
                             <span class="material-symbols-outlined text-[16px]">upload_file</span>
-                            <span class="hidden sm:inline">Solicitar Docs</span>
+                            <span class="hidden md:inline">Solicitar Docs</span>
                         </button>
                     </div>
                 </div>
@@ -269,7 +269,7 @@
                 <label for="searchCaseInput" class="block text-sm font-medium text-slate-700 mb-2">Buscar Caso o Cliente</label>
                 <div class="relative">
                     <span class="absolute left-3 top-1/2 -translate-y-1/2 material-symbols-outlined text-slate-400 text-[20px]">search</span>
-                    <input type="text" id="searchCaseInput" class="w-full rounded-lg border-slate-300 bg-slate-50 py-2.5 pl-10 pr-4 text-sm focus:ring-lawyer-accent focus:border-lawyer-accent" placeholder="Escribe nombre o número de caso...">
+                    <input type="text" id="searchCaseInput" class="w-full rounded-lg border-slate-300 bg-slate-50 py-2.5 pl-10 pr-4 text-base md:text-sm focus:ring-lawyer-accent focus:border-lawyer-accent" placeholder="Escribe nombre o número de caso...">
                 </div>
             </div>
             
