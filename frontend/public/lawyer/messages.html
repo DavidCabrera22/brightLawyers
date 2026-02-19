@@ -238,7 +238,7 @@
                 </div>
 
                 <!-- Input Area -->
-                <div class="p-3 pb-32 md:p-4 md:pb-4 bg-white border-t border-slate-200 flex-shrink-0 z-20 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]">
+                <div class="p-3 pb-6 md:p-4 md:pb-4 bg-white border-t border-slate-200 flex-shrink-0 z-20 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]">
                     <form id="messageForm" class="flex items-end gap-2 max-w-4xl mx-auto">
                         <button type="button" class="h-10 w-10 md:h-11 md:w-11 flex items-center justify-center text-slate-400 hover:text-lawyer-accent hover:bg-slate-50 rounded-full transition-colors flex-shrink-0">
                             <span class="material-symbols-outlined text-[24px]">attach_file</span>
@@ -905,6 +905,26 @@
                 closeNewMessageModal();
             }
         });
+    </script>
+    <script>
+        // Fix for mobile keyboard layout issues
+        const messageInput = document.getElementById('messageInput');
+        
+        if (messageInput) {
+            messageInput.addEventListener('focus', () => {
+                // Ensure the input is visible and body doesn't scroll away
+                setTimeout(() => {
+                    window.scrollTo(0, 0);
+                    document.body.scrollTop = 0;
+                }, 100);
+            });
+
+            messageInput.addEventListener('blur', () => {
+                 // Force reset scroll when keyboard closes
+                 window.scrollTo(0, 0);
+                 document.body.scrollTop = 0;
+            });
+        }
     </script>
 </body>
 </html>
