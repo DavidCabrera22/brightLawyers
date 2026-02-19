@@ -564,7 +564,7 @@
 
             try {
                 const url = id ? `/tasks/${id}` : '/tasks';
-                const method = id ? 'PUT' : 'POST';
+                const method = id ? 'PATCH' : 'POST';
                 
                 const response = await fetchAPI(url, {
                     method: method,
@@ -598,7 +598,7 @@
         async function markAsDone(id) {
             try {
                 const response = await fetchAPI(`/tasks/${id}`, {
-                    method: 'PUT',
+                    method: 'PATCH',
                     body: JSON.stringify({ status: 'done' })
                 });
                 if (response.ok) {

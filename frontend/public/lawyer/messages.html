@@ -139,7 +139,7 @@
     <main class="flex-1 flex flex-col h-full overflow-hidden bg-lawyer-bg relative">
         
         <!-- Top Header -->
-        <header class="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-8 flex-shrink-0 z-10">
+        <header class="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-4 md:px-8 flex-shrink-0 z-10">
             <div class="flex items-center gap-3">
                 <button onclick="toggleSidebar()" class="md:hidden p-2 text-slate-500 hover:bg-slate-100 rounded-lg transition-colors">
                     <span class="material-symbols-outlined">menu</span>
@@ -178,72 +178,78 @@
             </div>
         </header>
 
-        <!-- Chat Interface Container -->
-        <div class="flex-1 overflow-hidden p-6 md:p-8">
-            <div class="bg-white rounded-xl border border-slate-100 shadow-card flex h-full overflow-hidden">
-                
-                <!-- Conversations List (Left) -->
-                <div class="w-full lg:w-80 border-r border-slate-100 flex flex-col z-0 bg-slate-50/50">
-                    <div class="p-4 border-b border-slate-100 space-y-3 bg-white">
-                        <button onclick="openNewMessageModal()" class="w-full flex items-center justify-center gap-2 bg-lawyer-primary hover:bg-lawyer-secondary text-white py-2.5 rounded-lg shadow-sm hover:shadow transition-all text-sm font-semibold">
-                            <span class="material-symbols-outlined text-[18px]">add_comment</span>
-                            Nueva Conversación
+        <!-- Chat Interface Container (Full Width/Height like Admin) -->
+        <div class="flex-1 flex overflow-hidden relative">
+            
+            <!-- Conversations List (Left) -->
+            <div id="conversationsPanel" class="w-full md:w-80 lg:w-96 bg-white border-r border-slate-200 flex flex-col z-0 h-full">
+                <div class="p-4 border-b border-slate-100 space-y-3 bg-white">
+                    <button onclick="openNewMessageModal()" class="w-full flex items-center justify-center gap-2 bg-lawyer-primary hover:bg-lawyer-secondary text-white py-2.5 rounded-lg shadow-sm hover:shadow transition-all text-sm font-semibold">
+                        <span class="material-symbols-outlined text-[18px]">add_comment</span>
+                        Nueva Conversación
+                    </button>
+                    <div class="relative">
+                        <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 material-symbols-outlined text-[18px]">search</span>
+                        <input id="searchConversations" class="h-10 w-full rounded-lg border-slate-200 bg-slate-50 pl-10 pr-4 text-sm focus:ring-lawyer-accent focus:border-lawyer-accent text-slate-700 placeholder-slate-400" placeholder="Buscar conversaciones..." type="text"/>
+                    </div>
+                </div>
+                <div id="conversationsList" class="flex-1 overflow-y-auto">
+                    <!-- Conversations will be loaded here -->
+                    <div class="flex flex-col items-center justify-center h-40 text-slate-400">
+                        <div class="w-6 h-6 border-2 border-lawyer-accent border-t-transparent rounded-full animate-spin mb-2"></div>
+                        <span class="text-xs font-medium">Cargando...</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chat Area (Right) -->
+            <div id="chatArea" class="hidden md:flex flex-1 flex-col bg-slate-50 relative">
+                <!-- Chat Header -->
+                <div class="h-16 border-b border-slate-200 flex items-center justify-between px-6 bg-white flex-shrink-0">
+                    <div class="flex items-center gap-3">
+                        <button onclick="backToConversations()" class="md:hidden p-2 -ml-2 text-slate-500 hover:bg-slate-100 rounded-full transition-colors mr-1">
+                            <span class="material-symbols-outlined text-[24px]">arrow_back</span>
                         </button>
-                        <div class="relative">
-                            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 material-symbols-outlined text-[18px]">search</span>
-                            <input id="searchConversations" class="h-10 w-full rounded-lg border-slate-200 bg-slate-50 pl-10 pr-4 text-sm focus:ring-lawyer-accent focus:border-lawyer-accent text-slate-700 placeholder-slate-400" placeholder="Buscar conversaciones..." type="text"/>
+                        <div class="h-10 w-10 rounded-full bg-lawyer-secondary text-white flex items-center justify-center font-bold text-sm" id="chatAvatar">
+                            --
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-slate-800 text-sm" id="chatClientName">Selecciona una conversación</h3>
+                            <p class="text-xs text-slate-500" id="chatCaseTitle">--</p>
                         </div>
                     </div>
-                    <div id="conversationsList" class="flex-1 overflow-y-auto">
-                        <!-- Conversations will be loaded here -->
-                        <div class="flex flex-col items-center justify-center h-40 text-slate-400">
-                            <div class="w-6 h-6 border-2 border-lawyer-accent border-t-transparent rounded-full animate-spin mb-2"></div>
-                            <span class="text-xs font-medium">Cargando...</span>
+                    <div class="flex items-center gap-2">
+                        <button id="btnRequestDocs" onclick="toggleDocumentRequestCurrent()" class="hidden px-3 py-1.5 bg-lawyer-accent text-white text-xs font-bold rounded hover:bg-orange-600 transition-colors flex items-center gap-1">
+                            <span class="material-symbols-outlined text-[16px]">upload_file</span>
+                            Solicitar Docs
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Messages -->
+                <div id="messagesContainer" class="flex-1 overflow-y-auto p-6 space-y-4 bg-slate-50">
+                    <!-- Messages will appear here -->
+                    <div class="flex h-full items-center justify-center text-slate-400">
+                        <div class="text-center">
+                            <span class="material-symbols-outlined text-5xl mb-3 opacity-20">chat_bubble_outline</span>
+                            <p class="font-medium text-sm">Selecciona una conversación para ver los mensajes</p>
                         </div>
                     </div>
                 </div>
 
-                <!-- Chat Area (Right) -->
-                <div id="chatArea" class="hidden lg:flex flex-1 flex-col bg-white relative">
-                    <!-- Chat Header -->
-                    <div class="h-16 border-b border-slate-100 flex items-center justify-between px-6 bg-white">
-                        <div class="flex items-center gap-3">
-                            <div class="h-10 w-10 rounded-full bg-lawyer-secondary text-white flex items-center justify-center font-bold text-sm" id="chatAvatar">
-                                --
-                            </div>
-                            <div>
-                                <h3 class="font-bold text-slate-800 text-sm" id="chatClientName">Selecciona una conversación</h3>
-                                <p class="text-xs text-slate-500" id="chatCaseTitle">--</p>
-                            </div>
+                <!-- Input Area -->
+                <div class="p-4 bg-white border-t border-slate-200">
+                    <form id="messageForm" class="flex items-end gap-2 max-w-4xl mx-auto">
+                        <button type="button" class="h-11 w-11 flex items-center justify-center text-slate-400 hover:text-lawyer-accent hover:bg-slate-50 rounded-full transition-colors flex-shrink-0">
+                            <span class="material-symbols-outlined text-[24px]">attach_file</span>
+                        </button>
+                        <div class="flex-1 relative">
+                             <textarea id="messageInput" rows="1" class="w-full rounded-xl border-slate-200 bg-slate-50 p-3 text-base md:text-sm focus:ring-2 focus:ring-lawyer-accent/20 focus:border-lawyer-accent resize-none outline-none" placeholder="Escribe un mensaje..."></textarea>
                         </div>
-                        <div class="flex items-center gap-2">
-                            <button id="btnRequestDocs" onclick="toggleDocumentRequestCurrent()" class="hidden px-3 py-1.5 bg-lawyer-accent text-white text-xs font-bold rounded hover:bg-orange-600 transition-colors flex items-center gap-1">
-                                <span class="material-symbols-outlined text-[16px]">upload_file</span>
-                                Solicitar Docs
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Messages -->
-                    <div id="messagesContainer" class="flex-1 overflow-y-auto p-6 space-y-4 bg-slate-50">
-                        <!-- Messages will appear here -->
-                        <div class="flex h-full items-center justify-center text-slate-400">
-                            <div class="text-center">
-                                <span class="material-symbols-outlined text-5xl mb-3 opacity-20">chat_bubble_outline</span>
-                                <p class="font-medium text-sm">Selecciona una conversación para ver los mensajes</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Input Area -->
-                    <div class="p-4 bg-white border-t border-slate-100">
-                        <form id="messageForm" class="flex items-end gap-2">
-                            <textarea id="messageInput" rows="1" class="flex-1 rounded-lg border-slate-200 bg-slate-50 p-3 text-sm focus:ring-1 focus:ring-lawyer-accent focus:border-lawyer-accent resize-none text-slate-700 placeholder-slate-400" placeholder="Escribe un mensaje..."></textarea>
-                            <button type="submit" class="h-11 w-11 rounded-lg bg-lawyer-primary text-white flex items-center justify-center hover:bg-lawyer-secondary transition-colors shadow-sm hover:shadow">
-                                <span class="material-symbols-outlined text-[20px]">send</span>
-                            </button>
-                        </form>
-                    </div>
+                        <button type="submit" class="h-11 w-11 rounded-xl bg-lawyer-primary text-white flex items-center justify-center hover:bg-lawyer-secondary transition-colors shadow-md shadow-blue-900/10 flex-shrink-0">
+                            <span class="material-symbols-outlined text-[20px]">send</span>
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>
@@ -546,6 +552,10 @@
             const chatArea = document.getElementById('chatArea');
             chatArea.classList.remove('hidden');
             chatArea.classList.add('flex');
+            const conversationsPanel = document.getElementById('conversationsPanel');
+            if (window.innerWidth < 768 && conversationsPanel) {
+                conversationsPanel.classList.add('hidden');
+            }
             
             // Update Header
             const conversation = allConversations.find(c => c.id === caseId);
@@ -584,6 +594,39 @@
                 messagesContainer.innerHTML = '<div class="text-center p-4 text-red-500 text-sm">Error cargando mensajes</div>';
             }
         }
+
+        function backToConversations() {
+            currentCaseId = null;
+            renderConversations(allConversations);
+            const conversationsPanel = document.getElementById('conversationsPanel');
+            if (conversationsPanel) conversationsPanel.classList.remove('hidden');
+            const chatArea = document.getElementById('chatArea');
+            if (chatArea) {
+                chatArea.classList.add('hidden');
+                chatArea.classList.remove('flex');
+            }
+        }
+
+        window.addEventListener('resize', () => {
+            const conversationsPanel = document.getElementById('conversationsPanel');
+            const chatArea = document.getElementById('chatArea');
+            if (!conversationsPanel || !chatArea) return;
+            if (window.innerWidth >= 768) {
+                conversationsPanel.classList.remove('hidden');
+                chatArea.classList.remove('hidden');
+                chatArea.classList.add('flex');
+            } else {
+                if (currentCaseId) {
+                    conversationsPanel.classList.add('hidden');
+                    chatArea.classList.remove('hidden');
+                    chatArea.classList.add('flex');
+                } else {
+                    conversationsPanel.classList.remove('hidden');
+                    chatArea.classList.add('hidden');
+                    chatArea.classList.remove('flex');
+                }
+            }
+        });
 
         async function markAsRead(caseId) {
             try {
